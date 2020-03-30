@@ -1,0 +1,186 @@
+<div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          <a class="navbar-brand brand-logo" href="index.html">
+            Card System </a>
+          <a class="navbar-brand brand-logo-mini" href="index.html">
+            Card System </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold">Sanusi Mubaraq</p>
+                  <p class="font-weight-light text-muted mb-0">Agent</p>
+                </div>
+                <a class="dropdown-item" routerLink="/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <a class="dropdown-item" style="cursor: pointer;" (click)= "logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="profile-image">
+                  <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Sanusi Mubaraq</p>
+                  <p class="designation">Agent</p>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">Main Menu</li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/agent/dashboard">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/agent/capture">
+                <i class="menu-icon typcn typcn-th-large-outline"></i>
+                <span class="menu-title">Add Bio-data</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/profile">
+                <i class="menu-icon typcn typcn-bell"></i>
+                <span class="menu-title">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <!-- Page Title Header Starts-->
+            <div class="row page-title-header">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  
+                  <div class="col-md-6 grid-margin stretch-card average-price-card">
+                    <div class="card text-white">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between pb-2 align-items-center">
+                          <h2 class="font-weight-semibold mb-0">624</h2>
+                          <div class="icon-holder">
+                            <i class="mdi mdi-briefcase-outline"></i>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <h5 class="font-weight-semibold mb-0">Cards</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">ID Card</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          ...
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 grid-margin">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <h4 class="card-title mb-0">Users</h4>
+                        </div>
+                        <p>Registered Users</p>
+                        <div class="table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Unique Id</th>
+                                <th>Agent</th>
+                                <th>Email</th>
+                                <th>Updated On</th>
+                                <th>Gender</th>
+                                <th>D.O.B</th>
+                                <th>Zone</th>
+                                <th>Unit</th>
+                                <th>Phone No</th>
+                                <th>State</th>
+                                <th>Vehicle No</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor = "let user of users">
+                                <td>{{ user.firstname }} {{user.middlename}} {{user.lastname}}</td>
+                                <td>{{ user.uniqueId }}</td>
+                                <td>{{ user.agentId.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.updatedAt | date }}</td>
+                                <td>{{ user.gender }}</td>
+                                <td>{{ user.dob }}</td>
+                                <td>{{ user.zone }}</td>
+                                <td>{{ user.unit }}</td>
+                                <td>{{ user.phone_no }}</td>
+                                <td>{{ user.state }}</td>
+                                <td>{{ user.vehicle_no }}</td>
+                                <td>
+                                  <!-- <label class="badge badge-success" data-toggle="modal" data-target="#exampleModal">Approve</label> -->
+                                  <label class="badge {{user.approve? 'badge-success':'badge-danger'}}">{{user.approve? 'Approved' : 'Approve'}}</label>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
