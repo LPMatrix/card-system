@@ -59,7 +59,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgDatepickerModule,
     HttpClientModule,
     DataTablesModule.forRoot(),
     BrowserAnimationsModule

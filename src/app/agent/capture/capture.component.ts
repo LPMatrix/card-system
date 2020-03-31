@@ -22,10 +22,6 @@ export class CaptureComponent implements OnInit {
       });
   }
 
-  dateChanged(){
-    console.log(this.selectedDate);
-  }
-
   private init() {
     this.agentForm = new FormGroup({
       firstname : new FormControl(null, [Validators.required]),
