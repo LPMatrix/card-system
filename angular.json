@@ -31,14 +31,17 @@
               "src/assets/vendors/css/vendor.bundle.base.css",
               "src/assets/vendors/css/vendor.bundle.addons.css",
               "src/assets/css/shared/style.css",
-              "src/assets/css/demo_1/style.css"
+              "src/assets/css/demo_1/style.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.js",
               "src/assets/vendors/js/vendor.bundle.base.js",
               "src/assets/vendors/js/vendor.bundle.addons.js",
               "src/assets/js/shared/off-canvas.js",
               "src/assets/js/shared/misc.js",
-              "src/assets/js/demo_1/dashboard.js"
+              "src/assets/js/demo_1/dashboard.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
             ]
           },
           "configurations": {

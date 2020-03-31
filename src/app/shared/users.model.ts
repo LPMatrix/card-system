@@ -15,7 +15,7 @@ export interface User {
     uniqueId : string,
     password : string,
     updatedAt? : Date,
-    agentId? : any
+    agentId? : any,
     image : string,
     fingerprint_thumb : string,
     fingerprint_index : string,

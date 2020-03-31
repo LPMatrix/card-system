@@ -11,14 +11,14 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
+                <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="Profile image"> </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">Sanusi Mubaraq</p>
+                  <img class="img-md rounded-circle" src="{{userInformation?.image}}" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold">{{userInformation?.name}}</p>
                   <p class="font-weight-light text-muted mb-0">Agent</p>
                 </div>
-                <a class="dropdown-item" routerLink="/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <a class="dropdown-item" routerLink="/agent/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
                 <a class="dropdown-item" style="cursor: pointer;" (click)= "logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
               </div>
             </li>
@@ -36,11 +36,11 @@
             <li class="nav-item nav-profile">
               <a href="#" class="nav-link">
                 <div class="profile-image">
-                  <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
+                  <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="profile image">
                   <div class="dot-indicator bg-success"></div>
                 </div>
                 <div class="text-wrapper">
-                  <p class="profile-name">Sanusi Mubaraq</p>
+                  <p class="profile-name">{{userInformation?.name}}</p>
                   <p class="designation">Agent</p>
                 </div>
               </a>
@@ -61,7 +61,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="/profile">
+              <a class="nav-link" routerLink="/agent/profile">
                 <i class="menu-icon typcn typcn-bell"></i>
                 <span class="menu-title">Profile</span>
               </a>
@@ -82,7 +82,7 @@
                     <div class="card text-white">
                       <div class="card-body">
                         <div class="d-flex justify-content-between pb-2 align-items-center">
-                          <h2 class="font-weight-semibold mb-0">624</h2>
+                          <h2 class="font-weight-semibold mb-0">{{ counts?.userCount }}</h2>
                           <div class="icon-holder">
                             <i class="mdi mdi-briefcase-outline"></i>
                           </div>
@@ -141,18 +141,18 @@
                             </thead>
                             <tbody>
                               <tr *ngFor = "let user of users">
-                                <td>{{ user.firstname }} {{user.middlename}} {{user.lastname}}</td>
-                                <td>{{ user.uniqueId }}</td>
-                                <td>{{ user.agentId.name }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.updatedAt | date }}</td>
-                                <td>{{ user.gender }}</td>
-                                <td>{{ user.dob }}</td>
-                                <td>{{ user.zone }}</td>
-                                <td>{{ user.unit }}</td>
-                                <td>{{ user.phone_no }}</td>
-                                <td>{{ user.state }}</td>
-                                <td>{{ user.vehicle_no }}</td>
+                                <td>{{ user?.firstname }} {{user?.middlename}} {{user?.lastname}}</td>
+                                <td>{{ user?.uniqueId }}</td>
+                                <td>{{ user?.agentId.name }}</td>
+                                <td>{{ user?.email }}</td>
+                                <td>{{ user?.updatedAt | date }}</td>
+                                <td>{{ user?.gender }}</td>
+                                <td>{{ user?.dob }}</td>
+                                <td>{{ user?.zone }}</td>
+                                <td>{{ user?.unit }}</td>
+                                <td>{{ user?.phone_no }}</td>
+                                <td>{{ user?.state }}</td>
+                                <td>{{ user?.vehicle_no }}</td>
                                 <td>
                                   <!-- <label class="badge badge-success" data-toggle="modal" data-target="#exampleModal">Approve</label> -->
                                   <label class="badge {{user.approve? 'badge-success':'badge-danger'}}">{{user.approve? 'Approved' : 'Approve'}}</label>

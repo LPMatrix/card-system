@@ -35,5 +35,9 @@ export class AgentService {
         });
     }
     
+    getCounts() {
+        return this.http.get<{userCount: number}>(BACKEND_URL + 'agent/counts');
+    }
+
     
 }

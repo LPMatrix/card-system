@@ -24,6 +24,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminLoginComponent } from './auth/admin/login/login.component';
 import { AgentLoginComponent } from './auth/agent/login/login.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { CardBackComponent } from './card-back/card-back.component';
+import { CardComponent } from './card/card.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -45,14 +48,17 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     AdminProfileComponent,
     AgentProfileComponent,
     AdminLoginComponent,
-    AgentLoginComponent
+    AgentLoginComponent,
+    CardBackComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule.forRoot()
   ],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

@@ -12,10 +12,13 @@ const BACKEND_URL = environment.apiUrl;
 export class AdminService {
     private agents : Agent[] = [];
     private agentStatusListener = new BehaviorSubject<Agent[]>(null);
-    private users : User[] =[];
+    private users : User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>(null);
     constructor(private http :  HttpClient, private router : Router) {}
 
+    getCounts() {
+        return this.http.get<{userCount: number, agentCount: number}>(BACKEND_URL + 'admin/counts');
+    }
     getAgentStatusListener() {
         return this.agentStatusListener.asObservable();
     }
@@ -23,8 +26,14 @@ export class AdminService {
         return this.userStatusListener.asObservable();
     } 
     createAgent(agent : Agent) {
-        // console.log(agent)
-        this.http.post<{agent: Agent}>(BACKEND_URL + 'admin/agent', agent)
+        console.log(agent);
+        const postCredentials = new FormData();
+        postCredentials.append('name', agent.name);
+        postCredentials.append('email', agent.email);
+        postCredentials.append('password', agent.password);
+        postCredentials.append('image', agent.image, agent.name);
+        console.log(postCredentials);
+        this.http.post<{agent: Agent}>(BACKEND_URL + 'admin/agent', postCredentials)
         .subscribe(responseData => {
             this.agents.push(responseData.agent);
             this.agentStatusListener.next(this.agents);
@@ -34,7 +43,7 @@ export class AdminService {
     getUsers() {
         this.http.get<{users : User[]}>(BACKEND_URL + 'admin/agent/users')
         .subscribe(responseData => {
-            
+            // this.getCounts();
             this.users = responseData.users;
             this.userStatusListener.next(this.users);
         });
@@ -45,14 +54,11 @@ export class AdminService {
         }
         this.http.post<{user : User}>(BACKEND_URL + 'admin/agent/user/approve/' + userId, postData)
         .subscribe(responseData => {
-            // console.log(responseData.user);
             const getUsers = [...this.users];
             const userFiltered = getUsers.findIndex(p => p._id === userId);
             getUsers[userFiltered] = responseData.user;
             this.users = [...getUsers];
             this.userStatusListener.next(this.users);
-            // console.log(this.users);
-
         });
     }
 }

@@ -29,7 +29,9 @@ exports.postAgentLogin = (req, res, next) => {
 
             res.status(200).json({
                 token: token,
-                expiresIn: "3600"
+                expiresIn: "3600",
+                name : user.name,
+                image : user.image
             });
         })
         .catch(err => {

@@ -6,5 +6,8 @@ const isAgentAuth = require("../middleware/isAgentAuth");
 
 router.post('/user', [isAgentAuth, agentData], agentController.postAddUser);
 router.get('/user', [isAgentAuth, agentData], agentController.getUsers);
+router.get('/counts', [isAgentAuth, agentData], agentController.getUserCount);
+router.get('/profile', [isAgentAuth, agentData], agentController.getProfile);
+router.post('/profile', [isAgentAuth, agentData], agentController.postProfile);
 
 module.exports = router;

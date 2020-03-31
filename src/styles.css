@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.active{
+	background: #0c09ac !important;
+}
+.dataTables_wrapper > .dataTables_paginate > .paginate_button{
+	    color: #1b45ef !important;
+}
+.paginate_button::hover{
+	background-color: #1b45ef !important;
+}
