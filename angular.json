@@ -32,6 +32,7 @@
               "src/assets/vendors/css/vendor.bundle.addons.css",
               "src/assets/css/shared/style.css",
               "src/assets/css/demo_1/style.css",
+              "src/assets/css/card.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
