@@ -10,10 +10,20 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class CaptureComponent implements OnInit {
   agentForm : FormGroup;
+  states:any = [];
   constructor(private agentService : AgentService, private authService : AuthService) { }
 
   ngOnInit(): void {
     this.init();
+    this.agentService.getStates()
+      .subscribe(responseData => {
+        console.log(responseData);
+        this.states = responseData;
+      });
+  }
+
+  dateChanged(){
+    console.log(this.selectedDate);
   }
 
   private init() {

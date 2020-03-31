@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
               "src/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css",
               "src/assets/vendors/iconfonts/typicons/src/font/typicons.css",
@@ -42,7 +43,7 @@
               "src/assets/js/shared/off-canvas.js",
               "src/assets/js/shared/misc.js",
               "src/assets/js/demo_1/dashboard.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
             ]
           },
           "configurations": {
@@ -105,6 +106,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []

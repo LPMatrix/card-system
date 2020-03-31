@@ -8,3 +8,5 @@
 .paginate_button::hover{
 	background-color: #1b45ef !important;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

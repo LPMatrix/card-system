@@ -27,6 +27,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { CardBackComponent } from './card-back/card-back.component';
 import { CardComponent } from './card/card.component';
 import { DataTablesModule } from 'angular-datatables';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -57,8 +59,10 @@ import { DataTablesModule } from 'angular-datatables';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgDatepickerModule,
     HttpClientModule,
-    DataTablesModule.forRoot()
+    DataTablesModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

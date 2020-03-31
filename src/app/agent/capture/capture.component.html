@@ -191,11 +191,8 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
-                              <select  formControlName = "state" class="form-control">
-                                <option>Kwara</option>
-                                <option>Kaduna</option>
-                                <option>Oyo</option>
-                                <option>Kano</option>
+                              <select  formControlName = "state" class="form-control" [(ngModel)]="states" >
+                                <option *ngFor="let state of states">{{ state }}</option>
                               </select>
                             </div>
                           </div>

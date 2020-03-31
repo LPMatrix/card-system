@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { User } from '../shared/users.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, } from 'rxjs';
 import { environment } from '../../environments/environment';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
@@ -37,6 +37,9 @@ export class AgentService {
     
     getCounts() {
         return this.http.get<{userCount: number}>(BACKEND_URL + 'agent/counts');
+    }
+    getStates() {
+        return this.http.get("/assets/json/states.json");
     }
 
     
