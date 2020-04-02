@@ -14,14 +14,15 @@ import { AdminAuthGuard } from './auth/admin.auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
+import { UserAuthGuard } from './auth/user.auth.guard';
 
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
   {path: "agent", redirectTo: 'agent/dashboard'},
-  {path: "home", component: HomeComponent},
+  {path: "home", canActivate: [UserAuthGuard], component: HomeComponent},
   {path: "admin", redirectTo: 'admin/dashboard'},
-  {path: "dashboard", component:DashboardComponent},
+  {path: "dashboard", canActivate: [UserAuthGuard], component:DashboardComponent},
   {path: "admin/login", component:AdminLoginComponent},
   {path: "agent/login", component:AgentLoginComponent},
   {path: "admin/dashboard", canActivate: [AdminAuthGuard], component:DashboardPageComponent},
@@ -29,9 +30,9 @@ const routes: Routes = [
   {path: "agent/capture", canActivate: [AuthGuard], component:CaptureComponent},
   {path: "admin/add-agent", canActivate: [AdminAuthGuard], component:AddAgentComponent},
   {path: "login", component: LoginComponent},
-  {path: "profile", component: ProfileComponent},
-  {path: "agent/profile", component: AgentProfileComponent},
-  {path: "admin/profile", component: AdminProfileComponent}
+  {path: "profile", canActivate: [UserAuthGuard], component: ProfileComponent},
+  {path: "agent/profile", canActivate: [AuthGuard], component: AgentProfileComponent},
+  {path: "admin/profile", canActivate: [AdminAuthGuard], component: AdminProfileComponent}
 
 ];
 

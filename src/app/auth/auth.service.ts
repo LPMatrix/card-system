@@ -130,4 +130,8 @@ export class AuthService {
   getProfile () {
     return this.http.get<{agent: Agent}>(BACKEND_URL + 'agent/profile');
   }
+
+  changeProfile (agent : Agent) {
+    return this.http.post<{agent : Agent}>(BACKEND_URL + 'agent/profile', agent);
+  }
 }

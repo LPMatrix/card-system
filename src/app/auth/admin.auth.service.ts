@@ -96,4 +96,12 @@ export class AdminAuthService {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminExpiresIn');
   }
+  changeProfile (password : string, newpassword : string, confirmpassword : string) {
+    const postData = {
+      password : password,
+      newpassword : newpassword,
+      confirmpassword : confirmpassword
+    }
+    return this.http.post<{message : string}>(BACKEND_URL + 'admin/profile', postData);
+  }
 }

@@ -22,6 +22,10 @@ const agentSchema = new Schema({
     image: {
         type: String,
         required: true
+    },
+    is_active : {
+        type: Boolean,
+        default : true
     }
 });
 

@@ -56,6 +56,7 @@ exports.postAddUser = (req, res, next) => {
                             .then(result => {
                                 console.log(result);
                                 res.status(200).json({
+                                    message : 'User account has been generated and awaiting approval.',
                                     user: result
                                 });
                             })
@@ -111,7 +112,7 @@ exports.getProfile = (req, res, next) => {
                 });
             }
             res.status(200).json({
-                user: user
+                agent: user
             });
         })
         .catch(err => {
@@ -124,9 +125,8 @@ exports.getProfile = (req, res, next) => {
 exports.postProfile = (req, res, next) => {
     const name = req.body.name;
     const password = req.body.password;
-    const confirmpassword = req.body.confirmpassword;
-
-    if (password === confirmpassword) {
+    const newpassword = req.body.newpassword;
+    if (password === newpassword) {
         return res.status(401).json({
             message: "Password does not match!"
         });
@@ -149,7 +149,7 @@ exports.postProfile = (req, res, next) => {
                                 message: "Password does not match!"
                             })
                         }
-                        return bcrypt.hash(password, 12)
+                        return bcrypt.hash(newpassword, 12)
                             .then(hashPassword => {
                                 user.name = name;
 
@@ -157,8 +157,8 @@ exports.postProfile = (req, res, next) => {
                                 return user.save()
                                     .then(result => {
                                         res.status(200).json({
-                                            message: "Change Successful",
-                                            user: result
+                                            message: "Profile has been updated!",
+                                            agent: result
                                         })
                                     })
                                     .catch(err => {
@@ -183,7 +183,7 @@ exports.postProfile = (req, res, next) => {
                 return user.save()
                     .then(result => {
                         res.status(200).json({
-                            message: "Change Successful",
+                            message: "Password has been changed!",
                             user: result
                         })
                     })

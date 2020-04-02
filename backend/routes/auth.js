@@ -4,6 +4,8 @@ const authController = require('../controllers/auth');
 
 router.post('/agent/login', authController.postAgentLogin);
 
+router.post('/user/login', authController.postUserLogin);
+
 /*
   Admin Authentication Begins
 */

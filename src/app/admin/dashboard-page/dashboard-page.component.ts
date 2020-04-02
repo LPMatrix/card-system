@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { User } from 'src/app/shared/users.model';
 import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { Agent } from 'src/app/shared/agent.model';
 declare var $: any;
 
 
@@ -13,9 +14,13 @@ declare var $: any;
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   users: User[] = [];
-  counts: { userCount: number, agentCount: number };
+  agents: Agent[] = [];
+  counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
+  arrayCount: number = 0;
   dtTrigger: Subject<any> = new Subject();
   dtOptions: DataTables.Settings = {};
+  private usersSubscription: Subscription;
+  private agentsSubscription: Subscription;
   constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) { }
 
   ngOnInit(): void {
@@ -23,26 +28,25 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       pagingType: 'full_numbers',
       pageLength: 2
     };
-    this.adminService.getUsers();
-    this.getCount();
-    // console.log(this.counts);
-    this.adminService.getUserStatusListener()
+    this.adminService.geAgentUsers();
+    this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
         this.users = responseData;
-        this.getCount();
+        this.counts.userCount = this.users.length;
         this.dtTrigger.next();
+      });
+    this.agentsSubscription = this.adminService.getAgentStatusListener()
+      .subscribe(responseData => {
+        this.agents = responseData;
+        this.counts.agentCount = this.agents.length;
+        // this.dtTrigger.next();
       });
   }
 
   onApprove(userId: string) {
+    
     this.adminService.approve(userId);
     // this.getCount();
-  }
-  getCount() {
-    this.adminService.getCounts().subscribe(responseData => {
-      // console.log(responseData);
-      this.counts = responseData;
-    });
   }
 
   logout() {
@@ -52,5 +56,15 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+    this.usersSubscription.unsubscribe();
+    this.agentsSubscription.unsubscribe();
+  }
+
+  onAccountStatus(agentId : string) {
+    this.adminService.agentAccountStatus(agentId);
+  }
+
+  onDelete(agentId : string) {
+    this.adminService.deleteAgent(agentId);
   }
 }

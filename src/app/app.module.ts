@@ -28,6 +28,10 @@ import { CardBackComponent } from './card-back/card-back.component';
 import { CardComponent } from './card/card.component';
 import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorComponent } from './error/error.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { ErrorInterceptorService } from './error-interceptor.service';
+
 
 
 @NgModule({
@@ -52,7 +56,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AdminLoginComponent,
     AgentLoginComponent,
     CardBackComponent,
-    CardComponent
+    CardComponent,
+    ErrorComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,10 +67,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,
     DataTablesModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
-    {provide : HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

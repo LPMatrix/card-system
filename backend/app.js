@@ -4,8 +4,9 @@ const path = require('path');
 const authRouter = require('./routes/auth');
 const adminRouter = require("./routes/admin");
 const agentRouter = require("./routes/agent");
-const MongoDBURI = 'mongodb+srv://klez:kleztech@cluster0-nm91y.mongodb.net/ecard';
-// const MongoDBURI = 'mongodb://127.0.0.1:27017/ecard';
+const userRouter = require("./routes/users");
+// const MongoDBURI = 'mongodb+srv://klez:kleztech@cluster0-nm91y.mongodb.net/ecard';
+const MongoDBURI = 'mongodb://127.0.0.1:27017/ecard';
 const bodyParser = require('body-parser');
 const Admin = require('./models/admin');
 const bcrypt = require('bcryptjs');
@@ -52,7 +53,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization, AdminAuthorization"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, AdminAuthorization, UserAuthorization"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -64,6 +65,7 @@ app.use((req, res, next) => {
 
 app.use('/api/admin', adminRouter);
 app.use('/api/agent', agentRouter);
+app.use('/api/user', userRouter);
 
 app.use('/api', authRouter);
 module.exports = app;

@@ -11,7 +11,7 @@ const BACKEND_URL = environment.apiUrl;
 
 export class AgentService {
     private users : User[] =[];
-    private userStatusListener = new BehaviorSubject<User[]>(null);
+    private userStatusListener = new BehaviorSubject<User[]>([]);
     constructor(private http : HttpClient, private router : Router) {}
 
     getUserStatusListener() {
@@ -34,10 +34,7 @@ export class AgentService {
             this.userStatusListener.next(this.users);
         });
     }
-    
-    getCounts() {
-        return this.http.get<{userCount: number}>(BACKEND_URL + 'agent/counts');
-    }
+
     getStates() {
         return this.http.get("/assets/json/states.json");
     }

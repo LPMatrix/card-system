@@ -160,8 +160,8 @@
                             <tbody>
                               <tr *ngFor="let user of users" data-toggle="modal" data-target="#exampleModal">
                                 <td>{{ user?.firstname }} {{user?.middlename}} {{user?.lastname}}</td>
-                                <td>{{ user?.uniqueId }}</td>
-                                <td>{{ user?.agentId.name }}</td>
+                                <td>{{ user?.uniqueId | uppercase }}</td>
+                                <td>{{ user?.agentId? user?.agentId.name : 'Unknown'}}</td>
                                 <td>{{ user?.email }}</td>
                                 <td>{{ user?.updatedAt | date }}</td>
                                 <td>{{ user?.gender }}</td>
@@ -196,27 +196,25 @@
                             <thead>
                               <tr>
                                 <th>Name</th>
-                                <th>D.O.B</th>
-                                <th>Phone Number</th>
                                 <th>Email</th>
-                                <th>Vehicle Number</th>
-                                <th>Zone</th>
-                                <th>State</th>
-                                <th>Unit</th>
+                                <th>Added on</th>
+                                <th>Status</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>INV-87239</td>
-                                <td>Viola Ford</td>
-                                <td>Paid</td>
-                                <td>20 Jan 2019</td>
-                                <td>$755</td>
-                                <td>$755</td>
-                                <td>$755</td>
-                                <td>$755</td>
-                                <td><label class="badge badge-success" >View</label></td>
+                              <tr *ngFor = "let agent of agents">
+                                <td>{{agent?.name}}</td>
+                                <td>{{agent?.email}}</td>
+                                <td>{{agent?.updatedAt | date}}</td>
+                                <td>{{agent?.is_active? 'Active' : 'Disabled'}}</td>
+                                <td>
+                                  <!-- <label class="badge badge-success" >View</label> -->
+                                  <label class="badge {{agent?.is_active? 'badge-danger' : 'badge-success'}} mr-1" (click) = "onAccountStatus(agent?._id)">
+                                    {{agent?.is_active? 'Deactivate' : 'Activate'}}
+                                  </label>
+                                  <label class="badge badge-danger" (click)="onDelete(agent?._id)">X</label>
+                                </td>
                               </tr>
                             </tbody>
                           </table>

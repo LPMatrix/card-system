@@ -11,9 +11,9 @@ const BACKEND_URL = environment.apiUrl;
 })
 export class AdminService {
     private agents : Agent[] = [];
-    private agentStatusListener = new BehaviorSubject<Agent[]>(null);
+    private agentStatusListener = new BehaviorSubject<Agent[]>([]);
     private users : User[] = [];
-    private userStatusListener = new BehaviorSubject<User[]>(null);
+    private userStatusListener = new BehaviorSubject<User[]>([]);
     constructor(private http :  HttpClient, private router : Router) {}
 
     getCounts() {
@@ -26,13 +26,11 @@ export class AdminService {
         return this.userStatusListener.asObservable();
     } 
     createAgent(agent : Agent) {
-        console.log(agent);
         const postCredentials = new FormData();
         postCredentials.append('name', agent.name);
         postCredentials.append('email', agent.email);
         postCredentials.append('password', agent.password);
         postCredentials.append('image', agent.image, agent.name);
-        console.log(postCredentials);
         this.http.post<{agent: Agent}>(BACKEND_URL + 'admin/agent', postCredentials)
         .subscribe(responseData => {
             this.agents.push(responseData.agent);
@@ -40,12 +38,13 @@ export class AdminService {
             this.router.navigateByUrl('/admin/dashboard');
         });
     }
-    getUsers() {
-        this.http.get<{users : User[]}>(BACKEND_URL + 'admin/agent/users')
+    geAgentUsers() {
+        this.http.get<{users : User[], agents: Agent[]}>(BACKEND_URL + 'admin/agents-users')
         .subscribe(responseData => {
-            // this.getCounts();
             this.users = responseData.users;
+            this.agents = responseData.agents;
             this.userStatusListener.next(this.users);
+            this.agentStatusListener.next(this.agents);
         });
     }
     approve(userId: string) {
@@ -59,6 +58,27 @@ export class AdminService {
             getUsers[userFiltered] = responseData.user;
             this.users = [...getUsers];
             this.userStatusListener.next(this.users);
+        });
+    }
+
+    agentAccountStatus(agentId : string) {
+        const postData = {
+            agentId : agentId
+        }
+        this.http.post<{agent : Agent}>(BACKEND_URL + 'admin/agent/account', postData)
+        .subscribe(responseData => {
+            const agentFilter = this.agents.findIndex(p => p._id === agentId);
+            this.agents[agentFilter] = responseData.agent;
+            this.agentStatusListener.next(this.agents);
+        });
+    }
+    deleteAgent(agentId : string) {
+        this.http.delete<{message : string}>(BACKEND_URL + 'admin/agent/remove/' + agentId)
+        .subscribe(responseData => {
+            const getAgents = [...this.agents];
+            const getFilteredAgent = getAgents.filter(p => p._id !== agentId);
+            this.agents = [...getFilteredAgent];
+            this.agentStatusListener.next(this.agents);
         });
     }
 }
