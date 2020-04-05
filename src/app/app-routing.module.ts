@@ -14,6 +14,7 @@ import { AdminAuthGuard } from './auth/admin.auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { UserAuthGuard } from './auth/user.auth.guard';
 
 
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "profile", canActivate: [UserAuthGuard], component: ProfileComponent},
   {path: "agent/profile", canActivate: [AuthGuard], component: AgentProfileComponent},
-  {path: "admin/profile", canActivate: [AdminAuthGuard], component: AdminProfileComponent}
+  {path: "admin/profile", canActivate: [AdminAuthGuard], component: AdminProfileComponent},
+  {path: "forgot-password", component: ForgotPasswordComponent}
 
 ];
 

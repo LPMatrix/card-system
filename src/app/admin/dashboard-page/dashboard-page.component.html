@@ -158,7 +158,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let user of users" data-toggle="modal" data-target="#exampleModal">
+                              <tr *ngFor="let user of users" data-toggle="modal" >
                                 <td>{{ user?.firstname }} {{user?.middlename}} {{user?.lastname}}</td>
                                 <td>{{ user?.uniqueId | uppercase }}</td>
                                 <td>{{ user?.agentId? user?.agentId.name : 'Unknown'}}</td>

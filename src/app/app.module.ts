@@ -31,6 +31,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './error/error.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { ErrorInterceptorService } from './error-interceptor.service';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { WebcamModule } from 'ngx-webcam';
+
 
 
 
@@ -58,7 +62,9 @@ import { ErrorInterceptorService } from './error-interceptor.service';
     CardBackComponent,
     CardComponent,
     ErrorComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -66,8 +72,10 @@ import { ErrorInterceptorService } from './error-interceptor.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    WebcamModule,
     DataTablesModule.forRoot(),
     BrowserAnimationsModule,
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
