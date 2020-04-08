@@ -14,7 +14,7 @@ export class AdminService {
     private agentStatusListener = new BehaviorSubject<Agent[]>([]);
     private users : User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
-    constructor(private http :  HttpClient, private router : Router) {}
+    constructor(private http :  HttpClient, private router: Router) {}
 
     getCounts() {
         return this.http.get<{userCount: number, agentCount: number}>(BACKEND_URL + 'admin/counts');

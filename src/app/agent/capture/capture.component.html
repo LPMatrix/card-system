@@ -97,6 +97,10 @@
                   <div class="card-body">
                     <h4 class="card-title">Bio Data Registration</h4>
                     <form [formGroup] = "agentForm" (ngSubmit) = "onSubmit()" class="form-sample">
+                      <webcam [height]="500" [width]="500" [trigger]="triggerObservable" 
+                  (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                  [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+                  (initError)="handleInitError($event)"></webcam>
                       <p class="card-description"> Personal info </p>
                       <div class="row">
                         <div class="col-md-6">
@@ -211,7 +215,15 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Passport</label>
                             <div class="col-sm-9">
-                              <input  formControlName = "image" type="file" class="form-control">
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="triggerSnapshot()" *ngIf="showWebcam">Capture</button>
+                                 &nbsp;
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">{{ title }}</button>
+                              <!-- <input  formControlName = "image" type="file" class="form-control"> -->
+                            </div>
+                            <div class="image-preview" *ngIf = "webcamImage">
+                              <img 
+                              [src]="webcamImage.imageAsDataUrl"
+                              alt="agentForm.value.title">
                             </div>
                           </div>
                         </div>

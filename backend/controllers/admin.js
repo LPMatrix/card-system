@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: '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'
+        api_key: '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'
     }
 }));
 // Add a new User
@@ -45,7 +45,7 @@ exports.postAddAgent = (req, res, next) => {
                     newUser.save()
                         .then(result => {
                             res.status(200).json({
-                                message : "Agent account has been created successfully!",
+                                message: "Agent account has been created successfully!",
                                 agent: result
                             })
                         })
@@ -113,21 +113,28 @@ exports.postUserApproval = (req, res, next) => {
                 })
             }
 
+
             user.approve = !user.approve;
             return user.save()
                 .then(result => {
+                    if (result.approve) {
+                        
+                        transporter.sendMail({
+                            to: user.email,
+                            from: 'approval@ecard.ng',
+                            subject: 'Ecard Approval Confirmation',
+                            html: `
+                       <p>Dear ${user.firstname},</p>
+                       <br>
+                       <p>This is to notify you that your account has been activated successful. Click on this <a href='http://localhost:4200/login'>link</a> to login. Congratulations.</p>
+                    `
+                        });
+                    }
+
                     res.status(200).json({
                         user: result
                     });
-                //     return transporter.sendMail({
-                //         to: user.email,
-                //         from: 'adedireemmanuel@yahoo.com',
-                //         subject: 'Ecard Approval Confirmation',
-                //         html: `
-                //    <p>Approval Successful</p>
-                //    <p>This is to notify you that your registration was successful and your account has been approved. Your default password is 12345678. Congratulations.</p>
-                // `
-                //     });
+
 
                 })
                 .catch(err => {
@@ -233,7 +240,7 @@ exports.postProfile = (req, res, next) => {
                             return user.save()
                                 .then(result => {
                                     res.status(200).json({
-                                        message : "Changed has been updated!"
+                                        message: "Changed has been updated!"
                                     })
                                 })
                                 .catch(err => {

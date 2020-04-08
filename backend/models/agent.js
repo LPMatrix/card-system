@@ -19,6 +19,8 @@ const agentSchema = new Schema({
         type: String,
         required: true
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
     image: {
         type: String,
         required: true

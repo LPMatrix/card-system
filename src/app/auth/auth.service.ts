@@ -127,6 +127,27 @@ export class AuthService {
     }
   }
 
+  
+  forgotPassword(email: string) {
+    const postData = {
+      email : email
+    }
+    return this.http.post<{message : string}>(BACKEND_URL + 'agent/reset', postData);
+  }
+
+  getResetPassword(token: string) {
+    return this.http.get<{resetToken : string, agentId : string}>(BACKEND_URL + 'agent/reset/' + token);
+  }
+
+  postResetPassword(password: string, confirmpassword:string, token: string, agentId: string) {
+    const postData = {
+      password : password,
+      token : token,
+      agentId : agentId
+    }
+    return this.http.post<{message : string}>(BACKEND_URL + 'agent/reset/' + token, postData);
+  }
+
   getProfile () {
     return this.http.get<{agent: Agent}>(BACKEND_URL + 'agent/profile');
   }

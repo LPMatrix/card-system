@@ -31,9 +31,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './error/error.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { ErrorInterceptorService } from './error-interceptor.service';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { WebcamModule } from 'ngx-webcam';
+import { AgentForgotPasswordComponent } from './auth/agent/agent-forgot-password/agent-forgot-password.component';
+import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/agent-reset-password.component';
+import { ResetPasswordComponent } from './auth/login/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
+// import { AngularMaterialModule } from './angular-material.module';
 
 
 
@@ -64,11 +67,14 @@ import { WebcamModule } from 'ngx-webcam';
     ErrorComponent,
     LoadingSpinnerComponent,
     ResetPasswordComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    AgentForgotPasswordComponent,
+    AgentResetPasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    // AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -81,6 +87,7 @@ import { WebcamModule } from 'ngx-webcam';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents : [ErrorComponent]
 })
 export class AppModule { }

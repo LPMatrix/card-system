@@ -22,7 +22,7 @@ export class UserAuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   login(user: Auth) {
-    this.http.post<{ token: any, expiresIn: number, name: string, image:string }>( BACKEND_URL + 'user/login', user)
+    this.http.post<{ token: any, expiresIn: number, name: string, image: string }>(BACKEND_URL + 'user/login', user)
       .subscribe(
         responseData => {
           const token = responseData.token;
@@ -48,8 +48,8 @@ export class UserAuthService {
   }
   getUserDetail() {
     const userInformation = {
-      name : this.username,
-      image : this.userimage
+      name: this.username,
+      image: this.userimage
     };
     return userInformation;
   }
@@ -110,7 +110,7 @@ export class UserAuthService {
     localStorage.removeItem('userName');
   }
 
-  private getAuthData(){
+  private getAuthData() {
     const token = localStorage.getItem('userToken');
     const expiresIn = localStorage.getItem('userExpiresIn');
     const name = localStorage.getItem('userName');
@@ -122,22 +122,42 @@ export class UserAuthService {
     return {
       token: token,
       expirationDate: new Date(expiresIn),
-      image : image,
-      name : name
+      image: image,
+      name: name
     }
   }
 
-  getProfile () {
-    return this.http.get<{user: User}>(BACKEND_URL + 'user/profile');
+  forgotPassword(email: string) {
+    const postData = {
+      email : email
+    }
+    return this.http.post<{message : string}>(BACKEND_URL + 'user/reset', postData);
   }
 
-  changeProfile (password : string, newpassword : string, confirmpassword : string) {
+  getResetPassword(token: string) {
+    return this.http.get<{resetToken : string, userId : string}>(BACKEND_URL + 'user/reset/' + token);
+  }
+
+  postResetPassword(password: string, confirmpassword:string, token: string, userId: string) {
     const postData = {
       password : password,
-      newpassword : newpassword,
-      confirmpassword : confirmpassword
+      token : token,
+      userId : userId
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'user/profile', postData);
+    return this.http.post<{message : string}>(BACKEND_URL + 'user/reset/' + token, postData);
+  }
+
+  getProfile() {
+    return this.http.get<{ user: User }>(BACKEND_URL + 'user/profile');
+  }
+
+  changeProfile(password: string, newpassword: string, confirmpassword: string) {
+    const postData = {
+      password: password,
+      newpassword: newpassword,
+      confirmpassword: confirmpassword
+    }
+    return this.http.post<{ message: string }>(BACKEND_URL + 'user/profile', postData);
   }
 }
 

@@ -14,9 +14,11 @@ import { AdminAuthGuard } from './auth/admin.auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { UserAuthGuard } from './auth/user.auth.guard';
-
+import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/login/reset-password/reset-password.component';
+import { AgentForgotPasswordComponent } from './auth/agent/agent-forgot-password/agent-forgot-password.component';
+import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/agent-reset-password.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -34,7 +36,10 @@ const routes: Routes = [
   {path: "profile", canActivate: [UserAuthGuard], component: ProfileComponent},
   {path: "agent/profile", canActivate: [AuthGuard], component: AgentProfileComponent},
   {path: "admin/profile", canActivate: [AdminAuthGuard], component: AdminProfileComponent},
-  {path: "forgot-password", component: ForgotPasswordComponent}
+  {path: "forgot-password", component: ForgotPasswordComponent},
+  {path: "reset/:token", component : ResetPasswordComponent},
+  {path: "agent/forgot-password", component : AgentForgotPasswordComponent},
+  {path: "agent/reset/:token", component: AgentResetPasswordComponent}
 
 ];
 

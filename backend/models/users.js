@@ -68,6 +68,8 @@ const userSchma = new Schema({
         type : String,
         required : true
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
     updatedAt: {
         type: Date,
         default: Date.now()
