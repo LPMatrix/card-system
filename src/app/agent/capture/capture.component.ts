@@ -38,6 +38,7 @@ export class CaptureComponent implements OnInit {
 
   public triggerSnapshot(): void {
     this.trigger.next();
+    this.toggleWebcam();
   }
 
   toggleWebcam() {

@@ -6,15 +6,17 @@
         <div class="shape"><span class="txt">NP</span></div> <span class="text">NUPENG</span>
       </div>
     </header>
-    <div class="mk-icon-sim"><img src="../assets/images/faces/profile/profile.jpg" style="height: 5em"></div>
-    <div class="credit-font credit-card-number">Ajadi Temitope</div>
+    <div class="mk-icon-sim"><img [src]="data.image" style="height: 5em"></div>
+    <div class="credit-font credit-card-number">{{ data?.firstname }} {{data?.middlename.charAt(0)}}. {{data?.lastname}}</div>
     <footer class="foot">
       <div class="clearfix">
+        <!-- <div class="pull-left">
+          <div class="credit-card-date"><span class="title">Gender</span><span class="credit-font">{{ data?.gender }}</span></div>
+        </div> -->
         <div class="pull-left">
-          <div class="credit-card-date"><span class="title">Expires End</span><span class="credit-font">01/21</span></div>
-          <div class="credit-font credit-author">Sales</div>
+          <div class="credit-font credit-author">{{ data?.uniqueId }}</div>
         </div>
-        <div class="pull-right"><div class="mk-icon-visa"></div></div>
+        <div class="pull-right credit-author credit-card-date">{{ data?.gender }}</div>
       </div>
     </footer>
   </div>

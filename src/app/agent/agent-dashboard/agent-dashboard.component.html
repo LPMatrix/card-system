@@ -94,7 +94,7 @@
                     </div>
                   </div>
 
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="{{ user?.uniqueId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -104,7 +104,7 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                          <app-card></app-card>
+                          <app-card [data]="user"></app-card>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -140,7 +140,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor = "let user of users" data-toggle="modal" data-target="#exampleModal">
+                              <tr *ngFor = "let user of users">
                                 <td>{{ user?.firstname }} {{user?.middlename}} {{user?.lastname}}</td>
                                 <td>{{ user?.uniqueId }}</td>
                                 <td>{{ user?.agentId.name }}</td>
@@ -155,7 +155,10 @@
                                 <td>{{ user?.vehicle_no }}</td>
                                 <td>
                                   <!-- <label class="badge badge-success" data-toggle="modal" data-target="#exampleModal">Approve</label> -->
-                                  <label class="badge {{user.approve? 'badge-success':'badge-danger'}}">{{user.approve? 'Approved' : 'Approve'}}</label>
+                                  <button class="btn btn-secondary" data-toggle="modal" 
+                                  [attr.data-target]="'#'+user.uniqueId">View</button> &nbsp;
+                                  <button class=" btn badge {{user.approve? 'badge-success':'badge-danger'}}">{{user.approve? 'Approved' : 'Approve'}}</button>
+
                                 </td>
                               </tr>
                             </tbody>
