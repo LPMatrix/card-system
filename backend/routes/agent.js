@@ -3,6 +3,7 @@ const router = express.Router();
 const agentController = require("../controllers/agent");
 const agentData = require("../middleware/agentData");
 const isAgentAuth = require("../middleware/isAgentAuth");
+const file = require('../middleware/file');
 
 router.post('/user', [isAgentAuth, agentData], agentController.postAddUser);
 router.get('/user', [isAgentAuth, agentData], agentController.getUsers);

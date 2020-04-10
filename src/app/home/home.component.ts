@@ -9,10 +9,11 @@ import { User } from '../shared/users.model';
 })
 export class HomeComponent implements OnInit {
   user: User;
+  userInformation : {name: string, image: string};
   constructor(private userAuthService: UserAuthService) { }
 
   ngOnInit(): void {
-
+    this.userInformation = this.userAuthService.getUserDetail();
     this.userAuthService.getProfile()
       .subscribe(responseData => {
         this.user = responseData.user;

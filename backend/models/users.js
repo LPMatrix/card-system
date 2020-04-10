@@ -11,8 +11,7 @@ const userSchma = new Schema({
         required: true
     },
     lastname: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
@@ -41,11 +40,11 @@ const userSchma = new Schema({
     },
     phone_no: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     image: {
         type: String,
+        required : true
     },
     vehicle_no: {
         type: String,

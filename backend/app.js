@@ -49,6 +49,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/', express.static(path.join(__dirname, 'angular')));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -66,6 +67,8 @@ app.use((req, res, next) => {
 app.use('/api/admin', adminRouter);
 app.use('/api/agent', agentRouter);
 app.use('/api/user', userRouter);
-
 app.use('/api', authRouter);
+// app.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname,"angular", "index.html"));
+// })
 module.exports = app;

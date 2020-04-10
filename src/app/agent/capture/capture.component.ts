@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
-
+import { externalParameters } from './state-file';
+const stateRecord = externalParameters.states;
 @Component({
   selector: 'app-capture',
   templateUrl: './capture.component.html',
@@ -13,7 +14,8 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 })
 export class CaptureComponent implements OnInit {
   agentForm : FormGroup;
-  states:any = [];
+  states : string[] = stateRecord;
+  userInformation : {name: string, image: string};
   title: string = "Take Picture";
   // toggle webcam on/off
   public showWebcam = false;
@@ -58,7 +60,6 @@ export class CaptureComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
     this.showWebcam = !this.showWebcam;
   }
@@ -83,24 +84,20 @@ export class CaptureComponent implements OnInit {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
     this.init();
-    this.agentService.getStates()
-      .subscribe(responseData => {
-        console.log(responseData);
-        this.states = responseData;
-      });
+    this.userInformation = this.authService.getUserDetail();
   }
 
   private init() {
     this.agentForm = new FormGroup({
       firstname : new FormControl(null, [Validators.required]),
       middlename : new FormControl(null, [Validators.required]),
-      lastname : new FormControl(null, [Validators.required]),
+      lastname : new FormControl(null),
       email : new FormControl(null, [Validators.required, Validators.email]),
       gender : new FormControl(null, [Validators.required]),
       dob : new FormControl(null, [Validators.required]),
       zone : new FormControl(null, [Validators.required]),
       unit : new FormControl(null, [Validators.required]),
-      phone_no : new FormControl(null, [Validators.required]),
+      phone_no : new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]+[0-9]*$/)]),
       state : new FormControl(null, [Validators.required]),
       vehicle_no : new FormControl(null, [Validators.required]),
       image : new FormControl(null),
@@ -110,14 +107,16 @@ export class CaptureComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.agentForm.valid) {
+    this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
+    if(!this.agentForm.valid && this.agentForm.value.image === null) {
       return;
     }
+    
     this.agentService.createUser(this.agentForm.value);
   }
 
   logout() {
-    this.authService.logout()
+    this.authService.logout();
   }
 
 }

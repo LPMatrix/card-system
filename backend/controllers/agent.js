@@ -2,6 +2,7 @@ const User = require("../models/users"); // Fetch the Users Database Model
 const bcrypt = require("bcryptjs") // To encrypt password
 const crypto = require("crypto");
 const Agent = require("../models/agent");
+const fs = require('fs');
 // Add a new User
 exports.postAddUser = (req, res, next) => {
     const firstname = req.body.firstname;
@@ -16,7 +17,12 @@ exports.postAddUser = (req, res, next) => {
     const state = req.body.state;
     const vehicle_no = req.body.vehicle_no;
     const password = "12345678";
-
+    const url = req.protocol + '://' + req.get("host");
+    const name = firstname.toLowerCase() + "-" + middlename.toLowerCase();
+    const ext = "jpeg";
+    const imageName = name + '-' + Date.now() + '.' + ext;
+    const image = req.body.image;
+    var base64Data = image.replace(/^data:image\/jpeg;base64,/, "");
     crypto.randomBytes(5, (err, Buffer) => {
         if (err) {
             return res.status(401).json({
@@ -24,7 +30,14 @@ exports.postAddUser = (req, res, next) => {
             });
         }
         const uniqueId = "usr-" + Buffer.toString('hex');
-        return bcrypt.hash(password, 12)
+        fs.writeFile("backend/images/" + imageName, base64Data, 'base64', function (err) {
+            if (err) {
+                res.status(401).json({
+                    message: 'Error occured while uploading the image!'
+                })
+            }
+            
+            return bcrypt.hash(password, 12)
             .then(hashedPassword => {
                 return User.findOne({
                         email: email
@@ -49,18 +62,19 @@ exports.postAddUser = (req, res, next) => {
                             vehicle_no: vehicle_no,
                             uniqueId: uniqueId,
                             password: hashedPassword,
-                            agentId: req.user._id
+                            agentId: req.user._id,
+                            image : url + '/images/' + imageName
 
                         });
                         newUser.save()
                             .then(result => {
-                                console.log(result);
                                 res.status(200).json({
-                                    message : 'User account has been generated and awaiting approval.',
+                                    message: 'User account has been generated and awaiting approval.',
                                     user: result
                                 });
                             })
                             .catch(err => {
+                                console.log(err);
                                 res.status(500).json({
                                     message: err
                                 });
@@ -78,7 +92,10 @@ exports.postAddUser = (req, res, next) => {
                 })
             })
 
+        });
+       
     })
+
 
 }
 
@@ -202,15 +219,17 @@ exports.postProfile = (req, res, next) => {
 }
 
 exports.getUserCount = (req, res, next) => {
-    User.find({approve : true}).countDocuments() 
-    .then(userCount => {
-        res.status(200).json({
-            userCount : userCount
+    User.find({
+            approve: true
+        }).countDocuments()
+        .then(userCount => {
+            res.status(200).json({
+                userCount: userCount
+            })
         })
-    })
-    .catch(err => {
-        res.status(500).json({
-            message : err
+        .catch(err => {
+            res.status(500).json({
+                message: err
+            })
         })
-    })
 }

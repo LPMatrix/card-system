@@ -12,9 +12,11 @@ import { UserAuthService } from '../auth/user.auth.service';
 export class ProfileComponent implements OnInit {
   userForm : FormGroup;
   loading = false;
+  userInformation : {name: string, image: string};
   constructor(private userAuthService : UserAuthService) { }
 
   ngOnInit(): void {
+    this.userInformation = this.userAuthService.getUserDetail();
     this.init();
   }
 
