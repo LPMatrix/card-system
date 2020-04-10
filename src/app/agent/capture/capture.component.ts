@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { externalParameters } from './state-file';
+import { Agent } from 'src/app/shared/agent.model';
 const stateRecord = externalParameters.states;
 @Component({
   selector: 'app-capture',
@@ -15,7 +16,7 @@ const stateRecord = externalParameters.states;
 export class CaptureComponent implements OnInit {
   agentForm : FormGroup;
   states : string[] = stateRecord;
-  userInformation : {name: string, image: string};
+  userInformation : Agent;
   title: string = "Take Picture";
   // toggle webcam on/off
   public showWebcam = false;
@@ -85,7 +86,10 @@ export class CaptureComponent implements OnInit {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
     this.init();
-    this.userInformation = this.authService.getUserDetail();
+    this.authService.getAgentDataStatus()
+    .subscribe(responseData => {
+      this.userInformation = responseData;
+    });
   }
 
   private init() {

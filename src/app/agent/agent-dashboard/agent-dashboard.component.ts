@@ -3,6 +3,7 @@ import { User } from 'src/app/shared/users.model';
 import { AgentService } from '../agent.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subject, Subscription } from 'rxjs';
+import { Agent } from 'src/app/shared/agent.model';
 declare var $: any;
 
 @Component({
@@ -12,7 +13,7 @@ declare var $: any;
 })
 export class AgentDashboardComponent implements OnInit, OnDestroy {
   users : User[] = [];
-  userInformation : {name: string, image: string};
+  userInformation : Agent;
   dtTrigger: Subject<any> = new Subject();
   dtOptions: DataTables.Settings = {};
   private userSubscription : Subscription;
@@ -25,13 +26,15 @@ export class AgentDashboardComponent implements OnInit, OnDestroy {
       pageLength: 2
     };
     this.agentService.getUsers();
-    
-    this.userInformation = this.authService.getUserDetail();
     this.userSubscription = this.agentService.getUserStatusListener()
     .subscribe(responseData => {
       this.users = responseData;
       this.counts.userCount = this.users.length; 
       this.dtTrigger.next();
+    });
+    this.authService.getAgentDataStatus()
+    .subscribe(responseData => {
+      this.userInformation = responseData;
     });
   }
 

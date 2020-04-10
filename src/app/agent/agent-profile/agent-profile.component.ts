@@ -17,15 +17,15 @@ export class AgentProfileComponent implements OnInit {
   };
   loading = false;
   agentForm : FormGroup;
-  userInformation : {name: string, image: string};
+  userInformation : Agent;
   constructor(private authService : AuthService, private router : Router) { }
 
   ngOnInit(): void {
     this.init();
-    this.userInformation = this.authService.getUserDetail();
     this.authService.getProfile()
     .subscribe(responseData => {
       this.agent = responseData.agent;
+      this.userInformation = responseData.agent;
       this.agentForm.setValue({
         'name' : responseData.agent.name,
         'email' : responseData.agent.email,
@@ -33,7 +33,6 @@ export class AgentProfileComponent implements OnInit {
         'newpassword' : null,
         'confirmpassword' : null
       })
-      
     });
   }
   private init() {

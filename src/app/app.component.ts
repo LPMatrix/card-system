@@ -15,5 +15,8 @@ export class AppComponent {
     this.userAuthService.autoAuthUser();
     this.authService.autoAuthUser();
     this.adminAuthService.autoAuthAdmin();
+    if (this.userAuthService.getUserAuthStatus()) { this.userAuthService.getUserData(); }
+
+    if (this.authService.getAuthStatus()) { this.authService.getAgentData(); }
   }
 }

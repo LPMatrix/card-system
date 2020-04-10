@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { Agent } from '../shared/agent.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserAuthService } from '../auth/user.auth.service';
+import { User } from '../shared/users.model';
 
 @Component({
   selector: 'app-profile',
@@ -12,12 +13,15 @@ import { UserAuthService } from '../auth/user.auth.service';
 export class ProfileComponent implements OnInit {
   userForm : FormGroup;
   loading = false;
-  userInformation : {name: string, image: string};
+  userInformation : User;
   constructor(private userAuthService : UserAuthService) { }
 
   ngOnInit(): void {
-    this.userInformation = this.userAuthService.getUserDetail();
     this.init();
+    this.userAuthService.getUserDataStatus()
+      .subscribe(responseData => {
+        this.userInformation = responseData;
+      });
   }
 
   private init() {

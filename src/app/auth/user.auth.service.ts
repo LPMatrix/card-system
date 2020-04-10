@@ -18,40 +18,40 @@ export class UserAuthService {
   private isAuthenticated: boolean = false;
   private username: string;
   private userimage: string
+  private userData = new BehaviorSubject<User>(null);
   private authStatusListener = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient, private router: Router) { }
 
+  getUserDataStatus() {
+    return this.userData.asObservable();
+  }
+  getUserData() {
+    this.http.get<{user : User}>(BACKEND_URL + 'user/profile')
+    .subscribe(responseData => {
+      this.userData.next(responseData.user);
+    });
+  }
   login(user: Auth) {
-    this.http.post<{ token: any, expiresIn: number, name: string, image: string }>(BACKEND_URL + 'user/login', user)
+    this.http.post<{ token: any, expiresIn: number, user: User }>(BACKEND_URL + 'user/login', user)
       .subscribe(
         responseData => {
           const token = responseData.token;
           if (token) {
             this.token = token;
             const expiresIn = responseData.expiresIn;
-            const name = responseData.name;
-            const image = responseData.image;
-            this.username = responseData.name;
-            this.userimage = responseData.image;
             this.setTimer(expiresIn);
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
             const dateNow = new Date();
             const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, name, image);
+            this.saveAuthData(token, expirationDate);
+            this.userData.next(responseData.user);
             this.router.navigateByUrl('/');
           }
 
         }
       );
-  }
-  getUserDetail() {
-    const userInformation = {
-      name: this.username,
-      image: this.userimage
-    };
-    return userInformation;
   }
   getToken() {
     return this.token;
@@ -90,40 +90,30 @@ export class UserAuthService {
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.authStatusListener.next(true);
-      this.username = authInformation.name;
-      this.userimage = authInformation.image;
       this.setTimer(expiresIn / 1000)
     }
   }
 
-  private saveAuthData(token: string, expiresIn: Date, name: string, image: string) {
+  private saveAuthData(token: string, expiresIn: Date) {
     localStorage.setItem('userToken', token);
     localStorage.setItem('userExpiresIn', expiresIn.toISOString());
-    localStorage.setItem('userName', name);
-    localStorage.setItem('userImage', image)
   }
 
   private clearAuthData() {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userExpiresIn');
-    localStorage.removeItem('userImage');
-    localStorage.removeItem('userName');
   }
 
   private getAuthData() {
     const token = localStorage.getItem('userToken');
     const expiresIn = localStorage.getItem('userExpiresIn');
-    const name = localStorage.getItem('userName');
-    const image = localStorage.getItem('userImage');
 
     if (!token || !expiresIn) {
       return;
     }
     return {
       token: token,
-      expirationDate: new Date(expiresIn),
-      image: image,
-      name: name
+      expirationDate: new Date(expiresIn)
     }
   }
 

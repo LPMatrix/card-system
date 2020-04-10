@@ -49,8 +49,7 @@ exports.postUserLogin = (req, res, next) => {
                     res.status(200).json({
                         token: token,
                         expiresIn: "3600",
-                        name: user.firstname + " " + user.lastname,
-                        image: user.image
+                        user: user
                     });
                 })
                 .catch(err => {
@@ -238,8 +237,7 @@ exports.postAgentLogin = (req, res, next) => {
                     res.status(200).json({
                         token: token,
                         expiresIn: "3600",
-                        name: user.name,
-                        image: user.image
+                        agent : user
                     });
                 })
                 .catch(err => {
