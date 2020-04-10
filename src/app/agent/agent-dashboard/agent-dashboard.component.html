@@ -126,7 +126,7 @@
                               <tr>
                                 <th>Name</th>
                                 <th>Unique Id</th>
-                                <th>Agent</th>
+                                <!-- <th>Agent</th> -->
                                 <th>Email</th>
                                 <th>Updated On</th>
                                 <th>Gender</th>
@@ -143,7 +143,7 @@
                               <tr *ngFor = "let user of users">
                                 <td>{{ user?.firstname }} {{user?.middlename}} {{user?.lastname}}</td>
                                 <td>{{ user?.uniqueId }}</td>
-                                <td>{{ user?.agentId.name }}</td>
+                                <!-- <td>{{ user?.agentId.name }}</td> -->
                                 <td>{{ user?.email }}</td>
                                 <td>{{ user?.updatedAt | date }}</td>
                                 <td>{{ user?.gender }}</td>
