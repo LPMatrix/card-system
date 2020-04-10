@@ -43,7 +43,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
           this.dtTrigger.next();
         });
       } else {
-        this.isDtInitialized = true
+        this.isDtInitialized = true;
         this.dtTrigger.next();
       }
       });

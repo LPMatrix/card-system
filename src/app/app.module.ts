@@ -36,6 +36,7 @@ import { AgentForgotPasswordComponent } from './auth/agent/agent-forgot-password
 import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/agent-reset-password.component';
 import { ResetPasswordComponent } from './auth/login/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
+import { AngularMaterialModule } from './angular-material.module';
 // import { AngularMaterialModule } from './angular-material.module';
 
 
@@ -74,7 +75,7 @@ import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-pas
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // AngularMaterialModule,
+    AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

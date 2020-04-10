@@ -1,13 +1,21 @@
-// import { NgModule } from '@angular/core';
-// import {
-//     MatProgressSpinnerModule,
-//     MatDialogModule
-// } from '@angular/material';
+import { NgModule } from '@angular/core';
+import {
+    MatDialogModule
+} from '@angular/material/dialog';
 
-// @NgModule({
-//     exports: [
-//         MatProgressSpinnerModule,
-//         MatDialogModule
-//     ]
-// })
-// export class AngularMaterialModule { }
+import {
+    MatProgressSpinnerModule
+} from '@angular/material/progress-spinner';
+
+import {
+    MatButtonModule
+} from '@angular/material/button';
+
+@NgModule({
+    exports: [
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatButtonModule
+    ]
+})
+export class AngularMaterialModule { }

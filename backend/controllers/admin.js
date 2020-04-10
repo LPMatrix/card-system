@@ -119,7 +119,7 @@ exports.postUserApproval = (req, res, next) => {
                 .then(result => {
                     if (result.approve) {
                         
-                        transporter.sendMail({
+                        return transporter.sendMail({
                             to: user.email,
                             from: 'approval@ecard.ng',
                             subject: 'Ecard Approval Confirmation',
@@ -128,13 +128,22 @@ exports.postUserApproval = (req, res, next) => {
                        <br>
                        <p>This is to notify you that your account has been activated successful. Click on this <a href='http://localhost:4200/login'>link</a> to login. Congratulations.</p>
                     `
+                        })
+                        .then(output => {
+                            res.status(200).json({
+                                user: result
+                            });
+                        })
+                        .catch(err => {
+                            res.status(500).json({
+                                message : 'An error occured. Please check your connection and try again'
+                            })
                         });
                     }
-
                     res.status(200).json({
                         user: result
                     });
-
+                    
 
                 })
                 .catch(err => {
