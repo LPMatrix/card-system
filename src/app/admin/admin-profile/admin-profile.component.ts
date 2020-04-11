@@ -10,6 +10,7 @@ import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 export class AdminProfileComponent implements OnInit {
   adminForm : FormGroup;
   loading = false;
+  message : string;
   constructor(private adminAuthService : AdminAuthService) { }
 
   ngOnInit(): void {
@@ -29,20 +30,23 @@ export class AdminProfileComponent implements OnInit {
       return;
     }
     if(this.adminForm.value.confirmpassword !== this.adminForm.value.newpassword) {
+      this.message = "No match";
       return;
     }
     this.loading = true
+    this.message = null;
     const password = this.adminForm.value.password;
     const newpassword = this.adminForm.value.newpassword;
     const confirmpassword = this.adminForm.value.confirmpassword;
     this.adminAuthService.changeProfile(password, newpassword, confirmpassword)
     .subscribe(responseData => {
-      console.log(responseData);
       this.adminForm.setValue({
         'password' : null,
         'newpassword' : null,
         'confirmpassword' : null
       });
+      this.loading = false;
+    }, error => {
       this.loading = false;
     });
   }

@@ -102,11 +102,10 @@ exports.postAddUser = (req, res, next) => {
 // Get all users
 
 exports.getUsers = (req, res, next) => {
-    User.find().populate('agentId').sort({
+    User.find({agentId : req.user._id}).sort({
             _id: -1
         })
         .then(users => {
-            // console.log(users);
             res.status(200).json({
                 users: users
             })
@@ -143,12 +142,6 @@ exports.postProfile = (req, res, next) => {
     const name = req.body.name;
     const password = req.body.password;
     const newpassword = req.body.newpassword;
-    if (password === newpassword) {
-        return res.status(401).json({
-            message: "Password does not match!"
-        });
-    }
-
     Agent.findOne({
             _id: req.user._id
         })
@@ -158,7 +151,7 @@ exports.postProfile = (req, res, next) => {
                     message: "Authentication failed"
                 })
             }
-            if (password !== "") {
+            if (password !== null) {
                 return bcrypt.compare(password, user.password)
                     .then(doMatch => {
                         if (!doMatch) {
@@ -201,7 +194,7 @@ exports.postProfile = (req, res, next) => {
                     .then(result => {
                         res.status(200).json({
                             message: "Password has been changed!",
-                            user: result
+                            agent: result
                         })
                     })
                     .catch(err => {

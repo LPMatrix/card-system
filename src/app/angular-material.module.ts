@@ -10,12 +10,16 @@ import {
 import {
     MatButtonModule
 } from '@angular/material/button';
+import {
+    MatInputModule
+} from '@angular/material/input';
 
 @NgModule({
     exports: [
         MatProgressSpinnerModule,
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule,
+        MatInputModule
     ]
 })
 export class AngularMaterialModule { }

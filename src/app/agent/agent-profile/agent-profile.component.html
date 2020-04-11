@@ -16,14 +16,13 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                         <div class="dropdown-header text-center">
-                            <img class="img-md rounded-circle" src="{{userInformation?.image}}"
-                                alt="Profile image">
-                            <p class="mb-1 mt-3 font-weight-semibold">{{ userInformation.name}}</p>
+                            <img class="img-md rounded-circle" src="{{userInformation?.image}}" alt="Profile image">
+                            <p class="mb-1 mt-3 font-weight-semibold">{{ userInformation?.name}}</p>
                             <p class="font-weight-light text-muted mb-0">Agent</p>
                         </div>
                         <a class="dropdown-item" routerLink="/profile">My Profile <i
                                 class="dropdown-item-icon ti-dashboard"></i></a>
-                        <a class="dropdown-item" (click) = "logout()" style="cursor: pointer;">Sign Out<i
+                        <a class="dropdown-item" (click)="logout()" style="cursor: pointer;">Sign Out<i
                                 class="dropdown-item-icon ti-power-off"></i></a>
                     </div>
                 </li>
@@ -42,8 +41,7 @@
                 <li class="nav-item nav-profile">
                     <a href="#" class="nav-link">
                         <div class="profile-image">
-                            <img class="img-xs rounded-circle" src="{{userInformation?.image}}"
-                                alt="profile image">
+                            <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="profile image">
                             <div class="dot-indicator bg-success"></div>
                         </div>
                         <div class="text-wrapper">
@@ -89,24 +87,26 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail3">Email address</label>
                                         <input formControlName="email" type="email" class="form-control"
-                                            id="exampleInputEmail3" placeholder="Email" >
+                                            id="exampleInputEmail3" placeholder="Email">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword4">Password</label>
                                         <input formControlName="password" type="password" class="form-control"
-                                            id="exampleInputPassword4" placeholder="Password" >
+                                            id="exampleInputPassword4" placeholder="Password">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword4">New Password</label>
                                         <input formControlName="newpassword" type="password" class="form-control"
-                                            id="exampleInputNewPassword4" placeholder="New Password" >
+                                            id="exampleInputNewPassword4" placeholder="New Password">
+                                        <mat-error *ngIf="message">{{message}}</mat-error>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword4">Confirm Password</label>
                                         <input formControlName="confirmpassword" type="password" class="form-control"
                                             id="exampleInputConfirmPassword4" placeholder="Confirm Password">
                                     </div>
-                                    <button type="submit" class="btn btn-success mr-2" [class.spinner]="loading" [disabled]="loading">Save Changes</button>
+                                    <button type="submit" class="btn btn-success mr-2" [class.spinner]="loading"
+                                        [disabled]="loading">Save Changes</button>
                                 </form>
                             </div>
                         </div>

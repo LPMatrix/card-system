@@ -18,6 +18,7 @@ export class AgentProfileComponent implements OnInit {
   loading = false;
   agentForm : FormGroup;
   userInformation : Agent;
+  message : string;
   constructor(private authService : AuthService, private router : Router) { }
 
   ngOnInit(): void {
@@ -39,22 +40,28 @@ export class AgentProfileComponent implements OnInit {
     this.agentForm = new FormGroup({
       name : new FormControl(null, [Validators.required]),
       email : new FormControl({value : null, disabled: true}, [Validators.required, Validators.email]),
-      password : new FormControl(null, [Validators.required]),
-      newpassword : new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      confirmpassword : new FormControl(null, [Validators.required, Validators.minLength(8)])
+      password : new FormControl(null),
+      newpassword : new FormControl(null, [Validators.minLength(8)]),
+      confirmpassword : new FormControl(null, [Validators.minLength(8)])
     });
   }
   onSubmit() {
     if(!this.agentForm.valid) {
       return;
     }
-    if(this.agentForm.value.confirmpassword !== this.agentForm.value.newpassword) {
+    const password = this.agentForm.value.password;
+    const confirmpassword = this.agentForm.value.confirmpassword;
+    const newpassword = this.agentForm.value.newpassword;
+    if(password !== null && newpassword !==null && confirmpassword !== newpassword) {
+      this.message = "No match";
       return;
     }
     this.loading = true;
+    this.message = null;
     this.authService.changeProfile(this.agentForm.value)
     .subscribe(responseData => {
       this.agent = responseData.agent;
+      this.userInformation = responseData.agent;
       this.agentForm.setValue({
         'name' : responseData.agent.name,
         'email' : responseData.agent.email,
@@ -62,7 +69,11 @@ export class AgentProfileComponent implements OnInit {
         'newpassword' : null,
         'confirmpassword' : null
       });
+      this.authService.agentData.next(responseData.agent);
       this.loading = false;
+    }, error => {
+      this.loading = false;
+
     });
   }
 

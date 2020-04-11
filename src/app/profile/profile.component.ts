@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   userForm : FormGroup;
   loading = false;
   userInformation : User;
+  message : string;
   constructor(private userAuthService : UserAuthService) { }
 
   ngOnInit(): void {
@@ -37,9 +38,11 @@ export class ProfileComponent implements OnInit {
       return;
     }
     if(this.userForm.value.confirmpassword !== this.userForm.value.newpassword) {
+      this.message = "No match";
       return;
     }
     this.loading = true;
+    this.message = null;
     const password = this.userForm.value.password;
     const newpassword = this.userForm.value.newpassword;
     const confirmpassword = this.userForm.value.confirmpassword;
@@ -50,6 +53,8 @@ export class ProfileComponent implements OnInit {
         'newpassword' : null,
         'confirmpassword' : null
       });
+      this.loading = false;
+    }, error =>  {
       this.loading = false;
     });
   }

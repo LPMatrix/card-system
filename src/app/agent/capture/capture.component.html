@@ -11,11 +11,11 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="{{userInformation.image}}" alt="Profile image"> </a>
+                <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="Profile image"> </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="{{userInformation.image}}" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">{{userInformation.name}}</p>
+                  <img class="img-md rounded-circle" src="{{userInformation?.image}}" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold">{{userInformation?.name}}</p>
                   <p class="font-weight-light text-muted mb-0">Agent</p>
                 </div>
                 <a class="dropdown-item" routerLink="/agent/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
@@ -36,11 +36,11 @@
             <li class="nav-item nav-profile">
               <a href="#" class="nav-link">
                 <div class="profile-image">
-                  <img class="img-xs rounded-circle" src="{{userInformation.image}}" alt="profile image">
+                  <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="profile image">
                   <div class="dot-indicator bg-success"></div>
                 </div>
                 <div class="text-wrapper">
-                  <p class="profile-name">{{userInformation.name}}</p>
+                  <p class="profile-name">{{userInformation?.name}}</p>
                   <p class="designation">Agent</p>
                 </div>
               </a>
@@ -196,6 +196,7 @@
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
                               <select  formControlName = "state" class="form-control">
+                                <option></option>
                                 <option *ngFor="let state of states">{{ state }}</option>
                               </select>
                             </div>
@@ -245,7 +246,7 @@
                         </div>
                       </div>
 
-                      <button  type="submit" class="btn btn-primary">Save Data</button>
+                      <button [disabled]= "!agentForm.valid"  type="submit" class="btn btn-primary">Save Data</button>
                     </form>
                   </div>
                 </div>

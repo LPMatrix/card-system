@@ -18,7 +18,7 @@ export class AuthService {
   private isAuthenticated: boolean = false;
   private username: string;
   private userimage: string
-  private agentData = new BehaviorSubject<Agent>(null);
+  agentData = new BehaviorSubject<Agent>(null);
   private authStatusListener = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -29,7 +29,6 @@ export class AuthService {
   getAgentData() {
     this.http.get<{agent : Agent}>(BACKEND_URL + 'agent/profile')
     .subscribe(responseData => {
-      console.log(responseData);
       this.agentData.next(responseData.agent);
     });
   }
