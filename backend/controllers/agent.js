@@ -74,21 +74,20 @@ exports.postAddUser = (req, res, next) => {
                                 });
                             })
                             .catch(err => {
-                                console.log(err);
                                 res.status(500).json({
-                                    message: err
+                                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                 });
                             })
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     });
             })
             .catch(err => {
                 res.status(500).json({
-                    message: err
+                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                 })
             })
 
@@ -112,7 +111,7 @@ exports.getUsers = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -133,7 +132,7 @@ exports.getProfile = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -173,19 +172,19 @@ exports.postProfile = (req, res, next) => {
                                     })
                                     .catch(err => {
                                         res.status(500).json({
-                                            message: err
+                                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                         })
                                     })
                             })
                             .catch(err => {
                                 res.status(500).json({
-                                    message: err
+                                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                 })
                             })
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     })
             } else {
@@ -199,14 +198,14 @@ exports.postProfile = (req, res, next) => {
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     })
             }
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -222,7 +221,7 @@ exports.getUserCount = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }

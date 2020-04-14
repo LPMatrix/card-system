@@ -54,13 +54,13 @@ exports.postUserLogin = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -103,13 +103,13 @@ exports.postUserReset = (req, res, next) => {
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     });
             })
             .catch(err => {
                 res.status(500).json({
-                    message: err
+                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                 })
             });
 
@@ -138,7 +138,7 @@ exports.getUserNewpassword = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         });
 
@@ -182,13 +182,13 @@ exports.postUserNewPassword = (req, res, next) => {
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         });
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
 
@@ -242,13 +242,13 @@ exports.postAgentLogin = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -286,13 +286,13 @@ exports.postAgentReset = (req, res, next) => {
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     });
             })
             .catch(err => {
                 res.status(500).json({
-                    message: err
+                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                 })
             });
 
@@ -321,7 +321,7 @@ exports.getAgentNewpassword = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         });
 
@@ -366,20 +366,20 @@ exports.postAgentNewPassword = (req, res, next) => {
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         });
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
 
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         });
 }
@@ -418,13 +418,13 @@ exports.postAdminLogin = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     });
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             });
         })
 }
@@ -465,13 +465,13 @@ exports.postAdminReset = (req, res, next) => {
                     })
                     .catch(err => {
                         res.status(500).json({
-                            message: err
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     });
             })
             .catch(err => {
                 res.status(500).json({
-                    message: err
+                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
                 })
             });
 
@@ -500,7 +500,7 @@ exports.getAdminNewpassword = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         });
 
@@ -543,20 +543,20 @@ exports.postAdminNewPassword = (req, res, next) => {
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         });
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
 
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         });
 }

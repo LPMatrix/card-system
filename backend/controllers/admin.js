@@ -51,19 +51,19 @@ exports.postAddAgent = (req, res, next) => {
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         });
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -89,13 +89,13 @@ exports.getAgentUsers = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -148,14 +148,14 @@ exports.postUserApproval = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
 
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -195,25 +195,25 @@ exports.postProfile = (req, res, next) => {
                                 })
                                 .catch(err => {
                                     res.status(500).json({
-                                        message: err
+                                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                     })
                                 })
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         })
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -254,26 +254,26 @@ exports.postProfile = (req, res, next) => {
                                 })
                                 .catch(err => {
                                     res.status(500).json({
-                                        message: err
+                                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                     })
                                 })
                         })
                         .catch(err => {
                             res.status(500).json({
-                                message: err
+                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
                             })
                         })
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
 
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -292,13 +292,13 @@ exports.getUserAgentCount = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -323,13 +323,13 @@ exports.postAgentStatus = (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err
+                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
@@ -353,7 +353,7 @@ exports.deleteAgent = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: err
+                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
 }
