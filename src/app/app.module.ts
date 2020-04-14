@@ -26,7 +26,6 @@ import { AgentLoginComponent } from './auth/agent/login/login.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { CardBackComponent } from './card-back/card-back.component';
 import { CardComponent } from './card/card.component';
-import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './error/error.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
@@ -37,7 +36,7 @@ import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/a
 import { ResetPasswordComponent } from './auth/login/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
 import { AngularMaterialModule } from './angular-material.module';
-// import { AngularMaterialModule } from './angular-material.module';
+import { ViewComponent } from './admin/view/view.component';
 
 
 
@@ -70,7 +69,8 @@ import { AngularMaterialModule } from './angular-material.module';
     ResetPasswordComponent,
     ForgotPasswordComponent,
     AgentForgotPasswordComponent,
-    AgentResetPasswordComponent
+    AgentResetPasswordComponent,
+    ViewComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +80,6 @@ import { AngularMaterialModule } from './angular-material.module';
     ReactiveFormsModule,
     HttpClientModule,
     WebcamModule,
-    DataTablesModule.forRoot(),
     BrowserAnimationsModule,
 
   ],

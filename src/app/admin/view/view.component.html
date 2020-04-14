@@ -1,4 +1,5 @@
-<div class="container-scroller">
+<body>
+    <div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
@@ -11,15 +12,15 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="Profile image"> </a>
+                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="{{userInformation?.image}}" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">{{userInformation?.name}}</p>
-                  <p class="font-weight-light text-muted mb-0">Agent</p>
+                  <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold">Alabidun Mubarak</p>
+                  <p class="font-weight-light text-muted mb-0">Admin</p>
                 </div>
-                <a class="dropdown-item" routerLink="/agent/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
-                <a class="dropdown-item" style="cursor: pointer;" (click)= "logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                <a class="dropdown-item" routerLink="/admin/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
               </div>
             </li>
           </ul>
@@ -36,32 +37,39 @@
             <li class="nav-item nav-profile">
               <a href="#" class="nav-link">
                 <div class="profile-image">
-                  <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="profile image">
+                  <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
                   <div class="dot-indicator bg-success"></div>
                 </div>
                 <div class="text-wrapper">
-                  <p class="profile-name">{{userInformation?.name}}</p>
-                  <p class="designation">Agent</p>
+                  <p class="profile-name">Alabidun Mubarak</p>
+                  <p class="designation">Admin</p>
                 </div>
               </a>
             </li>
             <li class="nav-item nav-category">Main Menu</li>
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/agent/dashboard">
+              <a class="nav-link" routerLink="/admin/dashboard">
                 <i class="menu-icon typcn typcn-document-text"></i>
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="/agent/capture">
+              <a class="nav-link" routerLink="/admin/add-agent">
                 <i class="menu-icon typcn typcn-th-large-outline"></i>
-                <span class="menu-title">Add Bio-data</span>
+                <span class="menu-title">Add Agent</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="/agent/profile">
+              <a class="nav-link active" routerLink="/admin/view-agent">
+                <i class="menu-icon typcn typcn-th-large-outline"></i>
+                <span class="menu-title">View Agents</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/profile">
                 <i class="menu-icon typcn typcn-bell"></i>
                 <span class="menu-title">Profile</span>
               </a>
@@ -94,6 +102,22 @@
                     </div>
                   </div>
 
+                  <div class="col-md-6 grid-margin stretch-card average-price-card">
+                    <div class="card text-white">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between pb-2 align-items-center">
+                          <h2 class="font-weight-semibold mb-0">{{ counts?.agentCount}}</h2>
+                          <div class="icon-holder">
+                            <i class="mdi mdi-briefcase-outline"></i>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <h5 class="font-weight-semibold mb-0">Agents</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="modal fade" id="{{ user?.uniqueId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -117,89 +141,52 @@
                     <div class="card">
                       <div class="card-body">
                         <div class="d-flex justify-content-between">
-                          <h4 class="card-title mb-0">Users</h4>
+                          <h4 class="card-title mb-0">Agents</h4>
                         </div>
-                        <p>Registered Users</p>
+                        <p>Registered Agents</p>
+                        <div class="example-header">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                          </mat-form-field>
+                        </div>
+
                         <div class="example-container mat-elevation-z8">
+
 
                           <mat-table [dataSource]="dataSource" matSort>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="Name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.lastname}} </mat-cell>
+                              <mat-cell *matCellDef="let row"> {{row.name }} </mat-cell>
                             </ng-container>
 
-                            <!-- UniqueID Column -->
-                            <ng-container matColumnDef="Unique Id">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Unique ID </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.uniqueId | uppercase}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Progress Column -->
+                            <!-- Email Column -->
                             <ng-container matColumnDef="Email">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                             </ng-container>
 
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="Updated On">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Updated On </mat-header-cell>
+                            <!-- DateAdded Column -->
+                            <ng-container matColumnDef="Added On">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Added On </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.updatedAt | date}} </mat-cell>
                             </ng-container>
 
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Gender">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="D.O.B">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> D.O.B </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.dob}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Zone">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Zone 
-                              </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Unit">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Unit
-                              </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.unit}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Phone No">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Phone No </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="State">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Vehicle No">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle No </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.vehicle_no }} </mat-cell>
+                            <!-- Status Column -->
+                            <ng-container matColumnDef="Status">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.is_active? 'Active' : 'Disabled' }} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
                             <ng-container matColumnDef="Action">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
                               <mat-cell *matCellDef="let row"> 
-                                <button class="btn btn-secondary" data-toggle="modal" 
-                                  [attr.data-target]="'#'+row.uniqueId">View
-                                </button> &nbsp;
-                                  <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}">{{row.approve? 'Approved' : 'Approve'}}</button>
+                                <button class="btn badge {{row?.is_active? 'badge-danger' : 'badge-success'}} mr-1" (click) = "onAccountStatus(row?._id)">
+                                    {{row?.is_active? 'Deactivate' : 'Activate'}}
+                                  </button>
+                                  <button class="btn badge badge-danger" (click)="onDelete(row?._id)">Delete</button>
                                 </mat-cell>
                             </ng-container>
 
@@ -210,7 +197,7 @@
 
                           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                         </div>
-                        
+
                       </div>
                     </div>
                   </div>
