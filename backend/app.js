@@ -5,8 +5,8 @@ const authRouter = require('./routes/auth');
 const adminRouter = require("./routes/admin");
 const agentRouter = require("./routes/agent");
 const userRouter = require("./routes/users");
-const MongoDBURI = 'mongodb+srv://klez:kleztech@cluster0-nm91y.mongodb.net/ecard';
-// const MongoDBURI = 'mongodb://127.0.0.1:27017/ecard';
+// const MongoDBURI = 'mongodb+srv://klez:kleztech@cluster0-nm91y.mongodb.net/ecard';
+const MongoDBURI = 'mongodb://127.0.0.1:27017/ecard';
 const bodyParser = require('body-parser');
 const Admin = require('./models/admin');
 const bcrypt = require('bcryptjs');
@@ -44,9 +44,13 @@ mongoose.connect(MongoDBURI, {
   .catch(err => {
     console.log('Connection failed');
   })
-app.use(bodyParser.json())
+app.use(bodyParser.json({
+  limit: '50mb',
+  extended: true
+}))
 app.use(bodyParser.urlencoded({
-  extended: false
+  limit: '50mb',
+  extended: true
 }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/', express.static(path.join(__dirname, 'angular')));
@@ -69,6 +73,6 @@ app.use('/api/agent', agentRouter);
 app.use('/api/user', userRouter);
 app.use('/api', authRouter);
 app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname,"angular", "index.html"));
+  res.sendFile(path.join(__dirname, "angular", "index.html"));
 })
 module.exports = app;

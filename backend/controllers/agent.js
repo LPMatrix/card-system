@@ -74,18 +74,21 @@ exports.postAddUser = (req, res, next) => {
                                 });
                             })
                             .catch(err => {
+                                console.log(err);
                                 res.status(500).json({
                                     message: "Sorry, we couldn't complete your request. Please try again in a moment."
                                 });
                             })
                     })
                     .catch(err => {
+                        console.log(err);
                         res.status(500).json({
                             message: "Sorry, we couldn't complete your request. Please try again in a moment."
                         })
                     });
             })
             .catch(err => {
+                console.log(err);
                 res.status(500).json({
                     message: "Sorry, we couldn't complete your request. Please try again in a moment."
                 })
