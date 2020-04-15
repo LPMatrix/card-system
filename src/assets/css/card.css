@@ -113,7 +113,7 @@ body{
   text-shadow:-1px -1px 0px rgba(255,255,255,0.3), 1px 1px 0px rgba(0,0,0,0.8);
 }
 .credit-card-wrap .credit-card-number{
-  font-size:26px;
+  font-size:20px;
   text-align:right;
   position:relative;
   letter-spacing:2px;
@@ -149,7 +149,7 @@ body{
 }
 .credit-card-wrap .mk-icon-sim{
   width:55px;
-  height:40px;
+  height:20px;
   margin:20px 0;
   border-radius:8px;
 }
