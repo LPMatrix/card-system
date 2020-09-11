@@ -54,7 +54,7 @@ export class AdminService {
         this.http.post<{user : User}>(BACKEND_URL + 'admin/agent/user/approve/' + userId, postData)
         .subscribe(responseData => {
             const getUsers = [...this.users];
-            const userFiltered = getUsers.findIndex(p => p._id === userId);
+            const userFiltered = getUsers.findIndex(p => p.id === userId);
             getUsers[userFiltered] = responseData.user;
             this.users = [...getUsers];
             this.userStatusListener.next(this.users);
