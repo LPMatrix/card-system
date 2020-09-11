@@ -114,10 +114,10 @@ exports.postUserApproval = (req, res, next) => {
             }
 
 
-            user.approve = !user.approve;
+            user.approved = !user.approved;
             return user.save()
                 .then(result => {
-                    if (result.approve) {
+                    if (result.approved) {
                         
                         return transporter.sendMail({
                             to: user.email,
@@ -280,7 +280,7 @@ exports.postProfile = (req, res, next) => {
 
 exports.getUserAgentCount = (req, res, next) => {
     User.find({
-            approve: true
+            approved: true
         }).countDocuments()
         .then(userCount => {
             return Agent.find().countDocuments()

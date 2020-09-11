@@ -7,11 +7,11 @@ const userSchma = new Schema({
         required: true
     },
     middlename: {
+        type: String
+    },
+    surname: {
         type: String,
         required: true
-    },
-    lastname: {
-        type: String
     },
     email: {
         type: String,
@@ -23,6 +23,14 @@ const userSchma = new Schema({
         required: true
     },
     dob: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    branch: {
         type: String,
         required: true
     },
@@ -42,20 +50,31 @@ const userSchma = new Schema({
         type: String,
         required: true
     },
+    next_of_kin_name: {
+        type: String,
+        required: true
+    },
+    next_of_kin_address: {
+        type: String,
+        required: true
+    },
+    next_of_kin_phone_no: {
+        type: String,
+        required: true
+    },
     image: {
         type: String,
         required : true
     },
-    vehicle_no: {
-        type: String,
-        required: true
+    fingerprint_image: {
+        type: String
     },
     
-    fingerprint_thumb: {
+    fingerprint_encode: {
         type: String,
         
     },
-    fingerprint_index: {
+    signature: {
         type: String
     },
     uniqueId: {
@@ -78,7 +97,7 @@ const userSchma = new Schema({
         required:true,
         ref: 'Agent'
     },
-    approve : {
+    approved : {
         type: Boolean,
         default: false
     }

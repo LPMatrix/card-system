@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth } from './auth.model';
 import { environment } from '../../environments/environment';
+import { tap } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
@@ -16,23 +17,22 @@ export class AdminAuthService {
   getAuthStatusListener = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient, private router: Router) { }
 
-  login(user:Auth) {
-    this.http.post<{ token: string, expiresIn: string }>(BACKEND_URL + 'admin/login', user)
-      .subscribe(responseData => {
-        const token = responseData.token;
-        if (token) {
-          this.token = token;
-          const expiresIn = responseData.expiresIn;
-          this.isAuthenticated = true;
-          this.getAuthStatusListener.next(true);
-          this.setTokenTimer(expiresIn);
-          const dateNow = new Date();
-          const expirationDate = new Date(dateNow.getTime() + +expiresIn * 1000);
-          this.saveAuthData(token, expirationDate);
-          this.router.navigate(['/admin']);
-        }
-
-      });
+  login(user: Auth) {
+    return this.http.post<{ token: string, expiresIn: string }>(BACKEND_URL + 'admin/login', user)
+    .pipe(tap(responseData => this.onHandleAuthentication(responseData)));
+  }
+  private onHandleAuthentication(responseData: { token: string, expiresIn: string }) {
+    const token = responseData.token;
+    if (token) {
+      this.token = token;
+      const expiresIn = responseData.expiresIn;
+      this.isAuthenticated = true;
+      this.getAuthStatusListener.next(true);
+      this.setTokenTimer(expiresIn);
+      const dateNow = new Date();
+      const expirationDate = new Date(dateNow.getTime() + +expiresIn * 1000);
+      this.saveAuthData(token, expirationDate);
+    }
   }
   getAdminAuthStatus() {
     return this.isAuthenticated;
@@ -49,20 +49,20 @@ export class AdminAuthService {
     }, expiresIn * 1000);
   }
 
-  autoAuthAdmin(){
+  autoAuthAdmin() {
     const authInformation = this.getAuthData();
 
-    if(!authInformation){
+    if (!authInformation) {
       return;
     }
     const currentDate = new Date();
     const expiresIn = authInformation.expiresIn.getTime() - currentDate.getTime();
 
-    if(expiresIn > 0){
+    if (expiresIn > 0) {
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.getAuthStatusListener.next(true);
-      this.setTokenTimer(expiresIn/1000);
+      this.setTokenTimer(expiresIn / 1000);
     }
   }
 
@@ -96,12 +96,12 @@ export class AdminAuthService {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminExpiresIn');
   }
-  changeProfile (password : string, newpassword : string, confirmpassword : string) {
+  changeProfile(password: string, newpassword: string, confirmpassword: string) {
     const postData = {
-      password : password,
-      newpassword : newpassword,
-      confirmpassword : confirmpassword
+      password: password,
+      newpassword: newpassword,
+      confirmpassword: confirmpassword
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'admin/profile', postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'admin/profile', postData);
   }
 }

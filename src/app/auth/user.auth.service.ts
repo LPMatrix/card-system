@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Auth } from './auth.model';
 import { User } from '../shared/users.model';
+import { tap } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl;
 
 
@@ -26,32 +27,30 @@ export class UserAuthService {
     return this.userData.asObservable();
   }
   getUserData() {
-    this.http.get<{user : User}>(BACKEND_URL + 'user/profile')
-    .subscribe(responseData => {
-      this.userData.next(responseData.user);
-    });
+    this.http.get<{ user: User }>(BACKEND_URL + 'user/profile')
+      .subscribe(responseData => {
+        this.userData.next(responseData.user);
+      });
   }
+  
   login(user: Auth) {
-    this.http.post<{ token: any, expiresIn: number, user: User }>(BACKEND_URL + 'user/login', user)
-      .subscribe(
-        responseData => {
-          const token = responseData.token;
-          if (token) {
-            this.token = token;
-            const expiresIn = responseData.expiresIn;
-            this.setTimer(expiresIn);
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            const dateNow = new Date();
-            const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
-            console.log(expirationDate);
-            this.saveAuthData(token, expirationDate);
-            this.userData.next(responseData.user);
-            this.router.navigateByUrl('/');
-          }
+    return this.http.post<{ token: any, expiresIn: number, user: User }>(BACKEND_URL + 'user/login', user)
+      .pipe(tap(responseData => this.onHandleAuthentication(responseData)));
+  }
 
-        }
-      );
+  private onHandleAuthentication(responseData: { token: any, expiresIn: number, user: User }) {
+    const token = responseData.token;
+    if (token) {
+      this.token = token;
+      const expiresIn = responseData.expiresIn;
+      this.setTimer(expiresIn);
+      this.isAuthenticated = true;
+      this.authStatusListener.next(true);
+      const dateNow = new Date();
+      const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
+      this.saveAuthData(token, expirationDate);
+      this.userData.next(responseData.user);
+    }
   }
   getToken() {
     return this.token;
@@ -119,22 +118,22 @@ export class UserAuthService {
 
   forgotPassword(email: string) {
     const postData = {
-      email : email
+      email: email
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'user/reset', postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'user/reset', postData);
   }
 
   getResetPassword(token: string) {
-    return this.http.get<{resetToken : string, userId : string}>(BACKEND_URL + 'user/reset/' + token);
+    return this.http.get<{ resetToken: string, userId: string }>(BACKEND_URL + 'user/reset/' + token);
   }
 
-  postResetPassword(password: string, confirmpassword:string, token: string, userId: string) {
+  postResetPassword(password: string, confirmpassword: string, token: string, userId: string) {
     const postData = {
-      password : password,
-      token : token,
-      userId : userId
+      password: password,
+      token: token,
+      userId: userId
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'user/reset/' + token, postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'user/reset/' + token, postData);
   }
 
   getProfile() {

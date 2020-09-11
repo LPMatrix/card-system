@@ -11,7 +11,7 @@ export interface User {
     unit : string,
     phone_no : string,
     state : string,
-    vehicle_no : string,
+    vehicle_no? : string,
     uniqueId : string,
     password : string,
     updatedAt? : Date,

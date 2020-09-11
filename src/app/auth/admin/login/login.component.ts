@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminAuthService } from '../../admin.auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-login',
@@ -11,11 +12,11 @@ import { AdminAuthService } from '../../admin.auth.service';
 export class AdminLoginComponent implements OnInit {
   credentialsForm: FormGroup;
   title = "Login";
-
-  constructor(private router: Router, private adminAuthService : AdminAuthService) {}
+  loading: boolean = false;
+  constructor(private router: Router, private adminAuthService: AdminAuthService) { }
   ngOnInit(): void {
     this.adminAuthService.autoAuthAdmin();
-    if(this.adminAuthService.getAdminAuthStatus()) {
+    if (this.adminAuthService.getAdminAuthStatus()) {
       this.router.navigateByUrl('/admin');
     }
     this.credentialsForm = new FormGroup({
@@ -30,7 +31,16 @@ export class AdminLoginComponent implements OnInit {
       this.title = "Login"
       return;
     }
-    this.adminAuthService.login(this.credentialsForm.value);
+    this.loading = true;
+    this.adminAuthService.login(this.credentialsForm.value)
+      .pipe(finalize(() => {
+        this.title = "Login";
+        this.loading = false;
+      }))
+      .subscribe(responseData => {
+        this.router.navigateByUrl('/admin');
+        this.credentialsForm.reset();
+      });
   }
 
 }

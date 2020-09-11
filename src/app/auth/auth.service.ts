@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Auth } from './auth.model';
 import { Agent } from '../shared/agent.model';
+import { tap } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl;
 
 
@@ -25,35 +26,33 @@ export class AuthService {
   getAgentDataStatus() {
     return this.agentData.asObservable();
   }
-  
+
   getAgentData() {
-    this.http.get<{agent : Agent}>(BACKEND_URL + 'agent/profile')
-    .subscribe(responseData => {
-      this.agentData.next(responseData.agent);
-    });
+    this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile')
+      .subscribe(responseData => {
+        this.agentData.next(responseData.agent);
+      });
   }
 
   login(user: Auth) {
-    this.http.post<{ token: any, expiresIn: number, agent : Agent }>( BACKEND_URL + 'agent/login', user)
-      .subscribe(
-        responseData => {
-          const token = responseData.token;
-          if (token) {
-            this.token = token;
-            const expiresIn = responseData.expiresIn;
-            this.setTimer(expiresIn);
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            const dateNow = new Date();
-            const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
-            console.log(expirationDate);
-            this.saveAuthData(token, expirationDate);
-            this.agentData.next(responseData.agent);
-            this.router.navigateByUrl('/agent/dashboard');
-          }
+    return this.http.post<{ token: any, expiresIn: number, agent: Agent }>(BACKEND_URL + 'agent/login', user)
+      .pipe(tap(responseData => this.onHandleAuthentication(responseData)));
+  }
 
-        }
-      );
+  private onHandleAuthentication(responseData: { token: any, expiresIn: number, agent: Agent }) {
+    const token = responseData.token;
+    if (token) {
+      this.token = token;
+      const expiresIn = responseData.expiresIn;
+      this.setTimer(expiresIn);
+      this.isAuthenticated = true;
+      this.authStatusListener.next(true);
+      const dateNow = new Date();
+      const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
+      console.log(expirationDate);
+      this.saveAuthData(token, expirationDate);
+      this.agentData.next(responseData.agent);
+    }
   }
   getToken() {
     return this.token;
@@ -106,7 +105,7 @@ export class AuthService {
     localStorage.removeItem('expiresIn');
   }
 
-  private getAuthData(){
+  private getAuthData() {
     const token = localStorage.getItem('token');
     const expiresIn = localStorage.getItem('expiresIn');
 
@@ -119,32 +118,32 @@ export class AuthService {
     }
   }
 
-  
+
   forgotPassword(email: string) {
     const postData = {
-      email : email
+      email: email
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'agent/reset', postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'agent/reset', postData);
   }
 
   getResetPassword(token: string) {
-    return this.http.get<{resetToken : string, agentId : string}>(BACKEND_URL + 'agent/reset/' + token);
+    return this.http.get<{ resetToken: string, agentId: string }>(BACKEND_URL + 'agent/reset/' + token);
   }
 
-  postResetPassword(password: string, confirmpassword:string, token: string, agentId: string) {
+  postResetPassword(password: string, confirmpassword: string, token: string, agentId: string) {
     const postData = {
-      password : password,
-      token : token,
-      agentId : agentId
+      password: password,
+      token: token,
+      agentId: agentId
     }
-    return this.http.post<{message : string}>(BACKEND_URL + 'agent/reset/' + token, postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'agent/reset/' + token, postData);
   }
 
-  getProfile () {
-    return this.http.get<{agent: Agent}>(BACKEND_URL + 'agent/profile');
+  getProfile() {
+    return this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile');
   }
 
-  changeProfile (agent : Agent) {
-    return this.http.post<{agent : Agent}>(BACKEND_URL + 'agent/profile', agent);
+  changeProfile(agent: Agent) {
+    return this.http.post<{ agent: Agent }>(BACKEND_URL + 'agent/profile', agent);
   }
 }

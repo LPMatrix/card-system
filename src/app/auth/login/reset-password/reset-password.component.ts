@@ -33,6 +33,8 @@ export class ResetPasswordComponent implements OnInit {
           .subscribe(responseData => {
             this.loading = false;
             this.userId= responseData.userId;
+          }, error => {
+            this.router.navigateByUrl('/');
           });
         }
       }

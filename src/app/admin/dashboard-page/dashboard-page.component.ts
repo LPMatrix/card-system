@@ -17,7 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
 export class DashboardPageComponent implements OnInit, OnDestroy {
   displayedColumns = [
   'Name', 'Unique Id', 'Email', 'Updated On', 'Gender', 'D.O.B', 'Zone', 
-  'Unit', 'Phone No', 'State', 'Vehicle No', 'Action'
+  'Unit', 'Phone No', 'State', 'Action'
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;

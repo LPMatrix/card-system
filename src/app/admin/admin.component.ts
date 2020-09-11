@@ -11,6 +11,7 @@ export class AdminComponent implements OnInit {
 
   credentialsForm: FormGroup;
   title = "Login";
+  
 
   constructor(public formBuilder: FormBuilder,public router: Router) { 
   	this.credentialsForm = this.formBuilder.group({
@@ -26,6 +27,7 @@ export class AdminComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
   }
 
 }

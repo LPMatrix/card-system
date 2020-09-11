@@ -32,6 +32,8 @@ export class AgentResetPasswordComponent implements OnInit {
           .subscribe(responseData => {
             this.loading = false;
             this.agentId= responseData.agentId;
+          }, error => {
+            this.router.navigateByUrl('/agent');
           });
         }
       }

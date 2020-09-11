@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-agent-login',
@@ -11,6 +12,7 @@ import { AuthService } from '../../auth.service';
 export class AgentLoginComponent implements OnInit {
   credentialsForm: FormGroup;
   title = "Login";
+  loading: boolean = false;
 
   constructor(private router: Router, private authService : AuthService) {}
   ngOnInit(): void {
@@ -30,7 +32,16 @@ export class AgentLoginComponent implements OnInit {
       this.title = "Login"
       return;
     }
-    this.authService.login(this.credentialsForm.value);
+    this.loading = true;
+    this.authService.login(this.credentialsForm.value)
+    .pipe(finalize(() => {
+      this.loading= false;
+      this.title = "Login";
+    }))
+    .subscribe(responseData => {
+      this.router.navigateByUrl('/agent/dashboard');
+      this.credentialsForm.reset();
+    });
   }
 
   
