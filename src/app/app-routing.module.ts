@@ -19,6 +19,7 @@ import { ResetPasswordComponent } from './auth/login/reset-password/reset-passwo
 import { AgentForgotPasswordComponent } from './auth/agent/agent-forgot-password/agent-forgot-password.component';
 import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/agent-reset-password.component';
 import {ViewComponent } from './admin/view/view.component';
+import { EditUserComponent } from './admin/edit-user/edit-user.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -39,7 +40,8 @@ const routes: Routes = [
   {path: "reset/:token", component : ResetPasswordComponent},
   {path: "agent/forgot-password", component : AgentForgotPasswordComponent},
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
-  {path: "admin/view-agent", component: ViewComponent}
+  {path: "admin/view-agent", component: ViewComponent},
+  {path: "admin/edit-user", component: EditUserComponent}
 
 ];
 

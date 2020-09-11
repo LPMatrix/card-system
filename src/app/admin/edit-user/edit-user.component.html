@@ -1,0 +1,351 @@
+<body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          <a class="navbar-brand brand-logo" href="#">
+            <img src="assets/images/logo.png" height="80">
+          </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold"></p>
+                  <p class="font-weight-light text-muted mb-0">Admin</p>
+                </div>
+                <a class="dropdown-item" routerLink="/admin/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="profile-image">
+                  <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name"></p>
+                  <p class="designation">Admin</p>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">Main Menu</li>
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/admin/dashboard">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/add-agent">
+                <i class="menu-icon typcn typcn-th-large-outline"></i>
+                <span class="menu-title">Add Agent</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/view-agent">
+                <i class="menu-icon typcn typcn-th-large-outline"></i>
+                <span class="menu-title">View Agents</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/profile">
+                <i class="menu-icon typcn typcn-bell"></i>
+                <span class="menu-title">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <!-- Page Title Header Starts-->
+            <div class="row page-title-header">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Update User Details</h4>
+                        <form [formGroup] = "agentForm" (ngSubmit) = "onSubmit()" class="form-sample">
+                          <webcam [height]="500" [width]="500" [trigger]="triggerObservable" 
+                      (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                      [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+                      (initError)="handleInitError($event)"></webcam>
+                          <p class="card-description"> Personal information </p>
+                          <div class="row mt-5">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">First Name</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "firstname" type="text" class="form-control" value="{{this.users.firstname}}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">MIddle Name</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "middlename" type="text" class="form-control" value="{{this.users.middlename}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Surname</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "surname" type="text" class="form-control" value="{{this.users.surname}}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "email" type="text" class="form-control" value="{{this.users.email}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Gender</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "gender" class="form-control" value="{{this.users.gender}}" readonly>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Phone</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "phone_no" type="number" class="form-control" value="{{this.users.phone_no}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6"> 
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                  <textarea formControlName="address" type="text" class="form-control" value="{{this.users.address}}"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Date of Birth</label>
+                                <div class="col-sm-9">
+                                  <mat-form-field>
+                                    <input matInput [matDatepicker]="picker" placeholder="MM/DD/YYY" formControlName="dob" value="{{this.users.dob}}">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Transportation Type</label>
+                                <div class="col-sm-9">
+                                  <select  formControlName = "transportation_type" class="form-control" value="{{this.users.transportation_type}}">
+                                    <option>Car</option>
+                                    <option>Bus</option>
+                                    <option>Trailer</option>
+                                    <option>Truck</option>
+                                    <option>Others</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Vehicle Number</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "vehicleNumber" type="text" class="form-control" value="{{this.users.vehicleNumber}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">ID Type</label>
+                                <div class="col-sm-9">
+                                  <select  formControlName = "verifiedIdType" class="form-control" value="{{this.users.verifiedIdType}}">
+                                    <option>National ID</option>
+                                    <option>Driver's License</option>
+                                    <option>International Passport</option>
+                                    <option>BVN</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">ID Number</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "verifiedId" type="text" class="form-control" value="{{this.users.verifiedId}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <p class="card-description mt-3">Next of Kin Information</p>
+    
+                          <div class="row mt-5">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "next_of_kin_name" type="text" class="form-control" value="{{this.users.next_of_kin_name}}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Phone Number</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "next_of_kin_phone_no" type="number" class="form-control" value="{{this.users.next_of_kin_phone_no}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <div>
+                            <div class="col-md-6"> 
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                  <textarea formControlName="next_of_kin_address" type="text" class="form-control" value="{{this.users.next_of_kin_address}}"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <p class="card-description mt-3"> Branch Information</p>
+                          <div class="row mt-5">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Branch</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "branch" class="form-control" readonly value="{{this.users.branch}}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Zone</label>
+                                <div class="col-sm-9">
+                                  <input formControlName = "zone" class="form-control" readonly value="{{this.users.zone}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">State</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "state" class="form-control" readonly value="{{this.users.state}}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Unit</label>
+                                <div class="col-sm-9">
+                                  <input  formControlName = "unit" class="form-control" readonly value="{{this.users.unit}}">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <p class="card-description mt-3"> Biometrics </p>
+    
+                          <div class="row mt-5">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3">Photo</label>
+                                <div class="col-sm-9">
+                                  <button class="btn btn-secondary" color="basic" type="button" (click)="triggerSnapshot()" *ngIf="showWebcam">Capture</button>
+                                     &nbsp;
+                                  <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">{{ title }}</button>
+                                </div>
+                                <div class="image-preview" *ngIf = "webcamImage">
+                                  <img
+                                  [src]="webcamImage.imageAsDataUrl"
+                                  alt="agentForm.value.title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+                          <div class="row mt-3">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-4">FingerPrint (left index)</label>
+                                <div class="col-sm-8">
+                                  <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">Capture</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-4">FingerPrint (left index)</label>
+                                <div class="col-sm-8">
+                                  <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">Capture</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <button [disabled]= "!agentForm.valid"  type="submit" class="btn btn-dark">Update Data</button> &nbsp;&nbsp;
+                          <a class="btn btn-primary" routerLink="/admin/dashboard">Cancel</a>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>

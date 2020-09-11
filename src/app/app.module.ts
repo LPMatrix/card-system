@@ -36,6 +36,8 @@ import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-pas
 import { AngularMaterialModule } from './angular-material.module';
 import { ViewComponent } from './admin/view/view.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { EditUserComponent } from './admin/edit-user/edit-user.component';
+import { AgentUsersComponent } from './admin/agent-users/agent-users.component';
 
 
 
@@ -67,7 +69,9 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     ForgotPasswordComponent,
     AgentForgotPasswordComponent,
     AgentResetPasswordComponent,
-    ViewComponent
+    ViewComponent,
+    EditUserComponent,
+    AgentUsersComponent
   ],
   imports: [
     BrowserModule,
