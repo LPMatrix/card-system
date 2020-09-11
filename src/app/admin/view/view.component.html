@@ -3,10 +3,9 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-          <a class="navbar-brand brand-logo" href="index.html">
-            Card System </a>
-          <a class="navbar-brand brand-logo-mini" href="index.html">
-            Card System </a>
+          <a class="navbar-brand brand-logo" href="#">
+            <img src="assets/images/logo.png" height="80">
+          </a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav ml-auto">
@@ -144,6 +143,13 @@
                           <h4 class="card-title mb-0">Agents</h4>
                         </div>
                         <p>Registered Agents</p>
+
+                        <div class="row">
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('csv')">Csv</button> &nbsp;
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('json')">Json</button> &nbsp;
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('txt')">Txt</button>
+                        </div>
+
                         <div class="example-header">
                           <mat-form-field>
                             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -153,7 +159,7 @@
                         <div class="example-container mat-elevation-z8">
 
 
-                          <mat-table [dataSource]="dataSource" matSort>
+                          <mat-table  matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="Name">
@@ -195,7 +201,7 @@
                             </mat-row>
                           </mat-table>
 
-                          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                          <mat-paginator [pageSizeOptions]="[20, 50, 100, 200]"></mat-paginator>
                         </div>
 
                       </div>

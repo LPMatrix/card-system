@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardPageComponent } from './admin/dashboard-page/dashboard-page.component';
 import { AddAgentComponent } from './admin/add-agent/add-agent.component';
 import { AgentDashboardComponent } from './agent/agent-dashboard/agent-dashboard.component';
@@ -26,7 +25,6 @@ const routes: Routes = [
   {path: "agent", redirectTo: 'agent/dashboard'},
   {path: "home", canActivate: [UserAuthGuard], component: HomeComponent},
   {path: "admin", redirectTo: 'admin/dashboard'},
-  {path: "dashboard", canActivate: [UserAuthGuard], component:DashboardComponent},
   {path: "admin/login", component:AdminLoginComponent},
   {path: "agent/login", component:AgentLoginComponent},
   {path: "admin/dashboard", canActivate: [AdminAuthGuard], component:DashboardPageComponent},

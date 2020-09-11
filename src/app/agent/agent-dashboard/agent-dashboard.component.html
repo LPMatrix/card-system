@@ -2,10 +2,9 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-          <a class="navbar-brand brand-logo" href="index.html">
-            Card System </a>
-          <a class="navbar-brand brand-logo-mini" href="index.html">
-            Card System </a>
+          <a class="navbar-brand brand-logo" href="#">
+            <img src="assets/images/logo.png" height="80">
+          </a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav ml-auto">
@@ -56,7 +55,7 @@
             <li class="nav-item">
               <a class="nav-link" routerLink="/agent/capture">
                 <i class="menu-icon typcn typcn-th-large-outline"></i>
-                <span class="menu-title">Add Bio-data</span>
+                <span class="menu-title">User Registration</span>
               </a>
             </li>
 
@@ -120,9 +119,20 @@
                           <h4 class="card-title mb-0">Users</h4>
                         </div>
                         <p>Registered Users</p>
+
+                        <div class="row">
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('csv')">Csv</button> &nbsp;
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('json')">Json</button> &nbsp;
+                          <button class="btn btn-secondary" (click)="exporter.exportTable('txt')">Txt</button>
+                        </div>
+                        
+                        <mat-form-field>
+                          <mat-label>Filter</mat-label>
+                          <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Name" #input>
+                        </mat-form-field>
                         <div class="example-container mat-elevation-z8">
 
-                          <mat-table [dataSource]="dataSource" matSort>
+                          <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
 
                             <!-- Name Column -->
                             <ng-container matColumnDef="Name">
@@ -136,58 +146,57 @@
                               <mat-cell *matCellDef="let row"> {{row.uniqueId | uppercase}} </mat-cell>
                             </ng-container>
 
-                            <!-- Progress Column -->
+                            <!-- Email Column -->
                             <ng-container matColumnDef="Email">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                             </ng-container>
 
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="Updated On">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Updated On </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.updatedAt | date}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
+                            <!-- Gender Column -->
                             <ng-container matColumnDef="Gender">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
                             </ng-container>
 
-                            <!-- Color Column -->
+                            <!-- DOB Column -->
                             <ng-container matColumnDef="D.O.B">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> D.O.B </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.dob}} </mat-cell>
                             </ng-container>
 
-                            <!-- Color Column -->
+                            <!-- Phone no Column -->
+                            <ng-container matColumnDef="Phone No">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Phone No </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
+                            </ng-container>
+
+                             <!-- Branch Column -->
+                             <ng-container matColumnDef="Branch">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.branch}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Zone Column -->
                             <ng-container matColumnDef="Zone">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Zone 
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
                             </ng-container>
 
-                            <!-- Color Column -->
+                            <!-- State Column -->
+                            <ng-container matColumnDef="State">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Unit Column -->
                             <ng-container matColumnDef="Unit">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Unit
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.unit}} </mat-cell>
                             </ng-container>
 
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="Phone No">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Phone No </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="State">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <!-- Color Column -->
+                            <!-- Action Column -->
                             <ng-container matColumnDef="Action">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
                               <mat-cell *matCellDef="let row"> 
@@ -203,7 +212,7 @@
                             </mat-row>
                           </mat-table>
 
-                          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                          <mat-paginator [pageSizeOptions]="[20, 50, 100, 500]"></mat-paginator>
                         </div>
                         
                       </div>

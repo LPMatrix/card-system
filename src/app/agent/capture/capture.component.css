@@ -8,3 +8,7 @@ input[type ="file"] {
   .image-preview img {
     height: 100%;
   }
+
+  .card-description{
+    font-weight: bold;
+  }

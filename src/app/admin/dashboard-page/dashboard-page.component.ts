@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { User } from 'src/app/shared/users.model';
 import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
@@ -14,12 +14,12 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
 })
-export class DashboardPageComponent implements OnInit, OnDestroy {
-  displayedColumns = [
-  'Name', 'Unique Id', 'Email', 'Updated On', 'Gender', 'D.O.B', 'Zone', 
-  'Unit', 'Phone No', 'State', 'Action'
+export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  displayedColumns: string[] = [
+  'Name', 'Unique Id', 'Email', 'Phone No', 'Gender', 'D.O.B', 'Branch', 'Zone', 'State',
+  'Unit','Updated On', 'Action'
   ];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<User>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   users: User[] = [];
@@ -28,9 +28,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   arrayCount: number = 0;
   private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
-  constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) { }
-
-  ngOnInit(): void {
+  constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) {
     this.adminService.geAgentUsers();
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
@@ -43,6 +41,10 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         this.agents = responseData;
         this.counts.agentCount = this.agents.length;
       });
+   }
+
+  ngOnInit(): void {
+    
   }
 
   onApprove(userId: string) {
@@ -68,7 +70,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.adminService.deleteAgent(agentId);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -77,5 +79,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

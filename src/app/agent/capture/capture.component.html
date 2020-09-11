@@ -2,10 +2,9 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-          <a class="navbar-brand brand-logo" href="index.html">
-            Card System </a>
-          <a class="navbar-brand brand-logo-mini" href="index.html">
-            Card System </a>
+          <a class="navbar-brand brand-logo" href="#">
+            <img src="assets/images/logo.png" height="80">
+          </a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav ml-auto">
@@ -56,7 +55,7 @@
             <li class="nav-item">
               <a class="nav-link active" routerLink="/agent/capture">
                 <i class="menu-icon typcn typcn-th-large-outline"></i>
-                <span class="menu-title">Add Bio-data</span>
+                <span class="menu-title">User Registration</span>
               </a>
             </li>
 
@@ -101,8 +100,8 @@
                   (imageCapture)="handleImage($event)" *ngIf="showWebcam"
                   [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
                   (initError)="handleInitError($event)"></webcam>
-                      <p class="card-description"> Personal info </p>
-                      <div class="row">
+                      <p class="card-description"> Personal information </p>
+                      <div class="row mt-5">
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">First Name</label>
@@ -123,9 +122,9 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Last Name</label>
+                            <label class="col-sm-3 col-form-label">Surname</label>
                             <div class="col-sm-9">
-                              <input formControlName = "lastname" type="text" class="form-control">
+                              <input formControlName = "surname" type="text" class="form-control">
                             </div>
                           </div>
                         </div>
@@ -152,9 +151,31 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Phone</label>
+                            <div class="col-sm-9">
+                              <input  formControlName = "phone_no" type="number" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6"> 
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                              <textarea formControlName="address" type="text" class="form-control"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date of Birth</label>
                             <div class="col-sm-9">
-                              <input type="text"  formControlName = "dob" class="form-control" placeholder="dd/mm/yyyy">
+                              <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="MM/DD/YYY" formControlName="dob">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
                             </div>
                           </div>
                         </div>
@@ -162,13 +183,113 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Transportation Type</label>
+                            <div class="col-sm-9">
+                              <select  formControlName = "transportation_type" class="form-control">
+                                <option>Car</option>
+                                <option>Bus</option>
+                                <option>Trailer</option>
+                                <option>Truck</option>
+                                <option>Others</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Vehicle Number</label>
+                            <div class="col-sm-9">
+                              <input  formControlName = "vehicleNumber" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ID Type</label>
+                            <div class="col-sm-9">
+                              <select  formControlName = "verifiedIdType" class="form-control">
+                                <option>National ID</option>
+                                <option>Driver's License</option>
+                                <option>International Passport</option>
+                                <option>BVN</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ID Number</label>
+                            <div class="col-sm-9">
+                              <input  formControlName = "verifiedId" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="card-description mt-3">Next of Kin Information</p>
+
+                      <div class="row mt-5">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Name</label>
+                            <div class="col-sm-9">
+                              <input formControlName = "next_of_kin_name" type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Phone Number</label>
+                            <div class="col-sm-9">
+                              <input formControlName = "next_of_kin_phone_no" type="number" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="col-md-6"> 
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                              <textarea formControlName="next_of_kin_address" type="text" class="form-control"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="card-description mt-3"> Branch Information</p>
+                      <div class="row mt-5">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Branch</label>
+                            <div class="col-sm-9">
+                              <select  formControlName = "branch" class="form-control">
+                                <option *ngFor="let branch of branches">{{ branch }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Zone</label>
                             <div class="col-sm-9">
-                              <select  formControlName = "zone" class="form-control">
-                                <option>Category1</option>
-                                <option>Category2</option>
-                                <option>Category3</option>
-                                <option>Category4</option>
+                              <select  formControlName = "zone" class="form-control" (change) = "selectZone($event.target.value)">
+                                <option *ngFor="let zone of zones">{{ zone }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">State</label>
+                            <div class="col-sm-9">
+                              <select  formControlName = "state" class="form-control" (change) = "selectState($event.target.value)">
+                                <option *ngFor="let state of states">{{ state.state }}</option>
                               </select>
                             </div>
                           </div>
@@ -177,49 +298,24 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Unit</label>
                             <div class="col-sm-9">
-                              <input formControlName = "unit" type="text" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Phone</label>
-                            <div class="col-sm-9">
-                              <input  formControlName = "phone_no" type="text" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">State</label>
-                            <div class="col-sm-9">
-                              <select  formControlName = "state" class="form-control">
-                                <option></option>
-                                <option *ngFor="let state of states">{{ state }}</option>
+                              <select  formControlName = "unit" class="form-control">
+                                <option *ngFor="let lg of lga">{{ lg }}</option>
                               </select>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="row">
+
+                      <p class="card-description mt-3"> Biometrics </p>
+
+                      <div class="row mt-5">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Vehicle Number</label>
-                            <div class="col-sm-9">
-                              <input type="text" formControlName = "vehicle_no" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Passport</label>
+                            <label class="col-sm-3">Photo</label>
                             <div class="col-sm-9">
                               <button class="btn btn-secondary" color="basic" type="button" (click)="triggerSnapshot()" *ngIf="showWebcam">Capture</button>
                                  &nbsp;
                               <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">{{ title }}</button>
-                              <!-- <input  formControlName = "image" type="file" class="form-control"> -->
                             </div>
                             <div class="image-preview" *ngIf = "webcamImage">
                               <img
@@ -228,24 +324,28 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+
+                      <div class="row mt-3">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Fingerprint Thumb</label>
-                            <div class="col-sm-9">
-                              <input  formControlName = "fingerprint_thumb" type="file" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Fingerprint Index</label>
-                            <div class="col-sm-9">
-                              <input formControlName = "fingerprint_index" type="file" class="form-control">
+                            <label class="col-sm-4">FingerPrint (left index)</label>
+                            <div class="col-sm-8">
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">Capture</button>
                             </div>
                           </div>
                         </div>
                       </div>
-
+                      <div class="row mt-3">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-4">FingerPrint (left index)</label>
+                            <div class="col-sm-8">
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">Capture</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <button [disabled]= "!agentForm.valid"  type="submit" class="btn btn-primary">Save Data</button>
                     </form>
                   </div>

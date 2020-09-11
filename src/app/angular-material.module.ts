@@ -22,7 +22,11 @@ import {
 	MatToolbarModule 
 } from '@angular/material/toolbar';
 
+import {CdkTableModule} from '@angular/cdk/table';
+
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
@@ -32,9 +36,12 @@ import { MatSortModule } from '@angular/material/sort';
         MatButtonModule,
         MatInputModule,
         MatTableModule,
+        CdkTableModule,
         MatToolbarModule,
         MatPaginatorModule,
-        MatSortModule
+        MatSortModule,
+        MatDatepickerModule,
+        MatNativeDateModule
 
     ]
 })

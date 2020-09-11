@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl,FormBuilder, Validators } from '@angular/forms';
 import { AgentService } from '../agent.service';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
-import { externalParameters } from './state-file';
+import { externalParameters, externalBranches } from './state-file';
 import { Agent } from 'src/app/shared/agent.model';
-const stateRecord = externalParameters.states;
+const _zones = externalParameters.zones;
+const _branches = externalBranches.branches;
 @Component({
   selector: 'app-capture',
   templateUrl: './capture.component.html',
@@ -15,7 +16,12 @@ const stateRecord = externalParameters.states;
 })
 export class CaptureComponent implements OnInit {
   agentForm : FormGroup;
-  states : string[] = stateRecord;
+  zones : string[] = _zones;
+  branches: string[] = _branches;
+  states: any;
+  selectedStates: any;
+  lga: any[];
+  uniqueId: string;
   userInformation : Agent;
   title: string = "Take Picture";
   // toggle webcam on/off
@@ -78,7 +84,7 @@ export class CaptureComponent implements OnInit {
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
   }
-  constructor(private agentService : AgentService, private authService : AuthService) { }
+  constructor(private agentService : AgentService, private authService : AuthService, public formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs()
@@ -91,24 +97,65 @@ export class CaptureComponent implements OnInit {
       this.userInformation = responseData;
     });
   }
+  
 
   private init() {
-    this.agentForm = new FormGroup({
-      firstname : new FormControl(null, [Validators.required]),
-      middlename : new FormControl(null, [Validators.required]),
-      lastname : new FormControl(null),
-      email : new FormControl(null, [Validators.required, Validators.email]),
-      gender : new FormControl(null, [Validators.required]),
-      dob : new FormControl(null, [Validators.required]),
-      zone : new FormControl(null, [Validators.required]),
-      unit : new FormControl(null, [Validators.required]),
-      phone_no : new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]+[0-9]*$/)]),
-      state : new FormControl(null, [Validators.required]),
-      vehicle_no : new FormControl(null, [Validators.required]),
-      image : new FormControl(null),
-      fingerprint_thumb : new FormControl(null),
-      fingerprint_index : new FormControl(null)
+    this.agentForm = this.formBuilder.group({
+      firstname : ['', Validators.required],
+      uniqueId: ['', Validators.nullValidator],
+      middlename : ['', Validators.required],
+      verifiedId : ['', Validators.required],
+      vehicleNumber: ['', Validators.required],
+      verifiedIdType: ['', Validators.required],
+      transportation_type: ['', Validators.required],
+      surname : ['', Validators.required],
+      gender : ['', Validators.required],
+      address : ['', Validators.required],
+      zone : ['', Validators.required],
+      branch : ['', Validators.required],
+      dob : ['', Validators.required],
+      unit : ['', Validators.required],
+      phone_no : ['', Validators.compose([Validators.required, Validators.pattern(/^[0-9]+[0-9]*$/)])],
+      state : ['', Validators.required],
+      next_of_kin_name : ['', Validators.required],
+      next_of_kin_address : ['', Validators.required],
+      next_of_kin_phone_no : ['', Validators.required],
+      image : ['', Validators.nullValidator],
+      signature : [Validators.nullValidator],
+      fingerprint_image : [Validators.nullValidator],
+      fingerprint_encode : [Validators.nullValidator],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
     });
+  }
+
+  selectZone(value: any){
+    if(value == "Kaduna") 
+      this.states = externalParameters.kaduna_states;
+    else if (value == "Lagos")
+      this.states = externalParameters.lagos_states;
+    else if (value == "Warri")
+      this.states = externalParameters.warri_states;
+    else 
+      this.states = externalParameters.port_harcourt_zones;
+  }
+
+  calculateUniqueId(){
+    var id = this.agentForm.value.state.substring(0,3).toUpperCase();
+    var firstInitial = this.agentForm.value.firstname.substring(0,1);
+    var secondInitial = this.agentForm.value.surname.substring(0,1);
+    var arr = []
+    while(arr.length < 1){
+      var randomnumber=Math.ceil(Math.random()*3000)
+      if(arr.indexOf(randomnumber) === -1){arr.push(randomnumber)}  
+    }
+    var uniqueid = this.agentForm.value.branch + '/' + id + '/' + arr.toString() + firstInitial + secondInitial;
+    this.agentForm.value.uniqueId = uniqueid;
+  }
+
+  selectState(value){
+    const myStates = this.states.find(state => state.state === value);
+    this.lga = myStates.lga;
+    this.calculateUniqueId();
   }
 
   onSubmit() {

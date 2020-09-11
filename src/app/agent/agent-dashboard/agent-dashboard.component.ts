@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { User } from 'src/app/shared/users.model';
 import { AgentService } from '../agent.service';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -13,10 +13,11 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './agent-dashboard.component.html',
   styleUrls: ['./agent-dashboard.component.css']
 })
-export class AgentDashboardComponent implements OnInit, OnDestroy {
+export class AgentDashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns = [
-  'Name', 'Unique Id', 'Email', 'Updated On', 'Gender', 'D.O.B', 'Zone', 
-  'Unit', 'Phone No', 'State', 'Action'
+  'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone', 
+  'State',
+  'Unit',  'Action'
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -41,9 +42,20 @@ export class AgentDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 
   logout() {
     this.authService.logout();
+  }
+
+
+
+  ngAfterViewInit():void {
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {

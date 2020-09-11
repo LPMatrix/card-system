@@ -11,8 +11,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { AgentComponent } from './agent/agent.component';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './auth/login/login.component';
-import { UserComponent } from './user/user.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardPageComponent } from './admin/dashboard-page/dashboard-page.component';
 import { AddAgentComponent } from './admin/add-agent/add-agent.component';
@@ -37,6 +35,7 @@ import { ResetPasswordComponent } from './auth/login/reset-password/reset-passwo
 import { ForgotPasswordComponent } from './auth/login/forgot-password/forgot-password.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { ViewComponent } from './admin/view/view.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 
 
@@ -51,8 +50,6 @@ import { ViewComponent } from './admin/view/view.component';
     AgentComponent,
     AdminComponent,
     LoginComponent,
-    UserComponent,
-    DashboardComponent,
     FooterComponent,
     DashboardPageComponent,
     AddAgentComponent,
@@ -80,6 +77,7 @@ import { ViewComponent } from './admin/view/view.component';
     ReactiveFormsModule,
     HttpClientModule,
     WebcamModule,
+    MatTableExporterModule,
     BrowserAnimationsModule,
 
   ],
