@@ -66,6 +66,22 @@ const userSchma = new Schema({
         type: String,
         required : true
     },
+    vehicleNumber: {
+        type: String,
+        required: true
+    },
+    transportation_type: {
+        type: String,
+        required: true
+    },
+    verifiedIdType: {
+        type: String,
+        required: true
+    },
+    verifiedId: {
+        type: String,
+        required: true
+    },
     fingerprint_image: {
         type: String
     },

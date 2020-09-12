@@ -10,6 +10,7 @@ router.post('/agent', [isAdminAuth, adminData, file], adminController.postAddAge
 router.post('/agent/user/approve/:userId', [isAdminAuth, adminData], adminController.postUserApproval);
 router.post('/agent/account', [isAdminAuth, adminData], adminController.postAgentStatus);
 router.post('/profile', [isAdminAuth, adminData], adminController.postProfile);
+router.post('/user/edit', [isAdminAuth, adminData], adminController.postEditUserDetails)
 // router.get('/agent', [isAdminAuth, adminData], adminController.getAgents);
 router.get('/counts', [isAdminAuth, adminData], adminController.getUserAgentCount);
 router.delete('/agent/remove/:agentId', [isAdminAuth, adminData], adminController.deleteAgent);

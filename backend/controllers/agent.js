@@ -16,6 +16,10 @@ exports.postAddUser = (req, res, next) => {
     const next_of_kin_name = req.body.next_of_kin_name;
     const next_of_kin_address = req.body.next_of_kin_address;
     const next_of_kin_phone_no = req.body.next_of_kin_phone_no;
+    const vehicleNumber = req.body.vehicleNumber;
+    const transportation_type = req.body.transportation_type;
+    const verifiedIdType = req.body.verifiedIdType;
+    const verifiedId = req.body.verifiedId;
     const fingerprint_image = req.body.fingerprint_image;
     const fingerprint_encode = req.body.fingerprint_encode;
     const signature = req.body.signature;
@@ -25,13 +29,14 @@ exports.postAddUser = (req, res, next) => {
     const state = req.body.state;
     const uniqueId = req.body.uniqueId;
     const password = "12345678";
-    const url = req.protocol + '://' + req.get("host");
+    var proto = req.connection.encrypted ? 'https' : 'http';
+    const url = proto + '://' + req.get("host");
     const name = firstname.toLowerCase() + "-" + middlename.toLowerCase();
     const ext = "jpeg";
     const imageName = name + '-' + Date.now() + '.' + ext;
     const image = req.body.image;
     var base64Data = image.replace(/^data:image\/jpeg;base64,/, "");
-    fs.writeFile("images/" + imageName, base64Data, 'base64', function (err) {
+    fs.writeFile("backend/images/" + imageName, base64Data, 'base64', function (err) {
         if (err) {
             res.status(401).json({
                 message: 'Error occured while uploading the image!'
@@ -61,6 +66,10 @@ exports.postAddUser = (req, res, next) => {
                             next_of_kin_name: next_of_kin_name,
                             next_of_kin_address: next_of_kin_address,
                             next_of_kin_phone_no: next_of_kin_phone_no,
+                            vehicleNumber: vehicleNumber,
+                            transportation_type: transportation_type,
+                            verifiedIdType: verifiedIdType,
+                            verifiedId: verifiedId,
                             zone: zone,
                             unit: unit,
                             phone_no: phone_no,

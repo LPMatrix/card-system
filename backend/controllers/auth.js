@@ -43,12 +43,12 @@ exports.postUserLogin = (req, res, next) => {
                         name: user.firstname,
                         userId: user._id
                     }, 'secret_key_should_be_longer', {
-                        expiresIn: '1h'
+                        expiresIn: '8760h'
                     });
 
                     res.status(200).json({
                         token: token,
-                        expiresIn: "3600",
+                        expiresIn: "31536000",
                         user: user
                     });
                 })
@@ -231,12 +231,12 @@ exports.postAgentLogin = (req, res, next) => {
                         name: user.name,
                         agentId: user._id
                     }, 'secret_key_should_be_longer', {
-                        expiresIn: '1h'
+                        expiresIn: '8760h'
                     });
 
                     res.status(200).json({
                         token: token,
-                        expiresIn: "3600",
+                        expiresIn: "31536000",
                         agent : user
                     });
                 })
@@ -409,11 +409,11 @@ exports.postAdminLogin = (req, res, next) => {
                     const token = jwt.sign({
                         adminId: user._id
                     }, 'secret_to_the_admin_must_not_be_known', {
-                        expiresIn: '1h'
+                        expiresIn: '8760h'
                     });
                     res.status(200).json({
                         token: token,
-                        expiresIn: "3600"
+                        expiresIn: "31536000"
                     });
                 })
                 .catch(err => {

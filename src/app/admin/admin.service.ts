@@ -47,6 +47,39 @@ export class AdminService {
             this.agentStatusListener.next(this.agents);
         });
     }
+    editUser(user: any, userId: String) {
+        const postCredentials = new FormData();
+        postCredentials.append('firstname', user.firstname);
+        postCredentials.append('middlename', user.middlename);
+        postCredentials.append('lastname', user.surname);
+        postCredentials.append('email', user.email);
+        postCredentials.append('gender', user.gender);
+        postCredentials.append('dob', user.dob);
+        postCredentials.append('zone', user.zone);
+        postCredentials.append('phone_no', user.phone_no);
+        postCredentials.append('signature', user.signature);
+        postCredentials.append('vehicleNumber', user.vehicleNumber);
+        postCredentials.append('verifiedId', user.verifiedId);
+        postCredentials.append('verifiedIdType', user.verifiedIdType);
+        postCredentials.append('transportation_type', user.transportation_type);
+        postCredentials.append('next_of_kin_address', user.next_of_kin_address);
+        postCredentials.append('next_of_kin_name', user.next_of_kin_name);
+        postCredentials.append('next_of_kin_phone_no', user.next_of_kin_phone_no);
+        postCredentials.append('address', user.address);
+        postCredentials.append('image', user.image);
+        // postCredentials.append('fingerprint_image', user.fingerprint_image);
+        // postCredentials.append('fingerprint_encode', user.fingerprint_encode);
+        console.log(user);
+        // this.http.post<{ user: User }>(BACKEND_URL + 'agent/user', user)
+        //     .subscribe(responseData => {
+        //         const getUser = [...this.users];
+        //         const userFIlteredIndex = getUser.findIndex(p => p._id === userId)
+        //         getUser[userFIlteredIndex] = responseData.user;
+        //         this.users = [...getUser];
+        //         this.userStatusListener.next(this.users);
+        //         this.router.navigateByUrl('/admin/dashboard');
+        //     });
+    }
     approve(userId: string) {
         const postData = {
             approval : true
@@ -54,7 +87,7 @@ export class AdminService {
         this.http.post<{user : User}>(BACKEND_URL + 'admin/agent/user/approve/' + userId, postData)
         .subscribe(responseData => {
             const getUsers = [...this.users];
-            const userFiltered = getUsers.findIndex(p => p.id === userId);
+            const userFiltered = getUsers.findIndex(p => p._id === userId);
             getUsers[userFiltered] = responseData.user;
             this.users = [...getUsers];
             this.userStatusListener.next(this.users);

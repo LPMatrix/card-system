@@ -14,7 +14,8 @@ exports.postAddAgent = (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const url = req.protocol + '://' + req.get("host");
+    var proto = req.connection.encrypted ? 'https' : 'http';
+    const url = proto + '://' + req.get("host");
     const image = req.file;
     // console.log(img, image);
 
@@ -118,32 +119,32 @@ exports.postUserApproval = (req, res, next) => {
             return user.save()
                 .then(result => {
                     if (result.approved) {
-                        
+
                         return transporter.sendMail({
-                            to: user.email,
-                            from: 'approval@ecard.ng',
-                            subject: 'Ecard Approval Confirmation',
-                            html: `
+                                to: user.email,
+                                from: 'approval@ecard.ng',
+                                subject: 'Ecard Approval Confirmation',
+                                html: `
                        <p>Dear ${user.firstname},</p>
                        <br>
                        <p>This is to notify you that your account has been activated successful. Click on this <a href='http://localhost:4200/login'>link</a> to login. Congratulations.</p>
                     `
-                        })
-                        .then(output => {
-                            res.status(200).json({
-                                user: result
-                            });
-                        })
-                        .catch(err => {
-                            res.status(500).json({
-                                message : 'An error occured. Please check your connection and try again'
                             })
-                        });
+                            .then(output => {
+                                res.status(200).json({
+                                    user: result
+                                });
+                            })
+                            .catch(err => {
+                                res.status(500).json({
+                                    message: 'An error occured. Please check your connection and try again'
+                                })
+                            });
                     }
                     res.status(200).json({
                         user: result
                     });
-                    
+
 
                 })
                 .catch(err => {
@@ -356,4 +357,91 @@ exports.deleteAgent = (req, res, next) => {
                 message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
         })
+}
+
+exports.postEditUserDetails = (req, res, next) => {
+    const firstname = req.body.firstname;
+    const middlename = req.body.middlename;
+    const surname = req.body.surname;
+    const email = req.body.email;
+    const gender = req.body.gender;
+    const dob = req.body.dob;
+    const address = req.body.address;
+    const next_of_kin_name = req.body.next_of_kin_name;
+    const next_of_kin_address = req.body.next_of_kin_address;
+    const next_of_kin_phone_no = req.body.next_of_kin_phone_no;
+    const vehicleNumber = req.body.vehicleNumber;
+    const transportation_type = req.body.transportation_type;
+    const verifiedIdType = req.body.verifiedIdType;
+    const verifiedId = req.body.verifiedId;
+    const zone = req.body.zone;
+    const phone_no = req.body.phone_no;
+    var proto = req.connection.encrypted ? 'https' : 'http';
+    const url = proto + '://' + req.get("host");
+    const name = firstname.toLowerCase() + "-" + middlename.toLowerCase();
+    const ext = "jpeg";
+    const imageName = name + '-' + Date.now() + '.' + ext;
+    const image = req.body.image;
+    var base64Data = image.replace(/^data:image\/jpeg;base64,/, "");
+    fs.writeFile("backend/images/" + imageName, base64Data, 'base64', function (err) {
+        if (err) {
+            res.status(401).json({
+                message: 'Error occured while uploading the image!'
+            })
+        }
+
+
+        return User.findOne({
+                email: email
+            })
+            .then(user => {
+                if (!user) {
+                    return res.status(401).json({
+                        message: "An error occured"
+                    })
+                }
+
+                user.firstname = firstname;
+                user.middlename = middlename;
+                user.surname = surname;
+                user.email = email;
+                user.gender = gender;
+                user.dob = dob;
+                user.address = address;
+                user.next_of_kin_name = next_of_kin_name;
+                user.next_of_kin_address = next_of_kin_address;
+                user.next_of_kin_phone_no = next_of_kin_phone_no;
+                user.vehicleNumber = vehicleNumber;
+                user.transportation_type = transportation_type;
+                user.verifiedIdType = verifiedIdType;
+                user.verifiedId = verifiedId;
+                user.zone = zone;
+                user.phone_no = phone_no;
+                user.image = url + '/images/' + imageName;
+
+                user.save()
+                    .then(result => {
+                        res.status(200).json({
+                            message: 'Update Successful.',
+                            user: result
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+                        });
+                    })
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
+                })
+            });
+
+
+    });
+
+
 }
