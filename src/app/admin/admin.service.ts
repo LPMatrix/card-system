@@ -114,4 +114,20 @@ export class AdminService {
             this.agentStatusListener.next(this.agents);
         });
     }
+
+    getAgentRegisteredUsers(agentId: String) {
+        return this.http.get<{users: User[]}>(BACKEND_URL + 'admin/agent/' + agentId + '/registered');
+    }
+    getUserDetailById(uniqueId: string) {
+        const postData = {
+            uniqueId: uniqueId
+        }
+        return this.http.post<{user: User}>(BACKEND_URL + 'admin/user/uniqueId', postData);
+    }
+    getUsersByUnit(unit: string) {
+        const postData = {
+            unit: unit
+        }
+        return this.http.post<{users: User[]}>(BACKEND_URL + 'admin/users/unit', postData);
+    }
 }

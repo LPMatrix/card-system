@@ -267,6 +267,7 @@
                             <label class="col-sm-3 col-form-label">Branch</label>
                             <div class="col-sm-9">
                               <select  formControlName = "branch" class="form-control">
+                                <option></option>
                                 <option *ngFor="let branch of branches">{{ branch }}</option>
                               </select>
                             </div>
@@ -277,6 +278,7 @@
                             <label class="col-sm-3 col-form-label">Zone</label>
                             <div class="col-sm-9">
                               <select  formControlName = "zone" class="form-control" (change) = "selectZone($event.target.value)">
+                                <option></option>
                                 <option *ngFor="let zone of zones">{{ zone }}</option>
                               </select>
                             </div>
@@ -289,6 +291,7 @@
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
                               <select  formControlName = "state" class="form-control" (change) = "selectState($event.target.value)">
+                                <option></option>
                                 <option *ngFor="let state of states">{{ state.state }}</option>
                               </select>
                             </div>
@@ -299,6 +302,7 @@
                             <label class="col-sm-3 col-form-label">Unit</label>
                             <div class="col-sm-9">
                               <select  formControlName = "unit" class="form-control">
+                                <option></option>
                                 <option *ngFor="let lg of lga">{{ lg }}</option>
                               </select>
                             </div>

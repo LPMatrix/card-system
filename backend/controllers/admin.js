@@ -9,6 +9,11 @@ const transporter = nodemailer.createTransport(sendgridTransport({
         api_key: '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'
     }
 }));
+const Nexmo = require('nexmo');
+const nexmo = new Nexmo({
+  apiKey: '24dc94ac',
+  apiSecret: 'yFydXmfgni80gamf',
+}, {debug: true});
 // Add a new User
 exports.postAddAgent = (req, res, next) => {
     const name = req.body.name;
@@ -444,4 +449,54 @@ exports.postEditUserDetails = (req, res, next) => {
     });
 
 
+}
+
+exports.getAgentRegisteredAccounts = (req, res, next) => {
+    const agentId = req.params.agentId;
+    User.find({agentId: agentId})
+    .then(users => {
+        res.status(200).json({
+            users: users
+        });
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    })
+}
+
+exports.getUsersByUnit = (req, res, next) => {
+    const unit = req.body.unit;
+    User.find({unit: unit})
+    .then(users => {
+        res.status(200).json({
+            users: users
+        });
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    })
+}
+
+exports.getUserById = (req, res, next) => {
+    const uniqueId = req.body.uniqueId;
+    User.findOne({uniqueId: uniqueId})
+    .then(user => {
+        if(!user) {
+            return res.status(401).json({
+                message: "Opps! Unable to fetch user."
+            })
+        }
+        res.status(200).json({
+            user: user
+        });
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    })
 }

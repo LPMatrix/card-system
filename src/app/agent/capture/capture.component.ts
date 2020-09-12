@@ -149,7 +149,7 @@ export class CaptureComponent implements OnInit {
       if(arr.indexOf(randomnumber) === -1){arr.push(randomnumber)}  
     }
     var uniqueid = this.agentForm.value.branch + '/' + id + '/' + arr.toString() + firstInitial + secondInitial;
-    this.agentForm.value.uniqueId = uniqueid;
+    this.uniqueId = uniqueid
   }
 
   selectState(value){
@@ -159,10 +159,11 @@ export class CaptureComponent implements OnInit {
   }
 
   onSubmit() {
+    this.agentForm.value.uniqueId = this.uniqueId;
     this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
-    if(!this.agentForm.valid && this.agentForm.value.image === null) {
-      return;
-    }
+    // if(!this.agentForm.valid && this.agentForm.value.image === null) {
+    //   return;
+    // }
     
     this.agentService.createUser(this.agentForm.value);
   }

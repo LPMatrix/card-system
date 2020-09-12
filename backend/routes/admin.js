@@ -15,5 +15,8 @@ router.post('/user/edit', [isAdminAuth, adminData], adminController.postEditUser
 router.get('/counts', [isAdminAuth, adminData], adminController.getUserAgentCount);
 router.delete('/agent/remove/:agentId', [isAdminAuth, adminData], adminController.deleteAgent);
 router.get('/agents-users', [isAdminAuth, adminData], adminController.getAgentUsers);
+router.get('/agent/:agentId/registered', [isAdminAuth, adminData], adminController.getAgentRegisteredAccounts);
+router.post('/user/uniqueId', [isAdminAuth, adminData], adminController.getUserById);
+router.post('/users/unit', [isAdminAuth, adminData], adminController.getUsersByUnit);
 
 module.exports = router;
