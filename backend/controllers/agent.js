@@ -117,186 +117,133 @@ exports.postAddUser = (req, res, next) => {
 
 // Get all users
 
-exports.getUsers = (req, res, next) => {
-    User.find({
+exports.getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find({
             agentId: req.user._id
         }).sort({
             _id: -1
+        });
+        res.status(200).json({
+            users: users
         })
-        .then(users => {
-            res.status(200).json({
-                users: users
-            })
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
+    }
 }
 
-exports.getProfile = (req, res, next) => {
-    Agent.findOne({
+exports.getProfile = async (req, res, next) => {
+    try {
+        const user = await Agent.findOne({
             _id: req.user._id
-        })
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: "User not authenticated! Please login..."
-                });
-            }
-            res.status(200).json({
-                agent: user
+        });
+        if (!user) {
+            return res.status(401).json({
+                message: "User not authenticated! Please login..."
             });
+        }
+        res.status(200).json({
+            agent: user
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
+    }
+
 }
 
-exports.postProfile = (req, res, next) => {
-    const name = req.body.name;
-    const password = req.body.password;
-    const newpassword = req.body.newpassword;
-    Agent.findOne({
+exports.postProfile = async (req, res, next) => {
+    try {
+        const name = req.body.name;
+        const password = req.body.password;
+        const newpassword = req.body.newpassword;
+        const user = await Agent.findOne({
             _id: req.user._id
-        })
-        .then(user => {
-            if (!user) {
+        });
+        if (!user) {
+            return res.status(401).json({
+                message: "Authentication failed. Please login again."
+            })
+        }
+        if (password !== null) {
+            const doMatch = await bcrypt.compare(password, user.password);
+            if (!doMatch) {
                 return res.status(401).json({
-                    message: "Authentication failed"
+                    message: "Password does not match!"
                 })
             }
-            if (password !== null) {
-                return bcrypt.compare(password, user.password)
-                    .then(doMatch => {
-                        if (!doMatch) {
-                            return res.status(401).json({
-                                message: "Password does not match!"
-                            })
-                        }
-                        return bcrypt.hash(newpassword, 12)
-                            .then(hashPassword => {
-                                user.name = name;
-
-                                user.password = hashPassword;
-                                return user.save()
-                                    .then(result => {
-                                        res.status(200).json({
-                                            message: "Profile has been updated!",
-                                            agent: result
-                                        })
-                                    })
-                                    .catch(err => {
-                                        res.status(500).json({
-                                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                        })
-                                    })
-                            })
-                            .catch(err => {
-                                res.status(500).json({
-                                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                })
-                            })
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                        })
-                    })
-            } else {
-                user.name = name;
-                return user.save()
-                    .then(result => {
-                        res.status(200).json({
-                            message: "Password has been changed!",
-                            agent: result
-                        })
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                        })
-                    })
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
-}
-
-exports.postChangePassword = (req, res, next) => {
-    const password = req.body.password;
-    const newpassword = req.body.newpassword;
-    Agent.findOne({
-            _id: req.user._id
-        })
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: "Authentication failed"
-                })
-            }
-            if (password !== null) {
-                return bcrypt.compare(password, user.password)
-                    .then(doMatch => {
-                        if (!doMatch) {
-                            return res.status(401).json({
-                                message: "Password does not match!"
-                            })
-                        }
-                        return bcrypt.hash(newpassword, 12)
-                            .then(hashPassword => {
-
-                                user.password = hashPassword;
-                                return user.save()
-                                    .then(result => {
-                                        res.status(200).json({
-                                            message: "Password Changed Successfully!"
-                                        })
-                                    })
-                                    .catch(err => {
-                                        res.status(500).json({
-                                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                        })
-                                    })
-                            })
-                            .catch(err => {
-                                res.status(500).json({
-                                    message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                })
-                            })
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                            message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                        })
-                    })
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
-}
-
-exports.getUserCount = (req, res, next) => {
-    User.find({
-            approved: true
-        }).countDocuments()
-        .then(userCount => {
+            const hashPassword = await bcrypt.hash(newpassword, 12);
+            user.name = name;
+            user.password = hashPassword;
+            const result = await user.save();
             res.status(200).json({
-                userCount: userCount
-            })
+                message: "Profile has been updated!",
+                agent: result
+            });
+        } else {
+            user.name = name;
+            const result = await user.save();
+            res.status(200).json({
+                message: "Password has been changed!",
+                agent: result
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
+    }
+}
+
+exports.postChangePassword = async (req, res, next) => {
+    try {
+        const password = req.body.password;
+        const newpassword = req.body.newpassword;
+        const user = await Agent.findOne({
+            _id: req.user._id
+        });
+        if (!user) {
+            return res.status(401).json({
+                message: "Authentication failed"
             })
+        }
+        if (password !== null) {
+            const doMatch = await bcrypt.compare(password, user.password);
+            if (!doMatch) {
+                return res.status(401).json({
+                    message: "Password does not match!"
+                })
+            }
+            const hashPassword = await bcrypt.hash(newpassword, 12);
+            user.password = hashPassword;
+            const result = await user.save();
+            res.status(200).json({
+                message: "Password Changed Successfully!"
+            })
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
+    }
+
+}
+
+exports.getUserCount = async (req, res, next) => {
+    try {
+        const userCount = await User.find({
+            approved: true
+        }).countDocuments();
+        res.status(200).json({
+            userCount: userCount
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    }
 }

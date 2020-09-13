@@ -8,7 +8,7 @@ const MIME_TYPE_MAP = {
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images');
+    cb(null, 'backend/images');
   },
   filename: (req, file, cb) => {
     const name =file.originalname.toLowerCase().split(' ').join('-')

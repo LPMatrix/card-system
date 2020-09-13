@@ -58,4 +58,8 @@ export class ProfileComponent implements OnInit {
       this.loading = false;
     });
   }
+
+  logout() {
+    this.userAuthService.logout()
+  }
 }

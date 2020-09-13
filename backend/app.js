@@ -5,7 +5,7 @@ const authRouter = require('./routes/auth');
 const adminRouter = require("./routes/admin");
 const agentRouter = require("./routes/agent");
 const userRouter = require("./routes/users");
-const MongoDBURI = 'mongodb+srv://klez:kleztech@cluster0-nm91y.mongodb.net/ecard';
+const MongoDBURI = 'mongodb+srv://klez:' + process.env.MONGO_ATLAS_PW +'@cluster0-nm91y.mongodb.net/ecard';
 // const MongoDBURI = 'mongodb://127.0.0.1:27017/ecard';
 const bodyParser = require('body-parser');
 const Admin = require('./models/admin');
@@ -15,31 +15,21 @@ mongoose.connect(MongoDBURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
-  .then(connect => {
-    // console.log('Connected to Database');
-    Admin.findOne({
-        email: 'superadmin@ecard.ng'
-      })
-      .then(user => {
-        if (!user) {
-          bcrypt.hash('password', 12)
-            .then(hashedPassword => {
-              const admin = Admin({
-                email: 'superadmin@ecard.ng',
-                password: hashedPassword
-              });
+  .then(async connect => {
+    const user = await Admin.findOne({
+      email: 'superadmin@ecard.ng'
+    })
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(process.env.SUPER_ADMIN_PW, 12);
+      const admin = Admin({
+        email: 'superadmin@ecard.ng',
+        password: hashedPassword
+      });
 
-              admin.save();
-            })
-            .catch(err => {
-              console.log('Error occured 1')
-            })
-        }
-        console.log('connected');
-      })
-      .catch(err => {
-        console.log('Error occured 2')
-      })
+      const result = await admin.save();
+      console.log('connected');
+    }
+    console.log('connected');
   })
   .catch(err => {
     console.log('Connection failed');

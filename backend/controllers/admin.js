@@ -6,16 +6,14 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: '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'
+        api_key: process.env.SENDGRID_APIKEY
     }
 }));
-const Nexmo = require('nexmo');
-const nexmo = new Nexmo({
-  apiKey: '24dc94ac',
-  apiSecret: 'yFydXmfgni80gamf',
-}, {debug: true});
+const accountSid = process.env.TWILIO_ACCOUNT_SID
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken)
 // Add a new User
-exports.postAddAgent = (req, res, next) => {
+exports.postAddAgent = async (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
@@ -29,339 +27,202 @@ exports.postAddAgent = (req, res, next) => {
             message: 'Image is not valid'
         });
     }
-
-    Agent.findOne({
+    try {
+        const user = await Agent.findOne({
             email: email
-        }) // Finds if email already exist in the database;
-        .then(user => {
-            if (user) {
-                return res.status(401).json({
-                    message: "Email already exist!"
-                })
-            }
-            //  Encrypt new user password
-            return bcrypt.hash(password, 12).then(hashPassword => {
-                    // create new user
-                    const newUser = new Agent({
-                        name: name,
-                        email: email,
-                        image: url + '/images/' + image.filename,
-                        password: hashPassword
-                    });
-                    newUser.save()
-                        .then(result => {
-                            res.status(200).json({
-                                message: "Agent account has been created successfully!",
-                                agent: result
-                            })
-                        })
-                        .catch(err => {
-                            res.status(500).json({
-                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                            })
-                        });
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
+        });
+        if (user) {
+            return res.status(401).json({
+                message: "Email already exist!"
+            });
+        }
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const newUser = new Agent({
+            name: name,
+            email: email,
+            image: url + '/images/' + image.filename,
+            password: hashedPassword
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
+        const result = await newUser.save();
+        res.status(200).json({
+            message: "Agent account has been created successfully!",
+            agent: result
         })
-}
-
-// Get All Agents
-exports.getAgents = (req, res, next) => {
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    }
 
 }
 
-exports.getAgentUsers = (req, res, next) => {
-    User.find().populate('agentId').sort({
+
+exports.getAgentUsers = async (req, res, next) => {
+    try {
+        const users = await User.find().populate('agentId').sort({
             _id: -1
         })
-        .then(users => {
-            return Agent.find().sort({
-                    _id: -1
-                })
-                .then(agents => {
-                    res.status(200).json({
-                        users: users,
-                        agents: agents
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
+        const agents = await Agent.find().sort({
+            _id: -1
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
+        res.status(200).json({
+            users: users,
+            agents: agents
         })
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        })
+    }
+
 }
 
-exports.postUserApproval = (req, res, next) => {
+exports.postUserApproval = async (req, res, next) => {
     // const approval = req.body.approval;
-    const userId = req.params.userId;
-    User.findOne({
+    try {
+        const userId = req.params.userId;
+        const user = await User.findOne({
             _id: userId
-        }).populate('agentId')
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: "An error occured"
-                })
-            }
-
-
-            user.approved = !user.approved;
-            return user.save()
-                .then(result => {
-                    if (result.approved) {
-
-                        return transporter.sendMail({
-                                to: user.email,
-                                from: 'approval@ecard.ng',
-                                subject: 'Ecard Approval Confirmation',
-                                html: `
+        }).populate('agentId');
+        if (!user) {
+            return res.status(401).json({
+                message: "An error occured"
+            })
+        }
+        user.approved = !user.approved;
+        const result = await user.save()
+        if (result.approved) {
+            const sendSms = await client.messages.create({
+                body: 'You account has been approved by Digicapture. Please login to register.',
+                from:'+19124522011',
+                to: '+2348157984273'
+            });
+            // console.log(sendSms);
+            const sendMail = transporter.sendMail({
+                to: user.email,
+                from: 'approval@ecard.ng',
+                subject: 'Ecard Approval Confirmation',
+                html: `
                        <p>Dear ${user.firstname},</p>
                        <br>
                        <p>This is to notify you that your account has been activated successful. Click on this <a href='http://localhost:4200/login'>link</a> to login. Congratulations.</p>
                     `
-                            })
-                            .then(output => {
-                                res.status(200).json({
-                                    user: result
-                                });
-                            })
-                            .catch(err => {
-                                res.status(500).json({
-                                    message: 'An error occured. Please check your connection and try again'
-                                })
-                            });
-                    }
-                    res.status(200).json({
-                        user: result
-                    });
-
-
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
-
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
             })
-        })
-}
-
-exports.postProfile = (req, res, next) => {
-    const password = req.body.password;
-    const confirmpassword = req.bidy.confirmpassword;
-
-    if (password !== confirmpassword) {
-        return res.status(401).json({
-            message: 'Password does not match'
+        }
+        res.status(200).json({
+            user: result
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
     }
-    Admin.findOne()
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: 'Authentication failed'
-                })
-            }
-            return bcrypt.compare(password, user.password)
-                .then(doMatch => {
-                    if (!doMatch) {
-                        return res.status(401).json({
-                            message: "Password does not match!"
-                        })
-                    }
-                    return bcrypt.hash(password, 12)
-                        .then(hashPassword => {
-                            user.password = hashPassword;
-                            return user.save()
-                                .then(result => {
-                                    res.status(200).json({
-                                        message: "Password changed successfully",
-                                        user: result
-                                    });
-                                })
-                                .catch(err => {
-                                    res.status(500).json({
-                                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                    })
-                                })
-                        })
-                        .catch(err => {
-                            res.status(500).json({
-                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                            })
-                        })
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
+
 }
 
-exports.postProfile = (req, res, next) => {
-    const password = req.body.password;
-    const newpassword = req.body.newpassword;
-    if (password === newpassword) {
-        return res.status(401).json({
-            message: "Password does not match!"
+exports.postProfile = async (req, res, next) => {
+    try {
+        const password = req.body.password;
+        const newpassword = req.body.newpassword;
+        if (password === newpassword) {
+            return res.status(401).json({
+                message: "Password does not match!"
+            });
+        }
+
+        const user = await Admin.findOne({
+            _id: req.admin._id
+        })
+        if (!user) {
+            return res.status(401).json({
+                message: "Authentication failed"
+            })
+        }
+        const doMatch = await bcrypt.compare(password, user.password);
+        if (!doMatch) {
+            return res.status(401).json({
+                message: "Password does not match!"
+            })
+        }
+        const hashPassword = await bcrypt.hash(newpassword, 12);
+        user.password = hashPassword;
+        const result = await user.save()
+        res.status(200).json({
+            message: "Changed has been updated!"
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         });
     }
 
-    Admin.findOne({
-            _id: req.admin._id
-        })
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: "Authentication failed"
-                })
-            }
-            return bcrypt.compare(password, user.password)
-                .then(doMatch => {
-                    if (!doMatch) {
-                        return res.status(401).json({
-                            message: "Password does not match!"
-                        })
-                    }
-                    return bcrypt.hash(newpassword, 12)
-                        .then(hashPassword => {
-                            user.password = hashPassword;
-                            return user.save()
-                                .then(result => {
-                                    res.status(200).json({
-                                        message: "Changed has been updated!"
-                                    })
-                                })
-                                .catch(err => {
-                                    res.status(500).json({
-                                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                                    })
-                                })
-                        })
-                        .catch(err => {
-                            res.status(500).json({
-                                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                            })
-                        })
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
-
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
 }
 
-exports.getUserAgentCount = (req, res, next) => {
-    User.find({
+exports.getUserAgentCount = async (req, res, next) => {
+    try {
+        const userCount = await User.find({
             approved: true
-        }).countDocuments()
-        .then(userCount => {
-            return Agent.find().countDocuments()
-                .then(agentCount => {
-                    res.status(200).json({
-                        userCount: userCount,
-                        agentCount: agentCount
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
+        }).countDocuments();
+        const agentCount = await Agent.find().countDocuments();
+        res.status(200).json({
+            userCount: userCount,
+            agentCount: agentCount
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
+    }
+
 }
 
-exports.postAgentStatus = (req, res, next) => {
-    const agentId = req.body.agentId;
-    Agent.findOne({
+exports.postAgentStatus = async (req, res, next) => {
+    try {
+        const agentId = req.body.agentId;
+        const user = await Agent.findOne({
             _id: agentId
         })
-        .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: "An error occured"
-                })
-            }
-            user.is_active = !user.is_active;
-            return user.save()
-                .then(result => {
-                    res.status(200).json({
-                        agent: result
-                    });
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        message: "Sorry, we couldn't complete your request. Please try again in a moment."
-                    })
-                })
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
+        if (!user) {
+            return res.status(401).json({
+                message: "An error occured"
             })
+        }
+        user.is_active = !user.is_active;
+        const result = await user.save();
+        res.status(200).json({
+            agent: result
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
+    }
+
 }
 
-exports.deleteAgent = (req, res, next) => {
-    const agentId = req.params.agentId;
-    Agent.findOneAndDelete({
-            _id: agentId
-        })
-        .then(result => {
-            // console.log(result)
-            if (!result) {
-                return res.status(401).json({
-                    message: 'An error occured!'
-                })
+exports.deleteAgent = async (req, res, next) => {
+    try {
 
-            }
-            res.status(200).json({
-                message: 'Deleted successfully'
+        const agentId = req.params.agentId;
+        const result = await Agent.findOneAndDelete({
+            _id: agentId
+        });
+        if (!result) {
+            return res.status(401).json({
+                message: 'An error occured!'
             })
+
+        }
+        res.status(200).json({
+            message: 'Deleted successfully'
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-        .catch(err => {
-            res.status(500).json({
-                message: "Sorry, we couldn't complete your request. Please try again in a moment."
-            })
-        })
+    }
 }
 
 exports.postEditUserDetails = (req, res, next) => {
@@ -451,41 +312,47 @@ exports.postEditUserDetails = (req, res, next) => {
 
 }
 
-exports.getAgentRegisteredAccounts = (req, res, next) => {
-    const agentId = req.params.agentId;
-    User.find({agentId: agentId})
-    .then(users => {
+exports.getAgentRegisteredAccounts = async (req, res, next) => {
+    try {
+        const agentId = req.params.agentId;
+        const users = await User.find({
+            agentId: agentId
+        })
         res.status(200).json({
             users: users
         });
-    })
-    .catch(err => {
+    } catch (err) {
         res.status(500).json({
             message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-    })
+    }
+
 }
 
-exports.getUsersByUnit = (req, res, next) => {
-    const unit = req.body.unit;
-    User.find({unit: unit})
-    .then(users => {
+exports.getUsersByUnit = async (req, res, next) => {
+    try {
+        const unit = req.body.unit;
+        const users = await User.find({
+            unit: unit
+        });
         res.status(200).json({
             users: users
         });
-    })
-    .catch(err => {
+
+    } catch (err) {
         res.status(500).json({
             message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-    })
+    }
 }
 
-exports.getUserById = (req, res, next) => {
-    const uniqueId = req.body.uniqueId;
-    User.findOne({uniqueId: uniqueId})
-    .then(user => {
-        if(!user) {
+exports.getUserById = async (req, res, next) => {
+    try {
+        const uniqueId = req.body.uniqueId;
+        const user = User.findOne({
+            uniqueId: uniqueId
+        });
+        if (!user) {
             return res.status(401).json({
                 message: "Opps! Unable to fetch user."
             })
@@ -493,10 +360,10 @@ exports.getUserById = (req, res, next) => {
         res.status(200).json({
             user: user
         });
-    })
-    .catch(err => {
+    } catch (err) {
         res.status(500).json({
             message: "Sorry, we couldn't complete your request. Please try again in a moment."
         })
-    })
+    }
+
 }

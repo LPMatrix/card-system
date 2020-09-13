@@ -238,7 +238,7 @@
                                   [attr.data-target]="'#'+row.uniqueId">View
                                 </button> &nbsp;
                                 <a  class="btn btn-secondary" [routerLink]="['/admin/edit-user']" [state]=row>Edit</a>&nbsp;
-                                  <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}" (click) = "onApprove(row._id)">{{row.approve? 'Approved' : 'Approve'}}</button>
+                                  <button class="btn badge {{row.approved? 'badge-success':'badge-danger'}}" (click) = "onApprove(row._id)">{{row.approve? 'Approved' : 'Approve'}}</button>
                                 </mat-cell>
                             </ng-container>
 
