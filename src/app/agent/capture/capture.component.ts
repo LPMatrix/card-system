@@ -7,6 +7,11 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { externalParameters, externalBranches } from './state-file';
 import { Agent } from 'src/app/shared/agent.model';
+import { HttpClient,HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {  throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorComponent } from '../../error/error.component';
 const _zones = externalParameters.zones;
 const _branches = externalBranches.branches;
 @Component({
@@ -20,10 +25,14 @@ export class CaptureComponent implements OnInit {
   branches: string[] = _branches;
   states: any;
   selectedStates: any;
+  leftFingerImage: string;
   lga: any[];
+  fingerPrintError: string;
   uniqueId: string;
   userInformation : Agent;
+  showThumbImage:boolean = false;
   title: string = "Take Picture";
+  configUrl = 'https://localhost:8443/SGIFPCapture';
   // toggle webcam on/off
   public showWebcam = false;
   public allowCameraSwitch = true;
@@ -84,7 +93,36 @@ export class CaptureComponent implements OnInit {
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
   }
-  constructor(private agentService : AgentService, private authService : AuthService, public formBuilder: FormBuilder,) { }
+
+  getConfig() {
+     var secugen_lic = "";
+    const headerDict = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH,OPTIONS',
+    'Access-Control-Allow-Credentials': 'true',
+    'Content-Type': 'application/json; charset=utf-8'
+    }
+    let data = {licstr: "", Timeout: "10000", templateFormat: "ISO"};
+    var params = "Timeout=" + "10000";
+    params += "&Quality=" + "50";
+    params += "&licstr=" + encodeURIComponent(secugen_lic);
+    params += "&templateFormat=" + "ISO";
+    params += "&imageWSQRate=" + "0.75";
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(headerDict), 
+    };
+   
+  return this.http.post(this.configUrl,requestOptions, {params:data}).pipe(catchError(this.handleError));
+  }
+
+  constructor(
+    private agentService : AgentService, 
+    private authService : AuthService, 
+    public formBuilder: FormBuilder,
+    private http: HttpClient,
+    private dialog : MatDialog
+    ) { }
 
   ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs()
@@ -158,6 +196,42 @@ export class CaptureComponent implements OnInit {
     this.calculateUniqueId();
   }
 
+  captureLeft() {
+  this.getConfig()
+    .subscribe(
+      (data:any) => {
+        this.showThumbImage = true;
+        console.log(data);
+        if (data != null && data.BMPBase64.length > 0) {
+          this.leftFingerImage = "data:image/bmp;base64," + data.BMPBase64;
+          this.agentForm.value.fingerprint_image = "data:image/bmp;base64," + data.BMPBase64;
+          this.agentForm.value.fingerprint_encode = data.TemplateBase64;
+        }
+             }, // success path
+      error => {
+         this.showThumbImage = false;
+       this.fingerPrintError =  this.ErrorCodeToString(error.ErrorCode); 
+       this.dialog.open(ErrorComponent, {data : {message: this.fingerPrintError}});
+      } // error path
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+  if (error.error instanceof ErrorEvent) {
+    // A client-side or network error occurred. Handle it accordingly.
+    console.error('An error occurred:', error.error.message);
+  } else {
+    // The backend returned an unsuccessful response code.
+    // The response body may contain clues as to what went wrong,
+    console.error(
+      `Backend returned code ${error.status}, ` +
+      `body was: ${error.error}`);
+  }
+  // return an observable with a user-facing error message
+  return throwError(
+    'Something bad happened; please try again later.');
+};
+
   onSubmit() {
     this.agentForm.value.uniqueId = this.uniqueId;
     this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
@@ -171,5 +245,54 @@ export class CaptureComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
+
+  ErrorCodeToString(ErrorCode) {
+        var Description;
+        switch (ErrorCode) {
+            // 0 - 999 - Comes from SgFplib.h
+            // 1,000 - 9,999 - SGIBioSrv errors 
+            // 10,000 - 99,999 license errors
+            case 51:
+                Description = "System file load failure";
+                break;
+            case 52:
+                Description = "Sensor chip initialization failed";
+                break;
+            case 53:
+                Description = "Device not found";
+                break;
+            case 54:
+                Description = "Fingerprint image capture timeout";
+                break;
+            case 55:
+                Description = "No device available";
+                break;
+            case 56:
+                Description = "Driver load failed";
+                break;
+            case 57:
+                Description = "Wrong Image";
+                break;
+            case 58:
+                Description = "Lack of bandwidth";
+                break;
+            case 59:
+                Description = "Device Busy";
+                break;
+            case 60:
+                Description = "Cannot get serial number of the device";
+                break;
+            case 61:
+                Description = "Unsupported device";
+                break;
+            case 63:
+                Description = "SgiBioSrv didn't start; Try image capture again";
+                break;
+            default:
+                Description = "Unknown error code or Update code to reflect latest result";
+                break;
+        }
+        return Description;
+    }
 
 }
