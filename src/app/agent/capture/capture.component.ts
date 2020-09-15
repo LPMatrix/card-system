@@ -26,11 +26,13 @@ export class CaptureComponent implements OnInit {
   states: any;
   selectedStates: any;
   leftFingerImage: string;
+  rightFingerImage: string;
   lga: any[];
   fingerPrintError: string;
   uniqueId: string;
   userInformation : Agent;
   showThumbImage:boolean = false;
+  showRightThumbImage:boolean = false;
   title: string = "Take Picture";
   configUrl = 'https://localhost:8443/SGIFPCapture';
   // toggle webcam on/off
@@ -97,11 +99,7 @@ export class CaptureComponent implements OnInit {
   getConfig() {
      var secugen_lic = "";
     const headerDict = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'content-type',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH,OPTIONS',
-    'Access-Control-Allow-Credentials': 'true',
-    'Content-Type': 'application/json; charset=utf-8'
+    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
     }
     let data = {licstr: "", Timeout: "10000", templateFormat: "ISO"};
     var params = "Timeout=" + "10000";
@@ -113,7 +111,7 @@ export class CaptureComponent implements OnInit {
       headers: new HttpHeaders(headerDict), 
     };
    
-  return this.http.post(this.configUrl,requestOptions, {params:data}).pipe(catchError(this.handleError));
+  return this.http.post(this.configUrl,null, {headers:new HttpHeaders(headerDict), params: data}).pipe(catchError(this.handleError));
   }
 
   constructor(
@@ -210,6 +208,24 @@ export class CaptureComponent implements OnInit {
              }, // success path
       error => {
          this.showThumbImage = false;
+       this.fingerPrintError =  this.ErrorCodeToString(error.ErrorCode); 
+       this.dialog.open(ErrorComponent, {data : {message: this.fingerPrintError}});
+      } // error path
+    );
+  }
+
+   captureRight() {
+  this.getConfig()
+    .subscribe(
+      (data:any) => {
+        this.showRightThumbImage = true;
+        console.log(data);
+        if (data != null && data.BMPBase64.length > 0) {
+          this.rightFingerImage = "data:image/bmp;base64," + data.BMPBase64;
+        }
+             }, // success path
+      error => {
+         this.showRightThumbImage = false;
        this.fingerPrintError =  this.ErrorCodeToString(error.ErrorCode); 
        this.dialog.open(ErrorComponent, {data : {message: this.fingerPrintError}});
       } // error path

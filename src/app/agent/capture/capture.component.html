@@ -353,8 +353,13 @@
                           <div class="form-group row">
                             <label class="col-sm-4">FingerPrint (right thumb)</label>
                             <div class="col-sm-8">
-                              <button class="btn btn-secondary" color="basic" type="button">Capture</button>
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="captureRight()">Capture</button>
                             </div>
+                          </div>
+                          <div class="image-preview" *ngIf = "showRightThumbImage">
+                              <img
+                              [src]="this.rightFingerImage"
+                              alt="agentForm.value.title">
                           </div>
                         </div>
                       </div>

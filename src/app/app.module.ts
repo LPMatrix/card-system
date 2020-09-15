@@ -86,7 +86,7 @@ import { AgentUsersComponent } from './admin/agent-users/agent-users.component';
 
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent],
