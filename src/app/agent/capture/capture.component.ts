@@ -45,13 +45,13 @@ export class CaptureComponent implements OnInit {
 
   public triggerSnapshot(): void {
     this.trigger.next();
-    this.toggleWebcam();
+    this.showWebcam = false;
   }
 
   toggleWebcam() {
     this.showWebcam = !this.showWebcam;
     if (this.showWebcam == true) {
-     this.title = "Switch Camera Off";
+     this.title = "Take Picture";
     }
     else {
       this.title = "Take Picture";

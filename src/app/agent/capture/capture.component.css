@@ -2,7 +2,8 @@ input[type ="file"] {
     visibility: hidden;
   }
   .image-preview {
-    height: 5rem;
+    height: 200px;
+    width: 200px;
     margin: 1rem 0;
   }
   .image-preview img {
@@ -11,4 +12,8 @@ input[type ="file"] {
 
   .card-description{
     font-weight: bold;
+  }
+
+  .pt-1{
+    padding: 20px;
   }
