@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -28,7 +28,11 @@ export class AuthService {
   }
 
   getAgentData() {
-    this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile')
+    const token = this.getToken();
+    this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile',
+    {
+      headers: new HttpHeaders({Authorization: "Bearer " + token})
+  })
       .subscribe(responseData => {
         this.agentData.next(responseData.agent);
       });
@@ -140,10 +144,18 @@ export class AuthService {
   }
 
   getProfile() {
-    return this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile');
+    const token = this.getToken();
+    return this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/profile',
+      {
+        headers: new HttpHeaders({ Authorization: "Bearer " + token })
+      });
   }
 
   changeProfile(agent: Agent) {
-    return this.http.post<{ agent: Agent }>(BACKEND_URL + 'agent/profile', agent);
+    const token = this.getToken();
+    return this.http.post<{ agent: Agent }>(BACKEND_URL + 'agent/profile', agent,
+    {
+      headers: new HttpHeaders({ Authorization: "Bearer " + token })
+    });
   }
 }

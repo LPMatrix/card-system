@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { User } from '../shared/users.model';
 import { BehaviorSubject, } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
     providedIn: "root"
@@ -12,7 +13,7 @@ const BACKEND_URL = environment.apiUrl;
 export class AgentService {
     private users: User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
     getUserStatusListener() {
         return this.userStatusListener.asObservable();
@@ -44,7 +45,11 @@ export class AgentService {
         postCredentials.append('uniqueId', user.uniqueId);
         postCredentials.append('fingerprint_image', user.fingerprint_image);
         postCredentials.append('fingerprint_encode', user.fingerprint_encode);
-        this.http.post<{ user: User }>(BACKEND_URL + 'agent/user', user)
+        const token = this.authService.getToken();
+        this.http.post<{ user: User }>(BACKEND_URL + 'agent/user', user,
+        {
+            headers: new HttpHeaders({Authorization: "Bearer " + token})
+        })
             .subscribe(responseData => {
                 this.users.push(responseData.user);
                 this.userStatusListener.next(this.users);
@@ -53,7 +58,12 @@ export class AgentService {
     }
 
     getUsers() {
-        this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/user')
+        const token = this.authService.getToken();
+        this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/user',
+        
+        {
+            headers: new HttpHeaders({Authorization: "Bearer " + token})
+        })
             .subscribe(responseData => {
                 this.users = responseData.users;
                 this.userStatusListener.next(this.users);

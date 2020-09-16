@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -21,13 +21,17 @@ export class UserAuthService {
   private userimage: string
   private userData = new BehaviorSubject<User>(null);
   private authStatusListener = new BehaviorSubject<boolean>(false);
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private userAuthService: UserAuthService) { }
 
   getUserDataStatus() {
     return this.userData.asObservable();
   }
   getUserData() {
-    this.http.get<{ user: User }>(BACKEND_URL + 'user/profile')
+    const userToken = this.userAuthService.getToken();
+    this.http.get<{ user: User }>(BACKEND_URL + 'user/profile', 
+    {
+      headers: new HttpHeaders({UserAuthorization : "Bearer " + userToken})
+    })
       .subscribe(responseData => {
         this.userData.next(responseData.user);
       });
@@ -137,16 +141,24 @@ export class UserAuthService {
   }
 
   getProfile() {
-    return this.http.get<{ user: User }>(BACKEND_URL + 'user/profile');
+    const userToken = this.userAuthService.getToken();
+    return this.http.get<{ user: User }>(BACKEND_URL + 'user/profile',
+    {
+      headers: new HttpHeaders({UserAuthorization : "Bearer " + userToken})
+    });
   }
 
   changeProfile(password: string, newpassword: string, confirmpassword: string) {
+    const userToken = this.userAuthService.getToken();
     const postData = {
       password: password,
       newpassword: newpassword,
       confirmpassword: confirmpassword
     }
-    return this.http.post<{ message: string }>(BACKEND_URL + 'user/profile', postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'user/profile', postData,
+    {
+      headers: new HttpHeaders({UserAuthorization : "Bearer " + userToken})
+    });
   }
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth } from './auth.model';
@@ -97,11 +97,16 @@ export class AdminAuthService {
     localStorage.removeItem('adminExpiresIn');
   }
   changeProfile(password: string, newpassword: string, confirmpassword: string) {
+    
+    const adminToken = this.getToken();
     const postData = {
       password: password,
       newpassword: newpassword,
       confirmpassword: confirmpassword
     }
-    return this.http.post<{ message: string }>(BACKEND_URL + 'admin/profile', postData);
+    return this.http.post<{ message: string }>(BACKEND_URL + 'admin/profile', postData,
+    {
+      headers: new HttpHeaders({AdminAuthorization: "Bearer " + adminToken})
+  });
   }
 }
