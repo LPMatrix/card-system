@@ -38,6 +38,10 @@ import { ViewComponent } from './admin/view/view.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { EditUserComponent } from './admin/edit-user/edit-user.component';
 import { AgentUsersComponent } from './admin/agent-users/agent-users.component';
+import { VerifyComponent } from './verify/verify/verify.component';
+import { DetailsComponent } from './verify/details/details.component';
+import { AddExcoComponent } from './admin/add-exco/add-exco.component';
+import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
 
 
 
@@ -71,7 +75,11 @@ import { AgentUsersComponent } from './admin/agent-users/agent-users.component';
     AgentResetPasswordComponent,
     ViewComponent,
     EditUserComponent,
-    AgentUsersComponent
+    AgentUsersComponent,
+    VerifyComponent,
+    DetailsComponent,
+    AddExcoComponent,
+    ViewExcosComponent
   ],
   imports: [
     BrowserModule,

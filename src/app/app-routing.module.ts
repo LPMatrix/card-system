@@ -20,6 +20,10 @@ import { AgentForgotPasswordComponent } from './auth/agent/agent-forgot-password
 import { AgentResetPasswordComponent } from './auth/agent/agent-reset-password/agent-reset-password.component';
 import {ViewComponent } from './admin/view/view.component';
 import { EditUserComponent } from './admin/edit-user/edit-user.component';
+import { AddExcoComponent } from './admin/add-exco/add-exco.component';
+import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
+import { VerifyComponent } from './verify/verify/verify.component';
+import { DetailsComponent } from './verify/details/details.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -41,7 +45,11 @@ const routes: Routes = [
   {path: "agent/forgot-password", component : AgentForgotPasswordComponent},
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
   {path: "admin/view-agent", component: ViewComponent},
-  {path: "admin/edit-user", component: EditUserComponent}
+  {path: "admin/edit-user", component: EditUserComponent},
+  {path: "admin/add-exco", component: AddExcoComponent},
+  {path: "admin/excos", component: ViewExcosComponent},
+  {path: "verify", component: VerifyComponent},
+  {path: "verify/details", component: DetailsComponent}
 
 ];
 

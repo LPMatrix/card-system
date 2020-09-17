@@ -1,0 +1,167 @@
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="#">
+          <img src="assets/images/logo.png" height="80">
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <div class="dropdown-header text-center">
+                <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
+                <p class="mb-1 mt-3 font-weight-semibold"></p>
+                <p class="font-weight-light text-muted mb-0">Admin</p>
+              </div>
+              <a class="dropdown-item" routerLink="/admin/profile">My Profile <i
+                  class="dropdown-item-icon ti-dashboard"></i></a>
+              <a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Sign Out<i
+                  class="dropdown-item-icon ti-power-off"></i></a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+              <div class="profile-image">
+                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
+                <div class="dot-indicator bg-success"></div>
+              </div>
+              <div class="text-wrapper">
+                <p class="profile-name"></p>
+                <p class="designation">Admin</p>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Main Menu</li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/dashboard">
+              <i class="menu-icon typcn typcn-document-text"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/add-agent">
+              <i class="menu-icon typcn typcn-user-add"></i>
+              <span class="menu-title">Add Agent</span>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/view-agent">
+              <i class="menu-icon typcn typcn-eye"></i>
+              <span class="menu-title">View Agents</span>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/admin/add-exco">
+              <i class="menu-icon typcn typcn-user-outline"></i>
+              <span class="menu-title">Add Exco</span>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/excos">
+              <i class="menu-icon typcn typcn-eye-outline"></i>
+              <span class="menu-title">View Excos</span>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/profile">
+              <i class="menu-icon typcn typcn-user"></i>
+              <span class="menu-title">Profile</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <!-- Page Title Header Starts-->
+          <div class="row page-title-header">
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+  
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Add Agent</h4>
+                  <p class="card-description"> Add Agent Information </p>
+                  <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="forms-sample"
+                    enctype="multipart/form-data">
+                    <div class="form-group">
+                      <label for="exampleInputName1">Name</label>
+                      <input type="text" formControlName="name" class="form-control" id="exampleInputName1"
+                        placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Email address</label>
+                      <input type="email" formControlName="email" class="form-control" id="exampleInputEmail3"
+                        placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail4">Branch</label>
+                        <select  formControlName = "branch" class="form-control" id="exampleInputEmail4">
+                            <option></option>
+                            <option *ngFor="let branch of branches">{{ branch }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Password</label>
+                      <input type="password" formControlName="password" class="form-control" id="exampleInputPassword4"
+                        placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <div class="input-group col-xs-12">
+                        <button class="btn btn-secondary" color="basic" type="button" (click)="filePicker.click()">Pick an
+                          image</button>
+                        <input type="file" #filePicker (change)="onImagePicked($event)">
+                      </div>
+                      <div class="image-preview" *ngIf = "imagePreview !== '' && imagePreview && adminForm.get('image').valid">
+                        <img 
+                        [src]="imagePreview" 
+                        alt="adminForm.value.title">
+                      </div>
+                    </div>
+                    <button [disabled]="!adminForm.valid" type="submit" class="btn btn-dark mr-2">Add</button>
+                  </form>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020. All rights
+              reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
+                class="mdi mdi-heart text-danger"></i>
+            </span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
