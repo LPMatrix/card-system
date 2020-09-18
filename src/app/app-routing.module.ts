@@ -22,8 +22,8 @@ import {ViewComponent } from './admin/view/view.component';
 import { EditUserComponent } from './admin/edit-user/edit-user.component';
 import { AddExcoComponent } from './admin/add-exco/add-exco.component';
 import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
-import { VerifyComponent } from './verify/verify/verify.component';
 import { DetailsComponent } from './verify/details/details.component';
+import { VerifyComponent } from './admin/verify/verify.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -48,7 +48,7 @@ const routes: Routes = [
   {path: "admin/edit-user", component: EditUserComponent},
   {path: "admin/add-exco", component: AddExcoComponent},
   {path: "admin/excos", component: ViewExcosComponent},
-  {path: "verify", component: VerifyComponent},
+  {path: "admin/verify", component: VerifyComponent},
   {path: "verify/details", component: DetailsComponent}
 
 ];

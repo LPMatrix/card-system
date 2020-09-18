@@ -567,7 +567,7 @@
         height: 10px;
         border-radius: 100%;
         border: 2px solid #fff;
-        display: block; }
+        display: none; }
     .sidebar > .nav:not(.sub-menu) > .nav-item > .nav-link {
       background: transparent;
       -webkit-transition-duration: 0.3s;

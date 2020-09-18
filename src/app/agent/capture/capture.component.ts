@@ -173,6 +173,10 @@ export class CaptureComponent implements OnInit {
     this.agentService.createUser(this.agentForm.value);
   }
 
+  fetchUser(){
+    
+  }
+
   logout() {
     this.authService.logout();
   }

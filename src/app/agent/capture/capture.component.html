@@ -109,7 +109,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                              <button class="btn btn-secondary" color="basic" type="button" (click)="toggleWebcam()">Find</button>
+                              <button class="btn btn-secondary" color="basic" type="button" (click)="fetchUser()">Find</button>
                             </div>
                           </div>
                         </div>
@@ -170,7 +170,10 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Phone</label>
                             <div class="col-sm-9">
-                              <input  formControlName = "phone_no" type="number" class="form-control">
+                              <div class="input-group">
+                                <span class="input-group-addon">+234</span>
+                                <input  formControlName = "phone_no" type="number" class="form-control" maxlength="10">
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -260,7 +263,10 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Phone Number</label>
                             <div class="col-sm-9">
-                              <input formControlName = "next_of_kin_phone_no" type="number" class="form-control">
+                              <div class="input-group">
+                                <span class="input-group-addon">+234</span>
+                                <input formControlName = "next_of_kin_phone_no" type="number" class="form-control" maxlength="10">
+                              </div>
                             </div>
                           </div>
                         </div>
