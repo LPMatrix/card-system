@@ -1,0 +1,240 @@
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="#">
+          <img src="assets/images/logo.png" height="80">
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="Profile image"> </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <div class="dropdown-header text-center">
+                <img class="img-md rounded-circle" src="{{userInformation?.image}}" alt="Profile image">
+                <p class="mb-1 mt-3 font-weight-semibold">{{userInformation?.name}}</p>
+                <p class="font-weight-light text-muted mb-0">Agent</p>
+              </div>
+              <a class="dropdown-item" routerLink="/agent/profile">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+              <a class="dropdown-item" style="cursor: pointer;" (click)= "logout()">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+              <div class="profile-image">
+                <img class="img-xs rounded-circle" src="{{userInformation?.image}}" alt="profile image">
+                <div class="dot-indicator bg-success"></div>
+              </div>
+              <div class="text-wrapper">
+                <p class="profile-name">{{userInformation?.name}}</p>
+                <p class="designation">Exco</p>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Main Menu</li>
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/exco/dashboard">
+              <i class="menu-icon typcn typcn-document-text"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/exco/validate">
+              <i class="menu-icon typcn typcn-tick"></i>
+              <span class="menu-title">Verify Account</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/exco/profile">
+              <i class="menu-icon typcn typcn-bell"></i>
+              <span class="menu-title">Profile</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <!-- Page Title Header Starts-->
+          <div class="row page-title-header">
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                
+                <div class="col-md-3 grid-margin stretch-card average-price-card">
+                  <div class="card text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between pb-2 align-items-center">
+                        <h2 class="font-weight-semibold mb-0">{{ counts?.userCount }}</h2>
+                        <div class="icon-holder">
+                          <i class="mdi mdi-briefcase-outline"></i>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <h5 class="font-weight-semibold mb-0">Cards</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="{{ user?.uniqueId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ID Card</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <app-card [data]="user"></app-card>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="card-title mb-0">Users</h4>
+                      </div>
+                      <p>Registered Users</p>
+
+                      <div class="row">
+                        <button class="btn btn-secondary" (click)="exporter.exportTable('csv')">Csv</button> &nbsp;
+                        <button class="btn btn-secondary" (click)="exporter.exportTable('json')">Json</button> &nbsp;
+                        <button class="btn btn-secondary" (click)="exporter.exportTable('txt')">Txt</button>
+                      </div>
+                      
+                      <mat-form-field>
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Name" #input>
+                      </mat-form-field>
+                      <div class="example-container mat-elevation-z8">
+
+                        <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
+
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="Name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.lastname}} </mat-cell>
+                          </ng-container>
+
+                          <!-- UniqueID Column -->
+                          <ng-container matColumnDef="Unique Id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Unique ID </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.uniqueId | uppercase}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Email Column -->
+                          <ng-container matColumnDef="Email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Gender Column -->
+                          <ng-container matColumnDef="Gender">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
+                          </ng-container>
+
+                          <!-- DOB Column -->
+                          <ng-container matColumnDef="D.O.B">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> D.O.B </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.dob}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Phone no Column -->
+                          <ng-container matColumnDef="Phone No">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Phone No </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
+                          </ng-container>
+
+                           <!-- Branch Column -->
+                           <ng-container matColumnDef="Branch">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.branch}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Zone Column -->
+                          <ng-container matColumnDef="Zone">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Zone 
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
+                          </ng-container>
+
+                          <!-- State Column -->
+                          <ng-container matColumnDef="State">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Unit Column -->
+                          <ng-container matColumnDef="Unit">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Unit
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.unit}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Action Column -->
+                          <ng-container matColumnDef="Action">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> 
+                              <button class="btn btn-secondary" data-toggle="modal" 
+                                [attr.data-target]="'#'+row.uniqueId">View
+                              </button> &nbsp;
+                                <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}">{{row.approve? 'Approved' : 'Approve'}}</button>
+                              </mat-cell>
+                          </ng-container>
+
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;">
+                          </mat-row>
+                        </mat-table>
+
+                        <mat-paginator [pageSizeOptions]="[20, 50, 100, 500]"></mat-paginator>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+            </span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>

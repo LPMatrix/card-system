@@ -24,6 +24,11 @@ import { AddExcoComponent } from './admin/add-exco/add-exco.component';
 import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
 import { DetailsComponent } from './verify/details/details.component';
 import { VerifyComponent } from './admin/verify/verify.component';
+import { ExcoComponent } from './exco/exco/exco.component';
+import { ExcoProfileComponent } from './exco/profile/profile.component';
+import { ValidateComponent } from './exco/validate/validate.component';
+import { ExcoLoginComponent } from './auth/exco/exco-login/exco-login.component';
+import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -49,7 +54,13 @@ const routes: Routes = [
   {path: "admin/add-exco", component: AddExcoComponent},
   {path: "admin/excos", component: ViewExcosComponent},
   {path: "admin/verify", component: VerifyComponent},
-  {path: "verify/details", component: DetailsComponent}
+  {path: "verify/details", component: DetailsComponent},
+  {path: "exco", redirectTo: 'exco/dashboard'},
+  {path: "exco/login", component: ExcoLoginComponent},
+  {path: "exco/profile", component: ExcoProfileComponent},
+  {path: "exco/validate", component: ValidateComponent},
+  {path: "exco/dashboard", component: ExcoComponent},
+  {path: "exco/reset-password", component: ExcoPasswordComponent}
 
 ];
 

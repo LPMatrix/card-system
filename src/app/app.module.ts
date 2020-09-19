@@ -42,6 +42,11 @@ import { VerifyComponent } from './admin/verify/verify.component';
 import { DetailsComponent } from './verify/details/details.component';
 import { AddExcoComponent } from './admin/add-exco/add-exco.component';
 import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
+import { ExcoComponent } from './exco/exco/exco.component';
+import { ValidateComponent } from './exco/validate/validate.component';
+import { ExcoProfileComponent } from './exco/profile/profile.component';
+import { ExcoLoginComponent } from './auth/exco/exco-login/exco-login.component';
+import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.component';
 
 
 
@@ -79,7 +84,12 @@ import { ViewExcosComponent } from './admin/view-excos/view-excos.component';
     VerifyComponent,
     DetailsComponent,
     AddExcoComponent,
-    ViewExcosComponent
+    ViewExcosComponent,
+    ExcoComponent,
+    ValidateComponent,
+    ExcoProfileComponent,
+    ExcoLoginComponent,
+    ExcoPasswordComponent
   ],
   imports: [
     BrowserModule,
