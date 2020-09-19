@@ -110,7 +110,7 @@ export class CaptureComponent implements OnInit {
     this.agentForm = this.formBuilder.group({
       firstname : ['', Validators.required],
       uniqueId: ['', Validators.nullValidator],
-      middlename : ['', Validators.required],
+      middlename : [''],
       verifiedId : ['', Validators.required],
       vehicleNumber: ['', Validators.required],
       verifiedIdType: ['', Validators.required],
@@ -169,12 +169,38 @@ export class CaptureComponent implements OnInit {
     // if(!this.agentForm.valid && this.agentForm.value.image === null) {
     //   return;
     // }
-    
-    this.agentService.createUser(this.agentForm.value);
+
+    this.agentService.createUser(this.fingerprintID, this.agentForm.value);
   }
 
-  fetchUser(){
-    
+  fetchUser() {
+    this.agentService.getUserByFingerId(this.fingerprintID)
+      .subscribe(response => {
+        this.agentForm.setValue({
+          firstname: response.user.firstname,
+          uniqueId: '',
+          middlename: response.user.middlename,
+          verifiedId: '',
+          vehicleNumber: '',
+          verifiedIdType: '',
+          transportation_type: '',
+          surname: response.user.surname,
+          gender: '',
+          address: '',
+          zone: '',
+          branch: '',
+          dob: '',
+          unit: '',
+          phone_no: '',
+          state: '',
+          next_of_kin_name: '',
+          next_of_kin_address: '',
+          next_of_kin_phone_no: '',
+          image: '',
+          signature: '',
+          email: ''
+        });
+      })
   }
 
   logout() {

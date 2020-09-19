@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
@@ -17,6 +18,7 @@ export class ExcoPasswordComponent implements OnInit {
   credentialsForm : FormGroup;
   constructor(
     private route : ActivatedRoute,
+    private authService : AuthService,
     private router : Router
   ) { }
 
@@ -27,6 +29,13 @@ export class ExcoPasswordComponent implements OnInit {
       (params : Params) => {
         if(params['token']) {
           this.token = params['token'];
+          this.authService.getResetPassword(this.token)
+          .subscribe(responseData => {
+            this.loading = false;
+            this.agentId= responseData.agentId;
+          }, error => {
+            this.router.navigateByUrl('/agent');
+          });
         }
       }
     );
@@ -49,6 +58,12 @@ export class ExcoPasswordComponent implements OnInit {
     this.loading = true;
     const password = this.credentialsForm.value.password;
     const confirmpassword = this.credentialsForm.value.confirmpassword;
+    this.authService.postResetPassword(password, confirmpassword, this.token, this.agentId)
+    .subscribe(responseData => {
+      this.message = responseData.message;
+      this.loading = false;
+      this.router.navigateByUrl('agent/login');
+    });
   }
 
 }

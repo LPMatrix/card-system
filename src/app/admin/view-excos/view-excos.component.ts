@@ -7,6 +7,7 @@ import { Agent } from 'src/app/shared/agent.model';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
 
 @Component({
   selector: 'app-view-excos',
@@ -26,7 +27,19 @@ export class ViewExcosComponent implements OnInit {
     arrayCount: number = 0;
     private usersSubscription: Subscription;
     private agentsSubscription: Subscription;
-    constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) { }
+    constructor(private confirmationDialogService: ConfirmationDialogServiceService, private adminService: AdminService, private adminAuthService: AdminAuthService) { }
+
+    public openConfirmationDialog(agentId : string) {
+      this.confirmationDialogService.confirm('Delete','Perform Delete Operation?')
+      .then((confirmed) => this.onDelete(agentId))
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+    }
+  
+    public openConfirmDialog(agentId : string) {
+      this.confirmationDialogService.confirm('','Are you sure you want to perform operation?')
+      .then((confirmed) => this.onAccountStatus(agentId))
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+    }
 
     ngOnInit(): void {
       this.adminService.geAgentUsers();
@@ -37,7 +50,8 @@ export class ViewExcosComponent implements OnInit {
         });
       this.agentsSubscription = this.adminService.getAgentStatusListener()
         .subscribe(responseData => {
-          this.agents = responseData;
+          this.agents = responseData.filter(
+            ag => ag.branch != null);
           this.dataSource = new MatTableDataSource(this.agents);
           this.counts.agentCount = this.agents.length;
         });

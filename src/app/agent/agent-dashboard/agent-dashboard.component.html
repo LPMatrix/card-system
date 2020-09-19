@@ -93,7 +93,7 @@
                     </div>
                   </div>
 
-                  <div class="modal fade" id="{{ user?.uniqueId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
+                  <div class="modal fade" id="{{ user?.fingerId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -201,9 +201,9 @@
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
                               <mat-cell *matCellDef="let row"> 
                                 <button class="btn btn-secondary" data-toggle="modal" 
-                                  [attr.data-target]="'#'+row.uniqueId">View
+                                  [attr.data-target]="'#'+row.fingerId">View
                                 </button> &nbsp;
-                                  <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}">{{row.approve? 'Approved' : 'Approve'}}</button>
+                                  <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}">{{row.approve? 'Approved' : 'Pending'}}</button>
                                 </mat-cell>
                             </ng-container>
 

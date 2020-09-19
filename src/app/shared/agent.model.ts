@@ -3,6 +3,7 @@ export interface Agent {
     name : string,
     email : string,
     password? : string,
+    branch?: string,
     image : File | string,
     updatedAt? : Date,
     is_active? : boolean,

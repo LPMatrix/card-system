@@ -33,9 +33,14 @@
   }
 
   .user-photo{
-      width: 120px;
-      height: 120px;
-      margin: 0 auto;
+      width: 120px !important;
+      height: 120px !important;
+      object-fit: cover;
+  }
+  .verified-image{
+    margin: 0 auto;
+    width: 120px !important;
+    height: 120px !important;
   }
   
   .mat-row,

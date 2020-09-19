@@ -35,8 +35,30 @@ export class AdminService {
         const postCredentials = new FormData();
         postCredentials.append('name', agent.name);
         postCredentials.append('email', agent.email);
+        postCredentials.append('branch', agent.branch);
         postCredentials.append('password', agent.password);
         postCredentials.append('image', agent.image, agent.name);
+        const adminToken = this.adminAuthService.getToken();
+        this.http.post<{agent: Agent}>(BACKEND_URL + 'admin/agent', postCredentials,
+        {
+            headers: new HttpHeaders({AdminAuthorization: "Bearer " + adminToken})
+        }
+        )
+        .subscribe(responseData => {
+            this.agents.push(responseData.agent);
+            this.agentStatusListener.next(this.agents);
+            this.router.navigateByUrl('/admin/dashboard');
+        });
+    }
+
+    createExcoAgent(agent : Agent) {
+        const postCredentials = new FormData();
+        postCredentials.append('name', agent.name);
+        postCredentials.append('email', agent.email);
+        postCredentials.append('branch', agent.branch);
+        postCredentials.append('password', agent.password);
+        postCredentials.append('image', agent.image, agent.name);
+        console.log(postCredentials.get('branch'))
         const adminToken = this.adminAuthService.getToken();
         this.http.post<{agent: Agent}>(BACKEND_URL + 'admin/agent', postCredentials,
         {

@@ -210,10 +210,10 @@
                             <ng-container matColumnDef="Action">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
                               <mat-cell *matCellDef="let row"> 
-                                <button class="btn badge {{row?.is_active? 'badge-danger' : 'badge-success'}} mr-1" (click) = "onAccountStatus(row?._id)">
+                                <button class="btn badge {{row?.is_active? 'badge-danger' : 'badge-success'}} mr-1" (click) = "openConfirmDialog(row?._id)">
                                     {{row?.is_active? 'Deactivate' : 'Activate'}}
                                   </button>
-                                  <button class="btn badge badge-danger" (click)="onDelete(row?._id)">Delete</button>
+                                  <button class="btn badge badge-danger" (click)="openConfirmationDialog(row?._id)">Delete</button>
                                 </mat-cell>
                             </ng-container>
 

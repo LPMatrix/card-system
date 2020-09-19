@@ -19,7 +19,7 @@ export class AgentService {
         return this.userStatusListener.asObservable();
     }
 
-    createUser(user: User) {
+    createUser(fingerId: string, user: User) {
         const postCredentials = new FormData();
         postCredentials.append('firstname', user.firstname);
         postCredentials.append('middlename', user.middlename);
@@ -43,10 +43,8 @@ export class AgentService {
         postCredentials.append('address', user.address);
         postCredentials.append('image', user.image);
         postCredentials.append('uniqueId', user.uniqueId);
-        postCredentials.append('fingerprint_image', user.fingerprint_image);
-        postCredentials.append('fingerprint_encode', user.fingerprint_encode);
         const token = this.authService.getToken();
-        this.http.post<{ user: User }>(BACKEND_URL + 'agent/user', user,
+        this.http.post<{ user: User }>(BACKEND_URL + 'agent/user/' + fingerId, user,
         {
             headers: new HttpHeaders({Authorization: "Bearer " + token})
         })
@@ -68,6 +66,15 @@ export class AgentService {
                 this.users = responseData.users;
                 this.userStatusListener.next(this.users);
             });
+    }
+
+    getUserByFingerId(fingerId: string) {
+        const token = this.authService.getToken();
+        return this.http.get<{ user: User }>(BACKEND_URL + 'agent/user/finger/' + fingerId,
+        
+        {
+            headers: new HttpHeaders({Authorization: "Bearer " + token})
+        })
     }
 
 

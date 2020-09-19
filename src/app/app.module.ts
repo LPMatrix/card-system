@@ -48,7 +48,11 @@ import { ExcoProfileComponent } from './exco/profile/profile.component';
 import { ExcoLoginComponent } from './auth/exco/exco-login/exco-login.component';
 import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.component';
 
+import { NgxPrintModule } from 'ngx-print';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogServiceService } from './confirmation-dialog/confirmation-dialog-service.service';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -89,7 +93,8 @@ import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.c
     ValidateComponent,
     ExcoProfileComponent,
     ExcoLoginComponent,
-    ExcoPasswordComponent
+    ExcoPasswordComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -101,13 +106,16 @@ import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.c
     WebcamModule,
     MatTableExporterModule,
     BrowserAnimationsModule,
+    NgxPrintModule,
+    NgbModule
 
   ],
   providers: [
+    ConfirmationDialogServiceService,
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents : [ErrorComponent]
+  entryComponents : [ErrorComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }

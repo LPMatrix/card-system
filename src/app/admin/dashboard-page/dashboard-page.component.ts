@@ -7,6 +7,7 @@ import { Agent } from 'src/app/shared/agent.model';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayCount: number = 0;
   private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
-  constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) {
+  constructor(private confirmationDialogService: ConfirmationDialogServiceService, private adminService: AdminService, private adminAuthService: AdminAuthService) {
     this.adminService.geAgentUsers();
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
@@ -45,6 +46,12 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngOnInit(): void {
     
+  }
+
+  public openConfirmDialog(userId : string) {
+    this.confirmationDialogService.confirm('','Are you sure you want to perform operation?')
+    .then((confirmed) => this.onAccountStatus(userId))
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
   onApprove(userId: string) {
