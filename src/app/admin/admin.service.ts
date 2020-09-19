@@ -167,6 +167,19 @@ export class AdminService {
             this.agentStatusListener.next(this.agents);
         });
     }
+    deleteUser(userId : string) {
+        const adminToken = this.adminAuthService.getToken();
+        this.http.delete<{message : string}>(BACKEND_URL + 'admin/user/remove/' + userId,
+        {
+            headers: new HttpHeaders({AdminAuthorization: "Bearer " + adminToken})
+        })
+        .subscribe(responseData => {
+            const getUsers = [...this.users];
+            const getFilteredUser = getUsers.filter(p => p._id !== userId);
+            this.users = [...getFilteredUser];
+            this.userStatusListener.next(this.users);
+        });
+    }
 
     getAgentRegisteredUsers(agentId: String) {
         const adminToken = this.adminAuthService.getToken();

@@ -5,6 +5,7 @@ import { User } from '../shared/users.model';
 import { BehaviorSubject, } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
+import { ExcoAuthService } from '../auth/exco.auth.service';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
     providedIn: "root"
@@ -13,7 +14,12 @@ const BACKEND_URL = environment.apiUrl;
 export class AgentService {
     private users: User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
-    constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private authService: AuthService,
+        private excoAuthService: ExcoAuthService
+        ) { }
 
     getUserStatusListener() {
         return this.userStatusListener.asObservable();
@@ -66,6 +72,15 @@ export class AgentService {
                 this.users = responseData.users;
                 this.userStatusListener.next(this.users);
             });
+    }
+
+    getExcoUsers() {
+        const token = this.excoAuthService.getToken();
+        return this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/exco/users',
+        
+        {
+            headers: new HttpHeaders({ExcoAuthorization: "Bearer " + token})
+        });
     }
 
     getUserByFingerId(fingerId: string) {

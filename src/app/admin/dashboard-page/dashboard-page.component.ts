@@ -77,6 +77,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     this.adminService.deleteAgent(agentId);
   }
 
+  onDeleteUser(userId: string) {
+    // Parse _id value as userId
+    this.adminService.deleteUser(userId);
+  }
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

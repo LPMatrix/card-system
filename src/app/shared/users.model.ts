@@ -24,9 +24,10 @@ export interface User {
     updatedAt? : Date,
     agentId? : any,
     image : File,
-    signature: File,
-    fingerprint_image : File,
-    fingerprint_encode : string,
+    signature?: File,
+    fingerId?: string
+    finger1 : string,
+    finger2 : string,
     approved? : boolean,
     __v? : any
 }
