@@ -29,6 +29,7 @@ import { ExcoProfileComponent } from './exco/profile/profile.component';
 import { ValidateComponent } from './exco/validate/validate.component';
 import { ExcoLoginComponent } from './auth/exco/exco-login/exco-login.component';
 import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.component';
+import { ExcoAuthGuard } from './auth/exo.auth.guard';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -49,17 +50,17 @@ const routes: Routes = [
   {path: "reset/:token", component : ResetPasswordComponent},
   {path: "agent/forgot-password", component : AgentForgotPasswordComponent},
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
-  {path: "admin/view-agent", component: ViewComponent},
-  {path: "admin/edit-user", component: EditUserComponent},
-  {path: "admin/add-exco", component: AddExcoComponent},
-  {path: "admin/excos", component: ViewExcosComponent},
-  {path: "admin/verify", component: VerifyComponent},
+  {path: "admin/view-agent", canActivate: [AdminAuthGuard],  component: ViewComponent},
+  {path: "admin/edit-user", canActivate: [AdminAuthGuard],  component: EditUserComponent},
+  {path: "admin/add-exco", canActivate: [AdminAuthGuard],  component: AddExcoComponent},
+  {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
+  {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},
   {path: "verify/details", component: DetailsComponent},
   {path: "exco", redirectTo: 'exco/dashboard'},
   {path: "exco/login", component: ExcoLoginComponent},
-  {path: "exco/profile", component: ExcoProfileComponent},
-  {path: "exco/validate", component: ValidateComponent},
-  {path: "exco/dashboard", component: ExcoComponent},
+  {path: "exco/profile", canActivate: [ExcoAuthGuard], component: ExcoProfileComponent},
+  {path: "exco/validate", canActivate: [ExcoAuthGuard], component: ValidateComponent},
+  {path: "exco/dashboard", canActivate: [ExcoAuthGuard], component: ExcoComponent},
   {path: "exco/reset-password", component: ExcoPasswordComponent}
 
 ];

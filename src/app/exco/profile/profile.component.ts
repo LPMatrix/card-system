@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Agent } from '../../shared/agent.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { ExcoAuthService } from 'src/app/auth/exco.auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,11 +20,11 @@ export class ExcoProfileComponent implements OnInit {
   agentForm : FormGroup;
   userInformation : Agent;
   message : string;
-  constructor(private authService : AuthService, private router : Router) { }
+  constructor(private excoAuthService : ExcoAuthService, private router : Router) { }
 
   ngOnInit(): void {
     this.init();
-    this.authService.getProfile()
+    this.excoAuthService.getProfile()
     .subscribe(responseData => {
       this.agent = responseData.agent;
       this.userInformation = responseData.agent;
@@ -59,7 +59,7 @@ export class ExcoProfileComponent implements OnInit {
     }
     this.loading = true;
     this.message = null;
-    this.authService.changeProfile(this.agentForm.value)
+    this.excoAuthService.changeProfile(this.agentForm.value)
     .subscribe(responseData => {
       this.agent = responseData.agent;
       this.userInformation = responseData.agent;
@@ -70,7 +70,7 @@ export class ExcoProfileComponent implements OnInit {
         'newpassword' : null,
         'confirmpassword' : null
       });
-      this.authService.agentData.next(responseData.agent);
+      this.excoAuthService.agentData.next(responseData.agent);
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -79,6 +79,7 @@ export class ExcoProfileComponent implements OnInit {
   }
 
   logout() {
+    this.excoAuthService.logout()
   }
 
 }

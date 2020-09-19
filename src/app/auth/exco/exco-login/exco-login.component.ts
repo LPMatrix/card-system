@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
 import { finalize } from 'rxjs/operators';
+import { ExcoAuthService } from '../../exco.auth.service';
 
 @Component({
   selector: 'app-exco-login',
@@ -14,11 +14,11 @@ export class ExcoLoginComponent implements OnInit {
   title = "Login";
   loading: boolean = false;
 
-  constructor(private router: Router, private authService : AuthService) {}
+  constructor(private router: Router, private excoAuthService : ExcoAuthService) {}
   ngOnInit(): void {
-    this.authService.autoAuthUser();
-    if(this.authService.getAuthStatus()) {
-      this.router.navigateByUrl('/agent');
+    this.excoAuthService.autoAuthUser();
+    if(this.excoAuthService.getAuthStatus()) {
+      this.router.navigateByUrl('/exco');
     }
     this.credentialsForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -33,7 +33,7 @@ export class ExcoLoginComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.authService.login(this.credentialsForm.value)
+    this.excoAuthService.login(this.credentialsForm.value)
     .pipe(finalize(() => {
       this.loading= false;
       this.title = "Login";
