@@ -37,7 +37,6 @@ import { AngularMaterialModule } from './angular-material.module';
 import { ViewComponent } from './admin/view/view.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { EditUserComponent } from './admin/edit-user/edit-user.component';
-import { AgentUsersComponent } from './admin/agent-users/agent-users.component';
 import { VerifyComponent } from './admin/verify/verify.component';
 import { DetailsComponent } from './verify/details/details.component';
 import { AddExcoComponent } from './admin/add-exco/add-exco.component';
@@ -84,7 +83,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AgentResetPasswordComponent,
     ViewComponent,
     EditUserComponent,
-    AgentUsersComponent,
     VerifyComponent,
     DetailsComponent,
     AddExcoComponent,
