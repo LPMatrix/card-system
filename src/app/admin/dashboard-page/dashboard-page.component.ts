@@ -46,7 +46,6 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     }))
     .subscribe(response => {
       // do nothing
-      this.router.navigateByUrl('/admin/dashboard');
     });
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {

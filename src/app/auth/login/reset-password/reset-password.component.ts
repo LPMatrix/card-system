@@ -56,13 +56,18 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
     this.loading = true;
+    this.title = "Please wait...";
     const password = this.credentialsForm.value.password;
     const confirmpassword = this.credentialsForm.value.confirmpassword;
     this.userAuthService.postResetPassword(password, confirmpassword, this.token, this.userId)
     .subscribe(responseData => {
       this.message = responseData.message;
       this.loading = false;
+      this.title = "Submit";
       this.router.navigateByUrl('/login');
+    }, error => {
+      this.loading = false;
+      this.title = "Submit";
     });
   }
 
