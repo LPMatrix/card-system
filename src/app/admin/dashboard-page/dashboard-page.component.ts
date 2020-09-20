@@ -54,6 +54,12 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
+  public openDeleteDialog(userId : string) {
+    this.confirmationDialogService.confirm('Delete','Are you sure you want to perform operation?')
+    .then((confirmed) => this.onDeleteUser(userId))
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+
   onApprove(userId: string) {
     
     this.adminService.approve(userId);

@@ -259,7 +259,8 @@
                                   [attr.data-target]="'#'+row.fingerId">View
                                 </button> &nbsp;
                                 <a  class="btn btn-secondary" [routerLink]="['/admin/edit-user']" [state]=row>Edit</a>&nbsp;
-                                  <button class="btn badge {{row.approved? 'badge-success':'badge-danger'}}" (click) = "openConfirmDialog(row._id)">{{row.approve? 'Approved' : 'Delete Approval'}}</button>
+                                <a  class="btn btn-secondary" (click)="openDeleteDialog(row._id)">Delete</a> &nbsp;
+                                <button class="btn badge {{row.approved? 'badge-success':'badge-danger'}}" (click) = "openConfirmDialog(row._id)">{{row.approve? 'Approved' : 'Delete Approval'}}</button>
                                 </mat-cell>
                             </ng-container>
 

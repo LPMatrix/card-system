@@ -29,6 +29,7 @@ import { ExcoProfileComponent } from './exco/profile/profile.component';
 import { ValidateComponent } from './exco/validate/validate.component';
 import { ExcoLoginComponent } from './auth/exco/exco-login/exco-login.component';
 import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.component';
+import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { ExcoAuthGuard } from './auth/exo.auth.guard';
 
 const routes: Routes = [
@@ -48,10 +49,11 @@ const routes: Routes = [
   {path: "admin/profile", canActivate: [AdminAuthGuard], component: AdminProfileComponent},
   {path: "forgot-password", component: ForgotPasswordComponent},
   {path: "reset/:token", component : ResetPasswordComponent},
-  {path: "agent/forgot-password", component : AgentForgotPasswordComponent},
+  {path: "agent/forgot-password", component : AgentForgotPasswordComponent},  
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
   {path: "admin/view-agent", canActivate: [AdminAuthGuard],  component: ViewComponent},
   {path: "admin/edit-user", canActivate: [AdminAuthGuard],  component: EditUserComponent},
+  {path: "admin/agent-user", canActivate: [AdminAuthGuard], component: ViewAgentComponent},
   {path: "admin/add-exco", canActivate: [AdminAuthGuard],  component: AddExcoComponent},
   {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
   {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},

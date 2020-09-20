@@ -52,6 +52,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { ConfirmationDialogServiceService } from './confirmation-dialog/confirmation-dialog-service.service';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 
 
 @NgModule({
@@ -92,7 +93,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ExcoProfileComponent,
     ExcoLoginComponent,
     ExcoPasswordComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ViewAgentComponent,
   ],
   imports: [
     BrowserModule,
