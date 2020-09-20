@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 import { jsPDF } from "jspdf";
@@ -34,16 +34,18 @@ export class VerifyComponent implements OnInit {
   //   });
   // }
 
-  print(){
+  print() {
     window.print();
   }
 
-  fetchUser(){
-    if(this.uniqueID != '')
-    this.adminService.getUserDetailById(this.uniqueID).subscribe(responseData => {
-      this.user = responseData.user;
-      console.log(this.user);
-    });
+  fetchUser() {
+    if (this.uniqueID !== '') {
+      this.adminService.getUserDetailById(this.uniqueID).subscribe(responseData => {
+        this.user = responseData.user;
+        console.log(this.user);
+      });
+
+    }
   }
 
   logout() {

@@ -3,6 +3,7 @@ import { Agent } from '../../shared/agent.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { AgentService } from 'src/app/agent/agent.service';
 
 @Component({
   selector: 'app-validate',
@@ -12,19 +13,26 @@ import { Router } from '@angular/router';
 export class ValidateComponent implements OnInit {
   @ViewChild('content') content: ElementRef;
   uniqueID: string;
-  userInformation : Agent;
+  userInformation: Agent;
   user: any;
-  constructor() { }
+  constructor(private agentService: AgentService) { }
 
   ngOnInit(): void {
   }
 
-  fetchUser(){
+  fetchUser() {
     // if(this.uniqueID != '')
+    if (this.uniqueID !== '') {
+      this.agentService.getUserDetailById(this.uniqueID)
+        .subscribe(responseData => {
+          this.user = responseData.user;
+          console.log(this.user);
+        });
+    }
   }
 
   logout() {
-   
+
   }
 
 }

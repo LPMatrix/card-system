@@ -83,6 +83,17 @@ export class AgentService {
         });
     }
 
+    getUserDetailById(uniqueId: string) {
+        const token = this.excoAuthService.getToken();
+        const postData = {
+            uniqueId: uniqueId
+        }
+        return this.http.post<{ user: User }>(BACKEND_URL + 'agent/exco/user/uniqueId', postData,
+        {
+            headers: new HttpHeaders({ExcoAuthorization: "Bearer " + token})
+        });
+    }
+
     getUserByFingerId(fingerId: string) {
         const token = this.authService.getToken();
         return this.http.get<{ user: User }>(BACKEND_URL + 'agent/user/finger/' + fingerId,

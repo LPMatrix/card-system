@@ -50,7 +50,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
 
   public openConfirmDialog(userId : string) {
     this.confirmationDialogService.confirm('','Are you sure you want to perform operation?')
-    .then((confirmed) => this.onAccountStatus(userId))
+    .then((confirmed) => this.onApprove(userId))
     .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 

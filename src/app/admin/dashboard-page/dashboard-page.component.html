@@ -260,7 +260,7 @@
                                 </button> &nbsp;
                                 <a  class="btn btn-secondary" [routerLink]="['/admin/edit-user']" [state]=row>Edit</a>&nbsp;
                                 <a  class="btn btn-secondary" (click)="openDeleteDialog(row._id)">Delete</a> &nbsp;
-                                <button class="btn badge {{row.approved? 'badge-success':'badge-danger'}}" (click) = "openConfirmDialog(row._id)">{{row.approve? 'Approved' : 'Delete Approval'}}</button>
+                                <button class="btn badge {{row.approved? 'badge-success':'badge-danger'}}" (click) = "openConfirmDialog(row._id)">{{row.approved? 'Account Approved' : 'Approve Account'}}</button>
                                 </mat-cell>
                             </ng-container>
 
