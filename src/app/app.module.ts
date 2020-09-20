@@ -54,6 +54,7 @@ import { ConfirmationDialogServiceService } from './confirmation-dialog/confirma
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
+import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
     ExcoPasswordComponent,
     ConfirmationDialogComponent,
     ViewAgentComponent,
+    ExcoForgetPasswordComponent,
   ],
   imports: [
     BrowserModule,
