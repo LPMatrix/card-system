@@ -117,6 +117,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
       });;
   }
 
+  onEdit(id: string) {
+    console.log(id)
+    this.router.navigateByUrl('/admin/edit-user/' + id);
+  }
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

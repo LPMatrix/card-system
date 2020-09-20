@@ -118,15 +118,15 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">First Name</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "firstname" type="text" class="form-control" value="{{this.users.firstname}}">
+                                  <input formControlName = "firstname" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">MIddle Name</label>
+                                <label class="col-sm-3 col-form-label">Middle Name</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "middlename" type="text" class="form-control" value="{{this.users.middlename}}">
+                                  <input formControlName = "middlename" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -136,7 +136,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Surname</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "surname" type="text" class="form-control" value="{{this.users.surname}}">
+                                  <input formControlName = "surname" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -144,7 +144,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "email" type="text" class="form-control" value="{{this.users.email}}">
+                                  <input formControlName = "email" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -154,7 +154,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Gender</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "gender" class="form-control" value="{{this.users.gender}}" readonly>
+                                  <input  formControlName = "gender" class="form-control" readonly>
                                 </div>
                               </div>
                             </div>
@@ -162,7 +162,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "phone_no" type="number" class="form-control" value="{{this.users.phone_no}}">
+                                  <input  formControlName = "phone_no" type="number" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -172,7 +172,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                  <textarea formControlName="address" type="text" class="form-control" value="{{this.users.address}}"></textarea>
+                                  <textarea formControlName="address" type="text" class="form-control"></textarea>
                                 </div>
                               </div>
                             </div>
@@ -181,7 +181,7 @@
                                 <label class="col-sm-3 col-form-label">Date of Birth</label>
                                 <div class="col-sm-9">
                                   <mat-form-field>
-                                    <input matInput [matDatepicker]="picker" placeholder="MM/DD/YYY" formControlName="dob" value="{{this.users.dob}}">
+                                    <input matInput [matDatepicker]="picker" placeholder="MM/DD/YYY" formControlName="dob">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                   </mat-form-field>
@@ -194,7 +194,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Transportation Type</label>
                                 <div class="col-sm-9">
-                                  <select  formControlName = "transportation_type" class="form-control" value="{{this.users.transportation_type}}">
+                                  <select  formControlName = "transportation_type" class="form-control">
                                     <option>Car</option>
                                     <option>Bus</option>
                                     <option>Trailer</option>
@@ -208,7 +208,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Vehicle Number</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "vehicleNumber" type="text" class="form-control" value="{{this.users.vehicleNumber}}">
+                                  <input  formControlName = "vehicleNumber" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -218,7 +218,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ID Type</label>
                                 <div class="col-sm-9">
-                                  <select  formControlName = "verifiedIdType" class="form-control" value="{{this.users.verifiedIdType}}">
+                                  <select  formControlName = "verifiedIdType" class="form-control">
                                     <option>National ID</option>
                                     <option>Driver's License</option>
                                     <option>International Passport</option>
@@ -231,7 +231,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ID Number</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "verifiedId" type="text" class="form-control" value="{{this.users.verifiedId}}">
+                                  <input  formControlName = "verifiedId" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -244,7 +244,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Name</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "next_of_kin_name" type="text" class="form-control" value="{{this.users.next_of_kin_name}}">
+                                  <input formControlName = "next_of_kin_name" type="text" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -252,7 +252,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone Number</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "next_of_kin_phone_no" type="number" class="form-control" value="{{this.users.next_of_kin_phone_no}}">
+                                  <input formControlName = "next_of_kin_phone_no" type="number" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -263,7 +263,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                  <textarea formControlName="next_of_kin_address" type="text" class="form-control" value="{{this.users.next_of_kin_address}}"></textarea>
+                                  <textarea formControlName="next_of_kin_address" type="text" class="form-control"></textarea>
                                 </div>
                               </div>
                             </div>
@@ -275,7 +275,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Branch</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "branch" class="form-control" readonly value="{{this.users.branch}}">
+                                  <input  formControlName = "branch" class="form-control" readonly>
                                 </div>
                               </div>
                             </div>
@@ -283,7 +283,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Zone</label>
                                 <div class="col-sm-9">
-                                  <input formControlName = "zone" class="form-control" readonly value="{{this.users.zone}}">
+                                  <input formControlName = "zone" class="form-control" readonly>
                                 </div>
                               </div>
                             </div>
@@ -293,7 +293,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">State</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "state" class="form-control" readonly value="{{this.users.state}}">
+                                  <input  formControlName = "state" class="form-control" readonly>
                                 </div>
                               </div>
                             </div>
@@ -301,7 +301,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Unit</label>
                                 <div class="col-sm-9">
-                                  <input  formControlName = "unit" class="form-control" readonly value="{{this.users.unit}}">
+                                  <input  formControlName = "unit" class="form-control" readonly>
                                 </div>
                               </div>
                             </div>
@@ -335,7 +335,7 @@
                   </div>
             </div>
             <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
-              <p style="color: white">Updating User Account.... </p>
+              <p style="color: white">Please wait.... </p>
             </ngx-spinner>
           </div>
           <!-- content-wrapper ends -->

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AgentService } from '../../agent/agent.service';
-import { Subject } from 'rxjs';
+import { Subject} from 'rxjs';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { User } from 'src/app/shared/users.model';
 import { AdminService } from '../admin.service';
 import { finalize } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -18,7 +18,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class EditUserComponent implements OnInit {
   title: string = "Take Picture";
-  users: User;
+  user: User;
+  userId: string;
   agentForm: FormGroup;
   // toggle webcam on/off
   public showWebcam = false;
@@ -83,6 +84,7 @@ export class EditUserComponent implements OnInit {
 
   constructor(
     private SpinnerService: NgxSpinnerService,
+    private route: ActivatedRoute,
     private agentService: AgentService,
     private authService: AuthService,
     public formBuilder: FormBuilder,
@@ -93,11 +95,49 @@ export class EditUserComponent implements OnInit {
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
-    this.init();
   }
 
   ngOnInit(): void {
-    this.users = history.state;
+    this.init();
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.SpinnerService.show();
+        if (params['user']) {
+          this.userId = params['user'];
+          console.log(this.userId, 'param user')
+          this.adminService.getUserById(this.userId)
+            .pipe(finalize(() => {
+              this.SpinnerService.hide();
+            }))
+            .subscribe(response => {
+              this.user = response.user;
+              this.agentForm.setValue({
+                firstname: response.user.firstname,
+                uniqueId: response.user.uniqueId,
+                middlename: response.user.middlename,
+                verifiedId: response.user.verifiedId,
+                vehicleNumber: response.user.vehicleNumber,
+                verifiedIdType: response.user.verifiedIdType,
+                transportation_type: response.user.transportation_type,
+                surname: response.user.surname,
+                gender: response.user.gender,
+                address: response.user.address,
+                zone: response.user.zone,
+                branch: response.user.branch,
+                dob: response.user.dob,
+                unit: response.user.unit,
+                phone_no: response.user.phone_no,
+                state: response.user.state,
+                next_of_kin_name: response.user.next_of_kin_name,
+                next_of_kin_address: response.user.next_of_kin_address,
+                next_of_kin_phone_no: response.user.next_of_kin_phone_no,
+                image: '',
+                email: response.user.email
+              });
+            });
+        }
+      }
+    );
   }
 
   private init() {
@@ -122,28 +162,25 @@ export class EditUserComponent implements OnInit {
       next_of_kin_address: ['', Validators.required],
       next_of_kin_phone_no: ['', Validators.required],
       image: ['', Validators.nullValidator],
-      signature: [Validators.nullValidator],
-      fingerprint_image: [Validators.nullValidator],
-      fingerprint_encode: [Validators.nullValidator],
       email: ['', Validators.compose([Validators.required, Validators.email])],
     });
   }
 
   onSubmit() {
-    if(this.webcamImage != null)
-    this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
-    else this.agentForm.value.image = null;
-    // if (!this.agentForm.valid) {
-    //   return;
-    // }
+    if (this.webcamImage != null) {
+      this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
+    } else {
+      this.agentForm.value.image = null;
+    }
     this.SpinnerService.show();
-    this.adminService.editUser(this.agentForm.value, this.users._id)
-    .pipe(finalize(() => {
-      this.SpinnerService.hide();
-    }))
-    .subscribe(response => {
-      this.router.navigateByUrl('/admin/dashboard');
-    })
+    this.adminService.editUser(this.agentForm.value, this.userId)
+      .subscribe(response => {
+        this.SpinnerService.hide();
+        this.router.navigateByUrl('/admin/dashboard');
+      }, error => {
+        this.SpinnerService.hide();
+      })
+      // this.router.navigateByUrl('/admin/dashboard');
     // this.agentService.createUser(this.agentForm.value);
   }
 

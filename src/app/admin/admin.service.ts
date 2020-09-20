@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 import { User } from '../shared/users.model';
 import { AdminAuthService } from '../auth/admin.auth.service';
 import { tap } from 'rxjs/operators';
-import { response } from 'express';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
     providedIn: "root"
@@ -92,7 +91,7 @@ export class AdminService {
         postCredentials.append('dob', user.dob);
         postCredentials.append('zone', user.zone);
         postCredentials.append('phone_no', user.phone_no);
-        postCredentials.append('signature', user.signature);
+        // postCredentials.append('signature', user.signature);
         postCredentials.append('vehicleNumber', user.vehicleNumber);
         postCredentials.append('verifiedId', user.verifiedId);
         postCredentials.append('verifiedIdType', user.verifiedIdType);
@@ -187,6 +186,14 @@ export class AdminService {
             uniqueId: uniqueId
         }
         return this.http.post<{ user: User }>(BACKEND_URL + 'admin/user/uniqueId', postData,
+            {
+                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
+            });
+    }
+
+    getUserById(userId: string) {
+        const adminToken = this.adminAuthService.getToken();
+        return this.http.get<{ user: User }>(BACKEND_URL + 'admin/user/' + userId,
             {
                 headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
             });
