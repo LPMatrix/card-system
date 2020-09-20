@@ -130,7 +130,9 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.agentForm.value.image = this.webcamImage.imageAsDataUrl ? this.webcamImage.imageAsDataUrl: null;
+    if(this.webcamImage != null)
+    this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
+    else this.agentForm.value.image = null;
     // if (!this.agentForm.valid) {
     //   return;
     // }
