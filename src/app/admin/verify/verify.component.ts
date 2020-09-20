@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 
@@ -14,7 +16,11 @@ export class VerifyComponent implements OnInit {
   uniqueID: string;
   user: any;
 
-  constructor(private adminService: AdminService, private adminAuthService: AdminAuthService) { }
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private adminService: AdminService,
+    private adminAuthService: AdminAuthService
+    ) { }
 
   ngOnInit(): void {
   }
@@ -40,7 +46,11 @@ export class VerifyComponent implements OnInit {
 
   fetchUser() {
     if (this.uniqueID !== '') {
-      this.adminService.getUserDetailById(this.uniqueID).subscribe(responseData => {
+      this.SpinnerService.show();
+      this.adminService.getUserDetailById(this.uniqueID)
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      })).subscribe(responseData => {
         this.user = responseData.user;
         console.log(this.user);
       });

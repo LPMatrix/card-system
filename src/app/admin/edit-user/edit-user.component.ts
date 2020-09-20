@@ -7,6 +7,9 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { User } from 'src/app/shared/users.model';
 import { AdminService } from '../admin.service';
+import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-edit-user',
@@ -79,10 +82,12 @@ export class EditUserComponent implements OnInit {
   }
 
   constructor(
+    private SpinnerService: NgxSpinnerService,
     private agentService: AgentService,
     private authService: AuthService,
     public formBuilder: FormBuilder,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) {
     WebcamUtil.getAvailableVideoInputs()
       .then((mediaDevices: MediaDeviceInfo[]) => {
@@ -129,7 +134,14 @@ export class EditUserComponent implements OnInit {
     // if (!this.agentForm.valid) {
     //   return;
     // }
-    this.adminService.editUser(this.agentForm.value, this.users._id);
+    this.SpinnerService.show();
+    this.adminService.editUser(this.agentForm.value, this.users._id)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      this.router.navigateByUrl('/admin/dashboard');
+    })
     // this.agentService.createUser(this.agentForm.value);
   }
 

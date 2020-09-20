@@ -137,7 +137,9 @@
                       </div>
                     </div>
                   </div>
-
+                  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+                    <p style="color: white">Please Wait. </p>
+                  </ngx-spinner>
                   <div class="modal fade" id="{{ user.fingerId }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngFor = "let user of users">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">

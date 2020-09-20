@@ -8,6 +8,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -29,8 +32,22 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayCount: number = 0;
   private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
-  constructor(private confirmationDialogService: ConfirmationDialogServiceService, private adminService: AdminService, private adminAuthService: AdminAuthService) {
-    this.adminService.geAgentUsers();
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private confirmationDialogService: ConfirmationDialogServiceService,
+    private adminService: AdminService,
+    private adminAuthService: AdminAuthService,
+    private router: Router
+  ) {
+    this.SpinnerService.show();
+    this.adminService.geAgentUsers()
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+      this.router.navigateByUrl('/admin/dashboard');
+    });
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
         this.users = responseData;
@@ -61,8 +78,14 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onApprove(userId: string) {
-    
-    this.adminService.approve(userId);
+    this.SpinnerService.show()
+    this.adminService.approve(userId)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+    });
     // this.getCount();
   }
 
@@ -85,7 +108,14 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
 
   onDeleteUser(userId: string) {
     // Parse _id value as userId
-    this.adminService.deleteUser(userId);
+    this.SpinnerService.show();
+    this.adminService.deleteUser(userId)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+    });;
   }
 
   ngAfterViewInit(): void {

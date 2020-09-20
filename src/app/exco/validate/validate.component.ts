@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Agent } from '../../shared/agent.model';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AgentService } from 'src/app/agent/agent.service';
+import { finalize } from 'rxjs/operators';
+import { ExcoAuthService } from 'src/app/auth/exco.auth.service';
 
 @Component({
   selector: 'app-validate',
@@ -15,7 +15,11 @@ export class ValidateComponent implements OnInit {
   uniqueID: string;
   userInformation: Agent;
   user: any;
-  constructor(private agentService: AgentService) { }
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private exoAuthService: ExcoAuthService,
+    private agentService: AgentService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +27,11 @@ export class ValidateComponent implements OnInit {
   fetchUser() {
     // if(this.uniqueID != '')
     if (this.uniqueID !== '') {
+      this.SpinnerService.show();
       this.agentService.getUserDetailById(this.uniqueID)
+        .pipe(finalize(() => {
+          this.SpinnerService.hide();
+        }))
         .subscribe(responseData => {
           this.user = responseData.user;
           console.log(this.user);
@@ -32,7 +40,7 @@ export class ValidateComponent implements OnInit {
   }
 
   logout() {
-
+    this.exoAuthService.logout();
   }
 
 }

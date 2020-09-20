@@ -27,7 +27,7 @@ export class UserAuthService {
     return this.userData.asObservable();
   }
   getUserData() {
-    const userToken = this.userAuthService.getToken();
+    const userToken = this.getToken();
     this.http.get<{ user: User }>(BACKEND_URL + 'user/profile', 
     {
       headers: new HttpHeaders({UserAuthorization : "Bearer " + userToken})
@@ -141,7 +141,7 @@ export class UserAuthService {
   }
 
   getProfile() {
-    const userToken = this.userAuthService.getToken();
+    const userToken = this.getToken();
     return this.http.get<{ user: User }>(BACKEND_URL + 'user/profile',
     {
       headers: new HttpHeaders({UserAuthorization : "Bearer " + userToken})
@@ -149,7 +149,7 @@ export class UserAuthService {
   }
 
   changeProfile(password: string, newpassword: string, confirmpassword: string) {
-    const userToken = this.userAuthService.getToken();
+    const userToken = this.getToken();
     const postData = {
       password: password,
       newpassword: newpassword,

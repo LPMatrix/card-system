@@ -7,8 +7,12 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { externalParameters, externalBranches } from './state-file';
 import { Agent } from 'src/app/shared/agent.model';
+import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 const _zones = externalParameters.zones;
 const _branches = externalBranches.branches;
+
 @Component({
   selector: 'app-capture',
   templateUrl: './capture.component.html',
@@ -21,10 +25,13 @@ export class CaptureComponent implements OnInit {
   fingerprintID: string;
   states: any;
   selectedStates: any;
+  loading: boolean = false;
   lga: any[];
   uniqueId: string;
   userInformation : Agent;
   title: string = "Take Picture";
+  
+  
   // toggle webcam on/off
   public showWebcam = false;
   public allowCameraSwitch = true;
@@ -88,9 +95,11 @@ export class CaptureComponent implements OnInit {
 
 
   constructor(
+    private SpinnerService: NgxSpinnerService,
     private agentService : AgentService, 
     private authService : AuthService, 
     public formBuilder: FormBuilder,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -169,12 +178,23 @@ export class CaptureComponent implements OnInit {
     // if(!this.agentForm.valid && this.agentForm.value.image === null) {
     //   return;
     // }
-
-    this.agentService.createUser(this.fingerprintID, this.agentForm.value);
+    this.SpinnerService.show();
+    this.agentService.createUser(this.fingerprintID, this.agentForm.value)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide(); 
+    }))
+    .subscribe(responseData => {
+      // DO nothing
+      this.router.navigateByUrl('/agent/dashboard');
+    });
   }
 
   fetchUser() {
+    this.SpinnerService.show();
     this.agentService.getUserByFingerId(this.fingerprintID)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide(); 
+    }))
       .subscribe(response => {
         this.agentForm.setValue({
           firstname: response.user.firstname,

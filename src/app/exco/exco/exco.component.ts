@@ -7,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AgentService } from 'src/app/agent/agent.service';
 import { ExcoAuthService } from 'src/app/auth/exco.auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-exco',
@@ -27,10 +29,14 @@ export class ExcoComponent implements OnInit, OnDestroy, AfterViewInit {
   userInformation: Agent;
   private userSubscription: Subscription;
   counts: { userCount: number } = { userCount: 0 };
-  constructor(private excoAuthService: ExcoAuthService, private agentService: AgentService) { }
+  constructor(private SpinnerService: NgxSpinnerService, private excoAuthService: ExcoAuthService, private agentService: AgentService) { }
 
   ngOnInit(): void {
+    this.SpinnerService.show();
     this.userSubscription = this.agentService.getExcoUsers()
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
       .subscribe(responseData => {
         this.users = responseData.users;
         this.dataSource = new MatTableDataSource(this.users);

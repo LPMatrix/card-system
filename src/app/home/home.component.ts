@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAuthService } from '../auth/user.auth.service';
 import { User } from '../shared/users.model';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,10 @@ import { User } from '../shared/users.model';
 export class HomeComponent implements OnInit {
   user: User;
   userInformation: User;
-  constructor(private userAuthService: UserAuthService) { }
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private userAuthService: UserAuthService
+    ) { }
 
   ngOnInit(): void {
     this.userAuthService.getProfile()

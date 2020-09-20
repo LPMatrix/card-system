@@ -7,6 +7,8 @@ import { Agent } from 'src/app/shared/agent.model';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-agent-dashboard',
@@ -24,12 +26,26 @@ export class AgentDashboardComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild(MatSort) sort: MatSort;
   users : User[] = [];
   userInformation : Agent;
+  loading: boolean = false;
   private userSubscription : Subscription;
   counts: { userCount: number } = {userCount: 0};
-  constructor(private agentService : AgentService, private authService: AuthService) { }
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private agentService : AgentService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.agentService.getUsers();
+    // this.loading = true;
+    this.SpinnerService.show(); 
+    this.agentService.getUsers()
+    .pipe(finalize(() => {
+      // this.loading= false;
+      this.SpinnerService.hide();
+    }))
+    .subscribe(responseData => {
+      // DO nothing
+    });
     this.userSubscription = this.agentService.getUserStatusListener()
     .subscribe(responseData => {
       this.users = responseData;

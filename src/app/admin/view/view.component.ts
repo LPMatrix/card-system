@@ -3,6 +3,8 @@ import { AdminService } from '../admin.service';
 import { User } from 'src/app/shared/users.model';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 import { Subject, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Agent } from 'src/app/shared/agent.model';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
@@ -26,7 +28,12 @@ displayedColumns = [
   arrayCount: number = 0;
   private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
-  constructor(private confirmationDialogService: ConfirmationDialogServiceService, private adminService: AdminService, private adminAuthService: AdminAuthService) { }
+  constructor(
+    private SpinnerService: NgxSpinnerService,
+    private confirmationDialogService: ConfirmationDialogServiceService,
+    private adminService: AdminService,
+    private adminAuthService: AdminAuthService
+    ) { }
 
   public openConfirmationDialog(agentId : string) {
     this.confirmationDialogService.confirm('Delete','Perform Delete Operation?')
@@ -41,7 +48,14 @@ displayedColumns = [
   }
 
   ngOnInit(): void {
-    this.adminService.geAgentUsers();
+    this.SpinnerService.show();
+    this.adminService.geAgentUsers()
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+    });
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
         this.users = responseData;
@@ -66,11 +80,25 @@ displayedColumns = [
   }
 
   onAccountStatus(agentId : string) {
-    this.adminService.agentAccountStatus(agentId);
+    this.SpinnerService.show();
+    this.adminService.agentAccountStatus(agentId)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+    });
   }
 
   onDelete(agentId : string) {
-    this.adminService.deleteAgent(agentId);
+    this.SpinnerService.show();
+    this.adminService.deleteAgent(agentId)
+    .pipe(finalize(() => {
+      this.SpinnerService.hide();
+    }))
+    .subscribe(response => {
+      // do nothing
+    });
   }
 
   ngAfterViewInit() {

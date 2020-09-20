@@ -6,6 +6,7 @@ import { BehaviorSubject, } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { ExcoAuthService } from '../auth/exco.auth.service';
+import { tap } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
     providedIn: "root"
@@ -19,7 +20,7 @@ export class AgentService {
         private router: Router,
         private authService: AuthService,
         private excoAuthService: ExcoAuthService
-        ) { }
+    ) { }
 
     getUserStatusListener() {
         return this.userStatusListener.asObservable();
@@ -50,37 +51,34 @@ export class AgentService {
         postCredentials.append('image', user.image);
         postCredentials.append('uniqueId', user.uniqueId);
         const token = this.authService.getToken();
-        this.http.post<{ user: User }>(BACKEND_URL + 'agent/user/' + fingerId, user,
-        {
-            headers: new HttpHeaders({Authorization: "Bearer " + token})
-        })
-            .subscribe(responseData => {
+        return this.http.post<{ user: User }>(BACKEND_URL + 'agent/user/' + fingerId, user,
+            {
+                headers: new HttpHeaders({ Authorization: "Bearer " + token })
+            }).pipe(tap(responseData => {
                 this.users.push(responseData.user);
                 this.userStatusListener.next(this.users);
-                this.router.navigateByUrl('/agent/dashboard');
-            });
+            }));
     }
 
     getUsers() {
         const token = this.authService.getToken();
-        this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/user',
-        
-        {
-            headers: new HttpHeaders({Authorization: "Bearer " + token})
-        })
-            .subscribe(responseData => {
+        return this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/user',
+
+            {
+                headers: new HttpHeaders({ Authorization: "Bearer " + token })
+            }).pipe(tap(responseData => {
                 this.users = responseData.users;
                 this.userStatusListener.next(this.users);
-            });
+            }));
     }
 
     getExcoUsers() {
         const token = this.excoAuthService.getToken();
         return this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/exco/users',
-        
-        {
-            headers: new HttpHeaders({ExcoAuthorization: "Bearer " + token})
-        });
+
+            {
+                headers: new HttpHeaders({ ExcoAuthorization: "Bearer " + token })
+            });
     }
 
     getUserDetailById(uniqueId: string) {
@@ -89,18 +87,18 @@ export class AgentService {
             uniqueId: uniqueId
         }
         return this.http.post<{ user: User }>(BACKEND_URL + 'agent/exco/user/uniqueId', postData,
-        {
-            headers: new HttpHeaders({ExcoAuthorization: "Bearer " + token})
-        });
+            {
+                headers: new HttpHeaders({ ExcoAuthorization: "Bearer " + token })
+            });
     }
 
     getUserByFingerId(fingerId: string) {
         const token = this.authService.getToken();
         return this.http.get<{ user: User }>(BACKEND_URL + 'agent/user/finger/' + fingerId,
-        
-        {
-            headers: new HttpHeaders({Authorization: "Bearer " + token})
-        })
+
+            {
+                headers: new HttpHeaders({ Authorization: "Bearer " + token })
+            })
     }
 
 

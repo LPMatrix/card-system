@@ -52,6 +52,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { ConfirmationDialogServiceService } from './confirmation-dialog/confirmation-dialog-service.service';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 
 
@@ -107,7 +108,8 @@ import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
     MatTableExporterModule,
     BrowserAnimationsModule,
     NgxPrintModule,
-    NgbModule
+    NgbModule,
+    NgxSpinnerModule
 
   ],
   providers: [
