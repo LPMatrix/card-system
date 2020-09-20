@@ -4,8 +4,8 @@ import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 import { Subject, Subscription } from 'rxjs';
 import { Agent } from 'src/app/shared/agent.model';
-import {MatPaginator} from '@angular/material/paginator';
-import { MatSort} from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
 import { finalize } from 'rxjs/operators';
@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
 })
 export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns: string[] = [
-  'Name', 'Unique Id', 'Email', 'Phone No', 'Gender', 'D.O.B', 'Branch', 'Zone', 'State',
-  'Unit','Updated On', 'Action'
+    'Name', 'Unique Id', 'Email', 'Phone No', 'Gender', 'D.O.B', 'Branch', 'Zone', 'State',
+    'Unit', 'Updated On', 'Action'
   ];
   dataSource: MatTableDataSource<User>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,52 +39,52 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     private adminAuthService: AdminAuthService,
     private router: Router
   ) {
+
+  }
+
+  ngOnInit(): void {
     this.SpinnerService.show();
     this.adminService.geAgentUsers()
-    .pipe(finalize(() => {
-      this.SpinnerService.hide();
-    }))
-    .subscribe(response => {
-      // do nothing
-    });
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
+      });
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
         this.users = responseData;
         this.counts.userCount = this.users.length;
-            this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource = new MatTableDataSource(this.users);
       });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
         this.agents = responseData;
         this.counts.agentCount = this.agents.length;
       });
-   }
-
-  ngOnInit(): void {
-    
   }
 
-  public openConfirmDialog(userId : string) {
-    this.confirmationDialogService.confirm('','Are you sure you want to perform operation?')
-    .then((confirmed) => this.onApprove(userId))
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  public openConfirmDialog(userId: string) {
+    this.confirmationDialogService.confirm('', 'Are you sure you want to perform operation?')
+      .then((confirmed) => this.onApprove(userId))
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
-  public openDeleteDialog(userId : string) {
-    this.confirmationDialogService.confirm('Delete','Are you sure you want to perform operation?')
-    .then((confirmed) => this.onDeleteUser(userId))
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  public openDeleteDialog(userId: string) {
+    this.confirmationDialogService.confirm('Delete', 'Are you sure you want to perform operation?')
+      .then((confirmed) => this.onDeleteUser(userId))
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
   onApprove(userId: string) {
     this.SpinnerService.show()
     this.adminService.approve(userId)
-    .pipe(finalize(() => {
-      this.SpinnerService.hide();
-    }))
-    .subscribe(response => {
-      // do nothing
-    });
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
+      });
     // this.getCount();
   }
 
@@ -97,11 +97,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     this.agentsSubscription.unsubscribe();
   }
 
-  onAccountStatus(agentId : string) {
+  onAccountStatus(agentId: string) {
     this.adminService.agentAccountStatus(agentId);
   }
 
-  onDelete(agentId : string) {
+  onDelete(agentId: string) {
     this.adminService.deleteAgent(agentId);
   }
 
@@ -109,12 +109,12 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     // Parse _id value as userId
     this.SpinnerService.show();
     this.adminService.deleteUser(userId)
-    .pipe(finalize(() => {
-      this.SpinnerService.hide();
-    }))
-    .subscribe(response => {
-      // do nothing
-    });;
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
+      });;
   }
 
   ngAfterViewInit(): void {

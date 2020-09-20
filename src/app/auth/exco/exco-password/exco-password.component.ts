@@ -34,7 +34,7 @@ export class ExcoPasswordComponent implements OnInit {
             this.loading = false;
             this.agentId= responseData.agentId;
           }, error => {
-            this.router.navigateByUrl('/agent');
+            this.router.navigateByUrl('/exco');
           });
         }
       }
@@ -56,13 +56,18 @@ export class ExcoPasswordComponent implements OnInit {
       return;
     }
     this.loading = true;
+    this.title = "Please wait..";
     const password = this.credentialsForm.value.password;
     const confirmpassword = this.credentialsForm.value.confirmpassword;
     this.excoAuthService.postResetPassword(password, confirmpassword, this.token, this.agentId)
     .subscribe(responseData => {
       this.message = responseData.message;
       this.loading = false;
+      this.title = "Submit";
       this.router.navigateByUrl('exco/login');
+    }, error => {
+      this.loading = false;
+      this.title = "Submit";
     });
   }
 
