@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://localhost:3000/api/'
-  apiUrl: 'https://digicapture.herokuapp.com/api/'
+  // apiUrl: 'https://digicapture.herokuapp.com/api/'
+  apiUrl: 'https://esnbiometrics.com/api/'
 };
 
 /*
