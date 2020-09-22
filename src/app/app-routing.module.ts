@@ -32,6 +32,7 @@ import { ExcoPasswordComponent } from './auth/exco/exco-password/exco-password.c
 import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { ExcoAuthGuard } from './auth/exo.auth.guard';
 import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
+import { GetcountComponent } from './getcount/getcount.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -65,7 +66,8 @@ const routes: Routes = [
   {path: "exco/validate", canActivate: [ExcoAuthGuard], component: ValidateComponent},
   {path: "exco/dashboard", canActivate: [ExcoAuthGuard], component: ExcoComponent},
   {path: "exco/agent/reset/:token", component: ExcoPasswordComponent},
-  {path: "exco/forget-password", component: ExcoForgetPasswordComponent}
+  {path: "exco/forget-password", component: ExcoForgetPasswordComponent},
+  {path: "enrolled", component: GetcountComponent}
 
 ];
 

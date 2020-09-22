@@ -59,7 +59,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
       });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
-        this.agents = responseData;
+        this.agents = responseData.filter(
+          ag => ag.branch == null);
         this.counts.agentCount = this.agents.length;
       });
   }

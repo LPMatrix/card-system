@@ -64,7 +64,7 @@ displayedColumns = [
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
         this.agents = responseData.filter(
-          ag => ag.branch == null);;
+          ag => ag.branch == null);
         this.dataSource = new MatTableDataSource(this.agents);
         this.counts.agentCount = this.agents.length;
       });
