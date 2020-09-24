@@ -52,7 +52,6 @@ export class VerifyComponent implements OnInit {
         this.SpinnerService.hide();
       })).subscribe(responseData => {
         this.user = responseData.user;
-        console.log(this.user);
       });
 
     }

@@ -53,7 +53,6 @@ export class AuthService {
       this.authStatusListener.next(true);
       const dateNow = new Date();
       const expirationDate = new Date(dateNow.getTime() + expiresIn * 1000);
-      console.log(expirationDate);
       this.saveAuthData(token, expirationDate);
       this.agentData.next(responseData.agent);
     }
@@ -68,7 +67,6 @@ export class AuthService {
     return this.isAuthenticated;
   }
   private setTimer(expiresIn) {
-    console.log('Setting Timer: ' + expiresIn);
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, expiresIn * 1000);
