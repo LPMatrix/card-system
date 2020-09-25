@@ -34,7 +34,6 @@ export class ValidateComponent implements OnInit {
         }))
         .subscribe(responseData => {
           this.user = responseData.user;
-          console.log(this.user);
         });
     }
   }

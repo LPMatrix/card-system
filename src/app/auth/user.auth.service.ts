@@ -66,7 +66,6 @@ export class UserAuthService {
     return this.isAuthenticated;
   }
   private setTimer(expiresIn) {
-    console.log('Setting Timer: ' + expiresIn);
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, expiresIn * 1000);

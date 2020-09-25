@@ -104,7 +104,6 @@ export class EditUserComponent implements OnInit {
         this.SpinnerService.show();
         if (params['user']) {
           this.userId = params['user'];
-          console.log(this.userId, 'param user')
           this.adminService.getUserById(this.userId)
             .pipe(finalize(() => {
               this.SpinnerService.hide();

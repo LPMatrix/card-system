@@ -22,8 +22,7 @@ export class AdminComponent implements OnInit {
 
    register() {
   	this.title = "Please wait....";
-    this.router.navigateByUrl("admin/dashboard"); 
-    console.log("clicked")
+    this.router.navigateByUrl("admin/dashboard");
    }
 
   ngOnInit(): void {

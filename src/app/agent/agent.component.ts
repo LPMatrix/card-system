@@ -18,7 +18,6 @@ export class AgentComponent implements OnInit {
 
    register() {
   	this.title = "Please wait....";
-    console.log(this.credentialsForm);
    }
 
    ngOnInit(): void {
