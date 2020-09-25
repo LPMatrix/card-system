@@ -56,6 +56,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
 import { GetcountComponent } from './getcount/getcount.component';
+import { ExportComponent } from './admin/export/export.component';
 
 
 @NgModule({
@@ -100,6 +101,7 @@ import { GetcountComponent } from './getcount/getcount.component';
     ViewAgentComponent,
     ExcoForgetPasswordComponent,
     GetcountComponent,
+    ExportComponent,
   ],
   imports: [
     BrowserModule,

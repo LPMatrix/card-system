@@ -33,6 +33,7 @@ import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { ExcoAuthGuard } from './auth/exo.auth.guard';
 import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
 import { GetcountComponent } from './getcount/getcount.component';
+import { ExportComponent } from './admin/export/export.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -59,6 +60,7 @@ const routes: Routes = [
   {path: "admin/add-exco", canActivate: [AdminAuthGuard],  component: AddExcoComponent},
   {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
   {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},
+  {path: "admin/export", canActivate: [AdminAuthGuard],  component: ExportComponent},
   {path: "verify/details", component: DetailsComponent},
   {path: "exco", redirectTo: 'exco/dashboard'},
   {path: "exco/login", component: ExcoLoginComponent},
@@ -68,7 +70,6 @@ const routes: Routes = [
   {path: "exco/agent/reset/:token", component: ExcoPasswordComponent},
   {path: "exco/forget-password", component: ExcoForgetPasswordComponent},
   {path: "enrolled", component: GetcountComponent}
-
 ];
 
 @NgModule({
