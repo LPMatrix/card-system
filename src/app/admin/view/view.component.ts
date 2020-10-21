@@ -19,9 +19,9 @@ export class ViewComponent implements OnInit {
 displayedColumns = [
   'Name', 'Email', 'Added On', 'Status', 'Action'
   ];
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
   agents: Agent[] = [];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
@@ -66,6 +66,7 @@ displayedColumns = [
         this.agents = responseData.filter(
           ag => ag.branch == null);
         this.dataSource = new MatTableDataSource(this.agents);
+        this.dataSource.paginator = this.paginator;
         this.counts.agentCount = this.agents.length;
       });
   }
@@ -101,15 +102,8 @@ displayedColumns = [
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 

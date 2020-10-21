@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import { MatSort} from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/shared/users.model';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -11,16 +11,16 @@ import { AdminService } from '../admin.service';
   templateUrl: './view-agent.component.html',
   styleUrls: ['./view-agent.component.css']
 })
-export class ViewAgentComponent implements OnInit, AfterViewInit {
+export class ViewAgentComponent implements OnInit {
   displayedColumns = [
-    'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone', 
+    'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone',
     'State',
     'Unit', 'Action'
-    ];
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  users : User[] = [];
+  ];
+  dataSource;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  users: User[] = [];
   agentId: string;
   constructor(private authService: AuthService, private adminService: AdminService) { }
 
@@ -29,10 +29,11 @@ export class ViewAgentComponent implements OnInit, AfterViewInit {
     this.fetchUsers();
   }
 
-  fetchUsers(){
+  fetchUsers() {
     this.adminService.getAgentRegisteredUsers(history.state).subscribe(responseData => {
       this.users = responseData.users;
       this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource.paginator = this.paginator;
     });
   }
 
@@ -44,10 +45,6 @@ export class ViewAgentComponent implements OnInit, AfterViewInit {
 
   logout() {
     this.authService.logout();
-  }
-
-  ngAfterViewInit():void {
-    this.dataSource.paginator = this.paginator;
   }
 
 

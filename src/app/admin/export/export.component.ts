@@ -16,15 +16,15 @@ import { Router } from '@angular/router';
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.css']
 })
-export class ExportComponent implements OnInit {
+export class ExportComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
-    'Name', 'Unique ID','ID No','Gender','Image','Branch', 'Zone', 'State',
-    'Unit','Issued On',
+    'Name', 'Unique ID', 'ID No', 'Gender', 'Image', 'Branch', 'Zone', 'State',
+    'Unit', 'Issued On',
   ];
-  dataSource: MatTableDataSource<User>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource: any;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
   counts: { userCount: number } = { userCount: 0 };
   arrayCount: number = 0;
@@ -52,9 +52,9 @@ export class ExportComponent implements OnInit {
     this.usersSubscription = this.adminService.getUserStatusListener()
       .subscribe(responseData => {
         this.users = responseData;
-        console.log(this.users);
         this.counts.userCount = this.users.length;
         this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
       });
   }
 
@@ -66,18 +66,8 @@ export class ExportComponent implements OnInit {
     this.usersSubscription.unsubscribe();
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

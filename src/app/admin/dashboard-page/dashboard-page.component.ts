@@ -18,14 +18,14 @@ import { Router } from '@angular/router';
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
 })
-export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DashboardPageComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'Name', 'Unique Id', 'Email', 'Phone No', 'Gender', 'D.O.B', 'Branch', 'Zone', 'State',
     'Unit', 'Updated On', 'Action'
   ];
-  dataSource: MatTableDataSource<User>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource: any;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
   agents: Agent[] = [];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
@@ -56,6 +56,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
         this.users = responseData;
         this.counts.userCount = this.users.length;
         this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
       });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
@@ -123,17 +124,12 @@ export class DashboardPageComponent implements OnInit, OnDestroy, AfterViewInit 
     this.router.navigateByUrl('/admin/edit-user/' + id);
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit(): void {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

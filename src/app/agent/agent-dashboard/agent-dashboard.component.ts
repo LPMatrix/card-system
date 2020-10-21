@@ -15,15 +15,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './agent-dashboard.component.html',
   styleUrls: ['./agent-dashboard.component.css']
 })
-export class AgentDashboardComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AgentDashboardComponent implements OnInit, OnDestroy{
   displayedColumns = [
   'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone', 
   'State',
   'Unit',  'Action'
   ];
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   users : User[] = [];
   userInformation : Agent;
   loading: boolean = false;
@@ -50,6 +50,7 @@ export class AgentDashboardComponent implements OnInit, OnDestroy, AfterViewInit
     .subscribe(responseData => {
       this.users = responseData;
       this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource.paginator = this.paginator;
       this.counts.userCount = this.users.length; 
     });
     this.authService.getAgentDataStatus()
@@ -69,10 +70,6 @@ export class AgentDashboardComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
 
-
-  ngAfterViewInit():void {
-    this.dataSource.paginator = this.paginator;
-  }
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event

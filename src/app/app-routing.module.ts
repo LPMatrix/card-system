@@ -61,7 +61,6 @@ const routes: Routes = [
   {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
   {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},
   {path: "admin/export", canActivate: [AdminAuthGuard],  component: ExportComponent},
-  {path: "verify/details", component: DetailsComponent},
   {path: "exco", redirectTo: 'exco/dashboard'},
   {path: "exco/login", component: ExcoLoginComponent},
   {path: "exco/profile", canActivate: [ExcoAuthGuard], component: ExcoProfileComponent},
