@@ -47,7 +47,7 @@
             </li>
             <li class="nav-item nav-category">Main Menu</li>
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/admin/dashboard">
+              <a class="nav-link" routerLink="/admin/dashboard">
                 <i class="menu-icon typcn typcn-document-text"></i>
                 <span class="menu-title">Dashboard</span>
               </a>
@@ -61,7 +61,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="/admin/view-agent">
+              <a class="nav-link active" routerLink="/admin/view-agent">
                 <i class="menu-icon typcn typcn-eye"></i>
                 <span class="menu-title">View Agents</span>
               </a>
@@ -148,33 +148,33 @@
                             <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
   
                               <!-- Name Column -->
-                              <ng-container matColumnDef="Name">
+                              <ng-container matColumnDef="firstname">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.lastname}} </mat-cell>
                               </ng-container>
   
                               <!-- UniqueID Column -->
-                              <ng-container matColumnDef="Unique Id">
+                              <ng-container matColumnDef="uniqueId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Unique ID </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.uniqueId | uppercase}} </mat-cell>
                               </ng-container>
   
                               <!-- Email Column -->
-                              <ng-container matColumnDef="Email">
+                              <ng-container matColumnDef="email">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                               </ng-container>
   
                               <!-- Gender Column -->
-                              <ng-container matColumnDef="Gender">
+                              <ng-container matColumnDef="gender">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
                               </ng-container>
   
                               <!-- DOB Column -->
-                              <ng-container matColumnDef="D.O.B">
+                              <ng-container matColumnDef="dob">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> D.O.B </mat-header-cell>
-                                <mat-cell *matCellDef="let row"> {{row.dob}} </mat-cell>
+                                <mat-cell *matCellDef="let row"> {{row.dob | date}} </mat-cell>
                               </ng-container>
   
                               <!-- Phone no Column -->
@@ -184,26 +184,26 @@
                               </ng-container>
   
                                <!-- Branch Column -->
-                               <ng-container matColumnDef="Branch">
+                               <ng-container matColumnDef="branch">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.branch}} </mat-cell>
                               </ng-container>
   
                               <!-- Zone Column -->
-                              <ng-container matColumnDef="Zone">
+                              <ng-container matColumnDef="zone">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Zone 
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
                               </ng-container>
   
                               <!-- State Column -->
-                              <ng-container matColumnDef="State">
+                              <ng-container matColumnDef="state">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                               </ng-container>
   
                               <!-- Unit Column -->
-                              <ng-container matColumnDef="Unit">
+                              <ng-container matColumnDef="unit">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Unit
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.unit}} </mat-cell>

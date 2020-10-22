@@ -97,7 +97,7 @@
 
             <li class="nav-item">
               <a class="nav-link" routerLink="/admin/profile">
-                <i class="menu-icon typcn typcn-profile"></i>
+                <i class="menu-icon typcn typcn-user"></i>
                 <span class="menu-title">Profile</span>
               </a>
             </li>
@@ -112,22 +112,6 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="row">
-                  
-                  <div class="col-md-6 grid-margin stretch-card average-price-card">
-                    <div class="card text-white">
-                      <div class="card-body">
-                        <div class="d-flex justify-content-between pb-2 align-items-center">
-                          <h2 class="font-weight-semibold mb-0">{{ counts?.userCount }}</h2>
-                          <div class="icon-holder">
-                            <i class="mdi mdi-briefcase-outline"></i>
-                          </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                          <h5 class="font-weight-semibold mb-0">Cards</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
                   <div class="col-md-6 grid-margin stretch-card average-price-card">
                     <div class="card text-white">
@@ -187,28 +171,28 @@
                         <div class="example-container mat-elevation-z8">
 
 
-                          <mat-table  matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
+                          <mat-table  matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort matSortStart="desc">
 
                             <!-- Name Column -->
-                            <ng-container matColumnDef="Name">
+                            <ng-container matColumnDef="name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.name }} </mat-cell>
                             </ng-container>
 
                             <!-- Email Column -->
-                            <ng-container matColumnDef="Email">
+                            <ng-container matColumnDef="email">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                             </ng-container>
 
                             <!-- DateAdded Column -->
-                            <ng-container matColumnDef="Added On">
+                            <ng-container matColumnDef="updatedAt">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Added On </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.updatedAt | date}} </mat-cell>
                             </ng-container>
 
                             <!-- Status Column -->
-                            <ng-container matColumnDef="Status">
+                            <ng-container matColumnDef="is_active">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.is_active? 'Active' : 'Disabled' }} </mat-cell>
                             </ng-container>
@@ -220,7 +204,7 @@
                                 <button class="btn badge {{row?.is_active? 'badge-danger' : 'badge-success'}} mr-1" (click) = "openConfirmDialog(row?._id)">
                                     {{row?.is_active? 'Deactivate' : 'Activate'}}
                                 </button>
-                                <a  class="btn btn-secondary" [routerLink]="['/admin/agent-user']" [state]=row?._id>View</a>&nbsp;
+                                <button  class="btn btn-secondary" (click)="openAgent(row?._id)">View</button>&nbsp;
                                 <button class="btn badge badge-danger" (click)="openConfirmationDialog(row?._id)">Delete</button>
                                 </mat-cell>
                             </ng-container>

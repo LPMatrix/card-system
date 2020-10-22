@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
-    'Name', 'Unique Id', 'Email', 'Phone No', 'Gender', 'D.O.B', 'Branch', 'Zone', 'State',
-    'Unit', 'Updated On', 'Action'
+    'firstname', 'uniqueId', 'email', 'Phone No', 'gender', 'dob', 'branch', 'zone', 'state',
+    'unit', 'updatedAt', 'Action'
   ];
   dataSource: any;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -41,7 +41,9 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   ) {
 
   }
-
+  // ngAfterViewInit() {
+  //   this.dataSource.sort = this.sort;
+  // }
   ngOnInit(): void {
     this.SpinnerService.show();
     this.adminService.geAgentUsers()
@@ -57,6 +59,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         this.counts.userCount = this.users.length;
         this.dataSource = new MatTableDataSource(this.users);
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
@@ -123,11 +126,6 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     console.log(id)
     this.router.navigateByUrl('/admin/edit-user/' + id);
   }
-
-  // ngAfterViewInit(): void {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

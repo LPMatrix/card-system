@@ -131,7 +131,7 @@ export class CaptureComponent implements OnInit {
       branch : ['', Validators.required],
       dob : ['', Validators.required],
       unit : ['', Validators.required],
-      phone_no : ['', Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern(/^[0-9]+[0-9]*$/)])],
+      phone_no : ['', Validators.compose([Validators.required, Validators.maxLength(10),Validators.minLength(10), Validators.pattern(/^[0-9]+[0-9]*$/)])],
       state : ['', Validators.required],
       next_of_kin_name : ['', Validators.required],
       next_of_kin_address : ['', Validators.required],

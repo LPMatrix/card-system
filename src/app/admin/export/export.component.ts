@@ -19,8 +19,8 @@ import { Router } from '@angular/router';
 export class ExportComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
-    'Name', 'Unique ID', 'ID No', 'Gender', 'Image', 'Branch', 'Zone', 'State',
-    'Unit', 'Issued On',
+    'firstname', 'uniqueId', 'verifiedIdType', 'verifiedId', 'gender', 'Image', 'branch', 'zone', 'state',
+    'unit', 'Issued On',
   ];
   dataSource: any;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

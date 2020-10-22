@@ -17,9 +17,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class AgentDashboardComponent implements OnInit, OnDestroy{
   displayedColumns = [
-  'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone', 
-  'State',
-  'Unit',  'Action'
+  'firstname', 'uniqueId', 'email', 'gender', 'dob', 'Phone No', 'branch', 'zone', 
+  'state',
+  'unit',  'Action'
   ];
   dataSource;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

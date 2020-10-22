@@ -9,6 +9,7 @@ import { Agent } from 'src/app/shared/agent.model';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
 @Component({
   selector: 'app-view',
@@ -17,11 +18,11 @@ import { ConfirmationDialogServiceService } from '../../confirmation-dialog/conf
 })
 export class ViewComponent implements OnInit {
 displayedColumns = [
-  'Name', 'Email', 'Added On', 'Status', 'Action'
+  'name', 'email', 'updatedAt', 'is_active', 'Action'
   ];
   dataSource;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   users: User[] = [];
   agents: Agent[] = [];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
@@ -32,7 +33,8 @@ displayedColumns = [
     private SpinnerService: NgxSpinnerService,
     private confirmationDialogService: ConfirmationDialogServiceService,
     private adminService: AdminService,
-    private adminAuthService: AdminAuthService
+    private adminAuthService: AdminAuthService,
+    private router: Router
     ) { }
 
   public openConfirmationDialog(agentId : string) {
@@ -47,6 +49,15 @@ displayedColumns = [
     .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
+  openAgent(id: string) {
+    console.log(id)
+    this.router.navigateByUrl('/admin/agent-user/' + id);
+  }
+
   ngOnInit(): void {
     this.SpinnerService.show();
     this.adminService.geAgentUsers()
@@ -56,17 +67,18 @@ displayedColumns = [
     .subscribe(response => {
       // do nothing
     });
-    this.usersSubscription = this.adminService.getUserStatusListener()
-      .subscribe(responseData => {
-        this.users = responseData;
-        this.counts.userCount = this.users.length;
-      });
+    // this.usersSubscription = this.adminService.getUserStatusListener()
+    //   .subscribe(responseData => {
+    //     this.users = responseData;
+    //     this.counts.userCount = this.users.length;
+    //   });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
         this.agents = responseData.filter(
           ag => ag.branch == null);
         this.dataSource = new MatTableDataSource(this.agents);
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.counts.agentCount = this.agents.length;
       });
   }
@@ -76,7 +88,7 @@ displayedColumns = [
   }
 
   ngOnDestroy(): void {
-    this.usersSubscription.unsubscribe();
+    // this.usersSubscription.unsubscribe();
     this.agentsSubscription.unsubscribe();
   }
 

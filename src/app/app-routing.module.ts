@@ -56,7 +56,7 @@ const routes: Routes = [
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
   {path: "admin/view-agent", canActivate: [AdminAuthGuard],  component: ViewComponent},
   {path: "admin/edit-user/:user", canActivate: [AdminAuthGuard],  component: EditUserComponent},
-  {path: "admin/agent-user", canActivate: [AdminAuthGuard], component: ViewAgentComponent},
+  {path: "admin/agent-user/:id", canActivate: [AdminAuthGuard], component: ViewAgentComponent},
   {path: "admin/add-exco", canActivate: [AdminAuthGuard],  component: AddExcoComponent},
   {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
   {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},

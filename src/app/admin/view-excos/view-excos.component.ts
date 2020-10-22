@@ -18,7 +18,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ViewExcosComponent implements OnInit {
   displayedColumns = [
-    'Name', 'Email', 'Added On', 'Status', 'Action'
+    'name', 'email', 'updatedAt', 'is_active', 'Action'
   ];
   dataSource;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

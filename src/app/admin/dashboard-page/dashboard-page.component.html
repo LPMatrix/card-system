@@ -188,22 +188,22 @@
 
                         <div class="example-container mat-elevation-z8">
 
-                          <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort>
+                          <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort matSortStart="desc">
 
                             <!-- Name Column -->
-                            <ng-container matColumnDef="Name">
+                            <ng-container matColumnDef="firstname">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.lastname}} </mat-cell>
                             </ng-container>
 
                             <!-- UniqueID Column -->
-                            <ng-container matColumnDef="Unique Id">
+                            <ng-container matColumnDef="uniqueId">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Unique ID </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.uniqueId | uppercase}} </mat-cell>
                             </ng-container>
 
                             <!-- Progress Column -->
-                            <ng-container matColumnDef="Email">
+                            <ng-container matColumnDef="email">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                             </ng-container>
@@ -215,45 +215,45 @@
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="Gender">
+                            <ng-container matColumnDef="gender">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.gender}} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="D.O.B">
+                            <ng-container matColumnDef="dob">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> D.O.B </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.dob}} </mat-cell>
+                              <mat-cell *matCellDef="let row"> {{row.dob | date}} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="Branch">
+                            <ng-container matColumnDef="branch">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.branch}} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="Zone">
+                            <ng-container matColumnDef="zone">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Zone 
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.zone}} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="State">
+                            <ng-container matColumnDef="state">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> State </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                             </ng-container>
 
                             <!-- Color Column -->
-                            <ng-container matColumnDef="Unit">
+                            <ng-container matColumnDef="unit">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Unit
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.unit}} </mat-cell>
                             </ng-container>
 
                             <!-- Name Column -->
-                            <ng-container matColumnDef="Updated On">
+                            <ng-container matColumnDef="updatedAt">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Updated On </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.updatedAt | date}} </mat-cell>
                             </ng-container>                            
@@ -278,7 +278,7 @@
                             </mat-row>
                           </mat-table>
 
-                          <mat-paginator [pageSizeOptions]="[20, 50, 100, 200]"></mat-paginator>
+                          <mat-paginator [pageSizeOptions]="[20, 50, 100, 200]" showFirstLastButtons></mat-paginator>
 
                            <!-- Row shown when there is no matching data. -->
                           <tr class="mat-row" *matNoDataRow>
