@@ -1,4 +1,4 @@
-import { Component, OnInit,} from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AdminService } from '../admin.service';
 import { mimeType } from './mimetype-validator';
@@ -13,12 +13,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-agent.component.css']
 })
 export class AddAgentComponent implements OnInit {
-  adminForm : FormGroup;
+  adminForm: FormGroup;
   imagePreview: string;
 
   constructor(
     private SpinnerService: NgxSpinnerService,
-    private adminService : AdminService,
+    private adminService: AdminService,
     private adminAuthService: AdminAuthService,
     private router: Router
   ) { }
@@ -29,10 +29,10 @@ export class AddAgentComponent implements OnInit {
 
   private init() {
     this.adminForm = new FormGroup({
-      name : new FormControl(null, [Validators.required]),
-      email : new FormControl(null, [Validators.required, Validators.email]),
-      password : new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      image : new FormControl(null, [Validators.required], [mimeType])
+      name: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      image: new FormControl(null, [Validators.required])
     });
   }
   onImagePicked(event: Event) {
@@ -47,17 +47,18 @@ export class AddAgentComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.adminForm.valid) {
+    this.adminForm.value.image = this.imagePreview;
+    if (!this.adminForm.valid) {
       return;
     }
     this.SpinnerService.show();
     this.adminService.createAgent(this.adminForm.value)
-    .pipe(finalize(() => {
-      this.SpinnerService.hide();
-    }))
-    .subscribe(response => {
-      this.router.navigateByUrl('/admin/view-agent');
-    });
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        this.router.navigateByUrl('/admin/view-agent');
+      });
   }
 
   logout() {

@@ -37,7 +37,7 @@ export class UserAuthService {
       });
   }
   
-  login(user: Auth) {
+  login(user: {uniqueId: string, password: string}) {
     return this.http.post<{ token: any, expiresIn: number, user: User }>(BACKEND_URL + 'user/login', user)
       .pipe(tap(responseData => this.onHandleAuthentication(responseData)));
   }

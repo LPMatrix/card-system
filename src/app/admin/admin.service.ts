@@ -34,11 +34,12 @@ export class AdminService {
         return this.userStatusListener.asObservable();
     }
     createAgent(agent: Agent) {
-        const postCredentials = new FormData();
-        postCredentials.append('name', agent.name);
-        postCredentials.append('email', agent.email);
-        postCredentials.append('password', agent.password);
-        postCredentials.append('image', agent.image, agent.name);
+        const postCredentials = {
+            name: agent.name,
+            email: agent.email,
+            password: agent.password,
+            image: agent.image
+        };
         const adminToken = this.adminAuthService.getToken();
         return this.http.post<{ agent: Agent }>(BACKEND_URL + 'admin/agent', postCredentials,
             {
@@ -51,13 +52,13 @@ export class AdminService {
     }
 
     createExcoAgent(agent: Agent) {
-        const postCredentials = new FormData();
-        postCredentials.append('name', agent.name);
-        postCredentials.append('email', agent.email);
-        postCredentials.append('branch', agent.branch);
-        postCredentials.append('password', agent.password);
-        postCredentials.append('image', agent.image, agent.name);
-        console.log(postCredentials.get('branch'))
+        const postCredentials = {
+            name: agent.name,
+            email: agent.email,
+            branch: agent.branch,
+            password: agent.password,
+            image: agent.image
+        };
         const adminToken = this.adminAuthService.getToken();
         return this.http.post<{ agent: Agent }>(BACKEND_URL + 'admin/agent', postCredentials,
             {

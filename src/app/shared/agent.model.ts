@@ -5,6 +5,7 @@ export interface Agent {
     password? : string,
     branch?: string,
     image : File | string,
+    imageId?: string,
     updatedAt? : Date,
     is_active? : boolean,
     __v? : any

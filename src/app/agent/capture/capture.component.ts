@@ -78,6 +78,7 @@ export class CaptureComponent implements OnInit {
   public handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
     this.showWebcam = !this.showWebcam;
+    console.log(this.webcamImage.imageAsDataUrl);
   }
 
   public cameraWasSwitched(deviceId: string): void {

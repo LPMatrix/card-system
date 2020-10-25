@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://digicapture.herokuapp.com/api/'
-  apiUrl: 'https://esnbiometrics.com/api/'
+  apiUrl: 'https://digicapture.herokuapp.com/api/'
+  // apiUrl: 'https://esnbiometrics.com/api/'
 };
 
 /*

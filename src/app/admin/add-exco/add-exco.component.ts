@@ -36,7 +36,7 @@ export class AddExcoComponent implements OnInit {
       email : new FormControl(null, [Validators.required, Validators.email]),
       branch: new FormControl(null, [Validators.required]),
       password : new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      image : new FormControl(null, [Validators.required], [mimeType])
+      image : new FormControl(null, [Validators.required])
     });
   }
   onImagePicked(event: Event) {
@@ -51,6 +51,7 @@ export class AddExcoComponent implements OnInit {
   }
 
   onSubmit() {
+    this.adminForm.value.image = this.imagePreview;
     if(!this.adminForm.valid) {
       return;
     }

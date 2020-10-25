@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }
     this.credentialsForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      uniqueId: new FormControl(null, Validators.required),
       password: new FormControl(null, [Validators.required])
     });
   }
