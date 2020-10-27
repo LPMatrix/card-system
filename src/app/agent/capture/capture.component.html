@@ -314,7 +314,8 @@
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
                               <select  formControlName = "state" class="form-control" (change) = "selectState($event.target.value)">
-                                <option></option>
+                                <option *ngIf = "agentForm.value.state !== null" value="{{agentForm.value.state}}">{{ agentForm.value.state }}</option>
+                                <option *ngIf = "!agentForm.value.state"></option>
                                 <option *ngFor="let state of states">{{ state.state }}</option>
                               </select>
                             </div>
@@ -325,7 +326,8 @@
                             <label class="col-sm-3 col-form-label">Unit</label>
                             <div class="col-sm-9">
                               <select  formControlName = "unit" class="form-control">
-                                <option></option>
+                                <option *ngIf = "agentForm.value.unit !== null" value="{{agentForm.value.unit}}">{{ agentForm.value.unit }}</option>
+                                <option *ngIf = "!agentForm.value.unit"></option>
                                 <option *ngFor="let lg of lga">{{ lg }}</option>
                               </select>
                             </div>

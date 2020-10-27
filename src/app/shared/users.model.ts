@@ -23,7 +23,9 @@ export interface User {
     uniqueId : string,
     updatedAt? : Date,
     agentId? : any,
-    image : File,
+    image : File | string,
+    imageId? : string,
+    imageBlob? : string,
     signature?: File,
     fingerId?: string
     finger1 : string,

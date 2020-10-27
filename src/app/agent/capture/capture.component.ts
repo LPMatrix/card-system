@@ -170,18 +170,24 @@ export class CaptureComponent implements OnInit {
   selectState(value){
     const myStates = this.states.find(state => state.state === value);
     this.lga = myStates.lga;
-    this.calculateUniqueId();
+    if (this.agentForm.value.uniqueId && this.agentForm.value.uniqueId !== null) {
+      this.uniqueId = this.agentForm.value.uniqueId;
+    } else {
+      this.calculateUniqueId();
+    }
+    
   }
 
   onSubmit() {
-    this.agentForm.value.uniqueId = this.uniqueId;
-    this.agentForm.value.image = this.webcamImage.imageAsDataUrl;
+    this.agentForm.value.uniqueId = this.uniqueId ? this.uniqueId : this.agentForm.value.uniqueId;
+    this.agentForm.value.image = this.webcamImage ? this.webcamImage.imageAsDataUrl : null;
     // if(!this.agentForm.valid && this.agentForm.value.image === null) {
     //   return;
     // }
     this.SpinnerService.show();
     this.agentService.createUser(this.fingerprintID, this.agentForm.value)
     .pipe(finalize(() => {
+      this.uniqueId = null;
       this.SpinnerService.hide(); 
     }))
     .subscribe(responseData => {
@@ -198,29 +204,35 @@ export class CaptureComponent implements OnInit {
     }))
       .subscribe(response => {
         this.agentForm.setValue({
-          firstname: response.user.firstname,
-          uniqueId: '',
-          middlename: response.user.middlename,
-          verifiedId: '',
-          vehicleNumber: '',
-          verifiedIdType: '',
-          transportation_type: '',
-          surname: response.user.surname,
-          gender: '',
-          address: '',
-          zone: '',
-          branch: '',
-          dob: '',
-          unit: '',
-          phone_no: '',
-          state: '',
-          next_of_kin_name: '',
-          next_of_kin_address: '',
-          next_of_kin_phone_no: '',
+          firstname: response.user.firstname ? response.user.firstname : '',
+          uniqueId: response.user.uniqueId ? response.user.uniqueId : '',
+          middlename: response.user.middlename ? response.user.middlename : '',
+          verifiedId: response.user.verifiedId ? response.user.verifiedId : '',
+          vehicleNumber: response.user.vehicleNumber ? response.user.vehicleNumber : '',
+          verifiedIdType: response.user.verifiedIdType ? response.user.verifiedIdType : '',
+          transportation_type: response.user.transportation_type ? response.user.transportation_type : '',
+          surname: response.user.surname ? response.user.surname : '',
+          gender: response.user.gender ? response.user.gender : '',
+          address: response.user.address ? response.user.address : '',
+          zone: response.user.zone ? response.user.zone : '',
+          branch: response.user.branch ? response.user.branch : '',
+          dob: response.user.dob ? response.user.dob : '',
+          unit: response.user.unit ? response.user.unit : '',
+          phone_no: response.user.phone_no ? response.user.phone_no : '',
+          state: response.user.state ? response.user.state : '',
+          next_of_kin_name: response.user.next_of_kin_name ? response.user.next_of_kin_name : '',
+          next_of_kin_address: response.user.next_of_kin_address ? response.user.next_of_kin_address : '',
+          next_of_kin_phone_no: response.user.next_of_kin_phone_no ? response.user.next_of_kin_phone_no : '',
           image: '',
           signature: '',
-          email: ''
+          email: response.user.email ? response.user.email : ''
         });
+        if(this.agentForm.value.zone) {
+          this.selectZone(this.agentForm.value.zone);
+          if(this.agentForm.value.state) {
+            this.selectState(this.agentForm.value.state);
+          }
+        }
       })
   }
 
