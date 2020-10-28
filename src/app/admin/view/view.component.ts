@@ -16,7 +16,7 @@ import { ConfirmationDialogServiceService } from '../../confirmation-dialog/conf
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css']
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnInit, OnDestroy {
 displayedColumns = [
   'name', 'email', 'updatedAt', 'is_active', 'Action'
   ];
@@ -54,24 +54,19 @@ displayedColumns = [
   }
 
   openAgent(id: string) {
-    console.log(id)
+    // console.log(id)
     this.router.navigateByUrl('/admin/agent-user/' + id);
   }
 
   ngOnInit(): void {
     this.SpinnerService.show();
-    this.adminService.geAgentUsers()
+    this.adminService.getAgents()
     .pipe(finalize(() => {
       this.SpinnerService.hide();
     }))
-    .subscribe(response => {
-      // do nothing
+    .subscribe(responseData => {
+      
     });
-    // this.usersSubscription = this.adminService.getUserStatusListener()
-    //   .subscribe(responseData => {
-    //     this.users = responseData;
-    //     this.counts.userCount = this.users.length;
-    //   });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
         this.agents = responseData.filter(

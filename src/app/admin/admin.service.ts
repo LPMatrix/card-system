@@ -82,6 +82,17 @@ export class AdminService {
                 this.agentStatusListener.next(this.agents);
             }));
     }
+    getAgents() {
+        const adminToken = this.adminAuthService.getToken();
+        return this.http.get<{ agents: Agent[] }>(BACKEND_URL + 'admin/agents',
+            {
+                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
+            })
+            .pipe(tap(responseData => {
+                this.agents = responseData.agents;
+                this.agentStatusListener.next(this.agents);
+            }));
+    }
     editUser(user: any, userId: String) {
         const adminToken = this.adminAuthService.getToken();
         const postCredentials = new FormData();

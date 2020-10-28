@@ -16,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './view-excos.component.html',
   styleUrls: ['./view-excos.component.css']
 })
-export class ViewExcosComponent implements OnInit {
+export class ViewExcosComponent implements OnInit, OnDestroy {
   displayedColumns = [
     'name', 'email', 'updatedAt', 'is_active', 'Action'
   ];
@@ -27,7 +27,6 @@ export class ViewExcosComponent implements OnInit {
   agents: Agent[] = [];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
   arrayCount: number = 0;
-  private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
   constructor(
     private SpinnerService: NgxSpinnerService,
@@ -50,17 +49,12 @@ export class ViewExcosComponent implements OnInit {
 
   ngOnInit(): void {
     this.SpinnerService.show();
-    this.adminService.geAgentUsers()
+    this.adminService.getAgents()
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))
       .subscribe(response => {
         // do nothing
-      });
-    this.usersSubscription = this.adminService.getUserStatusListener()
-      .subscribe(responseData => {
-        this.users = responseData;
-        this.counts.userCount = this.users.length;
       });
     this.agentsSubscription = this.adminService.getAgentStatusListener()
       .subscribe(responseData => {
@@ -77,7 +71,6 @@ export class ViewExcosComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.usersSubscription.unsubscribe();
     this.agentsSubscription.unsubscribe();
   }
 
