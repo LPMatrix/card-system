@@ -3,7 +3,7 @@ import { User } from 'src/app/shared/users.model';
 import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 import { Subject, Subscription } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
@@ -17,7 +17,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./export.component.css']
 })
 export class ExportComponent implements OnInit, OnDestroy {
-
+  totalUsers: number = 0;
+  totalAgents: number = 0;
+  postPerPage: number = 20;
+  currentPage: number = 1
+  pageSizeOptions = [20, 50, 100, 200];
   displayedColumns: string[] = [
     'firstname', 'uniqueId', 'verifiedIdType', 'verifiedId', 'gender', 'Image', 'branch', 'zone', 'state',
     'unit', 'Issued On',
@@ -42,19 +46,35 @@ export class ExportComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.SpinnerService.show();
-    this.adminService.geAgentUsers()
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))
       .subscribe(response => {
         // do nothing
       });
-    this.usersSubscription = this.adminService.getUserStatusListener()
-      .subscribe(responseData => {
-        this.users = responseData;
-        this.counts.userCount = this.users.length;
+    this.usersSubscription = this.adminService.usersChanged
+      .subscribe((responseData: { users: User[], totalUsers: number, totalAgents: number }) => {
+        this.users = responseData.users;
+        this.totalAgents = responseData.totalAgents;
+        this.totalUsers = responseData.totalUsers;
         this.dataSource = new MatTableDataSource(this.users);
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    // console.log(pageData);
+    this.SpinnerService.show();
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
       });
   }
 

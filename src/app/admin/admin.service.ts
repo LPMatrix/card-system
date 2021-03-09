@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Agent } from '../shared/agent.model';
-import { BehaviorSubject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { User } from '../shared/users.model';
@@ -17,6 +17,7 @@ export class AdminService {
     private agentStatusListener = new BehaviorSubject<Agent[]>([]);
     private users: User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
+    usersChanged = new Subject<{ users: User[], totalUsers: number, totalAgents: number }>();
     constructor(private http: HttpClient, private router: Router, private adminAuthService: AdminAuthService) { }
 
     getCounts() {
@@ -69,17 +70,21 @@ export class AdminService {
             this.agentStatusListener.next(this.agents);
         }));
     }
-    geAgentUsers() {
+    geAgentUsers(postSizePerPage: number, currentPage: number) {
         const adminToken = this.adminAuthService.getToken();
-        return this.http.get<{ users: User[], agents: Agent[] }>(BACKEND_URL + 'admin/agents-users',
+        return this.http.get<{ users: User[], totalUsers: number, totalAgents: number }>(BACKEND_URL + 'admin/agents-users',
             {
-                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
+                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken }),
+                params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
             })
             .pipe(tap(responseData => {
                 this.users = responseData.users;
-                this.agents = responseData.agents;
                 this.userStatusListener.next(this.users);
-                this.agentStatusListener.next(this.agents);
+                this.usersChanged.next({
+                    users: this.users.slice(),
+                    totalUsers: responseData.totalUsers,
+                    totalAgents: responseData.totalAgents
+                });
             }));
     }
     getAgents() {
@@ -146,6 +151,14 @@ export class AdminService {
     }
 
     agentAccountStatus(agentId: string) {
+        // const adminToken = this.adminAuthService.getToken();
+        // const postData = {
+        //     fingerprint: agentId
+        // }
+        // return this.http.post<{ users: any[] }>(BACKEND_URL + 'admin/v1/digi/66f94e9574a3d9ce/finger/search', postData,
+        //     {
+        //         headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
+        //     });
         const adminToken = this.adminAuthService.getToken();
         const postData = {
             agentId: agentId

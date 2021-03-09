@@ -4,13 +4,14 @@ import { AdminService } from '../admin.service';
 import { AdminAuthService } from 'src/app/auth/admin.auth.service';
 import { Subject, Subscription } from 'rxjs';
 import { Agent } from 'src/app/shared/agent.model';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogServiceService } from '../../confirmation-dialog/confirmation-dialog-service.service';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -28,6 +29,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
   agents: Agent[] = [];
+  totalUsers: number = 0;
+  totalAgents: number = 0;
+  postPerPage: number = 20;
+  currentPage: number = 1
+  pageSizeOptions = [20, 50, 100, 200];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
   arrayCount: number = 0;
   private usersSubscription: Subscription;
@@ -46,17 +52,18 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   // }
   ngOnInit(): void {
     this.SpinnerService.show();
-    this.adminService.geAgentUsers()
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))
       .subscribe(response => {
         // do nothing
       });
-    this.usersSubscription = this.adminService.getUserStatusListener()
-      .subscribe(responseData => {
-        this.users = responseData;
-        this.counts.userCount = this.users.length;
+    this.usersSubscription = this.adminService.usersChanged
+      .subscribe((responseData: { users: User[], totalUsers: number, totalAgents: number }) => {
+        this.users = responseData.users;
+        this.totalAgents = responseData.totalAgents;
+        this.totalUsers = responseData.totalUsers;
         this.dataSource = new MatTableDataSource(this.users);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -68,7 +75,19 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         this.counts.agentCount = this.agents.length;
       });
   }
-
+  onChangedPage(pageData: PageEvent) {
+    // console.log(pageData);
+    this.SpinnerService.show();
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
+      });
+  }
   public openConfirmDialog(userId: string) {
     this.confirmationDialogService.confirm('', 'Are you sure you want to perform operation?')
       .then((confirmed) => this.onApprove(userId))
