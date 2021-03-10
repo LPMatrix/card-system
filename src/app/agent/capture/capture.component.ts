@@ -169,7 +169,12 @@ export class CaptureComponent implements OnInit {
 
   selectState(value){
     const myStates = this.states.find(state => state.state === value);
-    this.lga = myStates.lga;
+    if (this.agentForm.value.zone == 'PTD'){
+      this.lga = myStates.units;
+    }
+    else{
+      this.lga = myStates.lga;
+    }
     if (this.agentForm.value.uniqueId && this.agentForm.value.uniqueId !== null) {
       this.uniqueId = this.agentForm.value.uniqueId;
     } else {
