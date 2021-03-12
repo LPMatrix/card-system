@@ -11,6 +11,7 @@ import { ConfirmationDialogServiceService } from '../../confirmation-dialog/conf
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
 
@@ -24,7 +25,20 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     'firstname', 'uniqueId', 'email', 'Phone No', 'gender', 'dob', 'branch', 'zone', 'state',
     'unit', 'updatedAt', 'Action'
   ];
+  branches: string[] = [
+  "PTD",
+  "IMB",
+  "ELD",
+  "JEWOG",
+  "LPGAR",
+  "OGS",
+  "SUTAKEP",
+  "PSW"
+];
   dataSource: any;
+  filters: string[] = ['None', 'Branch', 'Agent', 'Date'];
+  showButton: boolean = false;
+  selectedFilter: string = "None";
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
@@ -33,7 +47,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   totalAgents: number = 0;
   postPerPage: number = 20;
   currentPage: number = 1
-  pageSizeOptions = [20, 50, 100, 200];
+  credentialsForm: FormGroup;
+  pageSizeOptions = [20, 50, 200, 500];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
   arrayCount: number = 0;
   private usersSubscription: Subscription;
@@ -43,9 +58,18 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     private confirmationDialogService: ConfirmationDialogServiceService,
     private adminService: AdminService,
     private adminAuthService: AdminAuthService,
-    private router: Router
+    private router: Router,
+    public formBuilder: FormBuilder,
   ) {
-
+    this.credentialsForm = this.formBuilder.group({
+      startDate: ['', Validators.nullValidator],
+      branch: ['', Validators.nullValidator],
+      endDate: ['', Validators.nullValidator],
+      agent: ['', Validators.nullValidator],
+     });
+  }
+  activateButton(){
+    this.showButton = true;
   }
   // ngAfterViewInit() {
   //   this.dataSource.sort = this.sort;

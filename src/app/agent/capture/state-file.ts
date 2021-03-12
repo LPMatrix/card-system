@@ -4,6 +4,7 @@ export const externalBranches =
         "PTD",
         "IMB",
         "ELD",
+        "JEWOG",
         "LPGAR",
         "OGS",
         "SUTAKEP",
