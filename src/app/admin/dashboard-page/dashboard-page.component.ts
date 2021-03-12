@@ -75,6 +75,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   // ngAfterViewInit() {
   //   this.dataSource.sort = this.sort;
   // }
+  filter(){}
   ngOnInit(): void {
     this.SpinnerService.show();
     this.adminService.geAgentUsers(this.postPerPage, this.currentPage)

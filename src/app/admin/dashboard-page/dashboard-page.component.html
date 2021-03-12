@@ -200,7 +200,7 @@
                           <div class="form-row" *ngIf="selectedFilter == 'Branch'">
                               <div class="form-group col-md-6">
                                   <label for="inputState">Branch</label>
-                                  <select formControlName="branch" class="form-control dash-form-control" (change) = "selectState($event.target.value)"
+                                  <select formControlName="branch" class="form-control dash-form-control"
                                   [ngClass]="{ 'is-invalid': credentialsForm.controls.branch.invalid && (credentialsForm.controls.branch.dirty
                                   || credentialsForm.controls.branch.touched)}">
                                       <option *ngFor="let branch of branches">{{ branch }}</option>
@@ -255,7 +255,7 @@
                             <!-- Name Column -->
                             <ng-container matColumnDef="firstname">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.lastname}} </mat-cell>
+                              <mat-cell *matCellDef="let row"> {{row.firstname}} {{row.middlename}} {{row.surname}} </mat-cell>
                             </ng-container>
 
                             <!-- UniqueID Column -->
