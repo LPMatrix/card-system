@@ -4,7 +4,7 @@ import { AgentService } from '../agent.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subject, Subscription } from 'rxjs';
 import { Agent } from 'src/app/shared/agent.model';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { finalize } from 'rxjs/operators';
@@ -25,6 +25,11 @@ export class AgentDashboardComponent implements OnInit, OnDestroy{
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   users : User[] = [];
+  totalUsers: number = 0;
+  totalAgents: number = 0;
+  postPerPage: number = 20;
+  currentPage: number = 1
+  pageSizeOptions = [20, 50, 100, 200];
   userInformation : Agent;
   loading: boolean = false;
   private userSubscription : Subscription;
@@ -38,20 +43,20 @@ export class AgentDashboardComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     // this.loading = true;
     this.SpinnerService.show(); 
-    this.agentService.getUsers()
+    this.agentService.getUsers(this.postPerPage, this.currentPage)
     .pipe(finalize(() => {
-      // this.loading= false;
       this.SpinnerService.hide();
     }))
-    .subscribe(responseData => {
-      // DO nothing
+    .subscribe(response => {
+      // do nothing
     });
-    this.userSubscription = this.agentService.getUserStatusListener()
-    .subscribe(responseData => {
-      this.users = responseData;
+    this.userSubscription = this.agentService.usersChanged
+    .subscribe((responseData: { users: User[], totalUsers: number }) => {
+      this.users = responseData.users;
+      this.totalUsers = responseData.totalUsers;
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
-      this.counts.userCount = this.users.length; 
+      this.dataSource.sort = this.sort;
     });
     this.authService.getAgentDataStatus()
     .subscribe(responseData => {
@@ -64,6 +69,19 @@ export class AgentDashboardComponent implements OnInit, OnDestroy{
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  onChangedPage(pageData: PageEvent) {
+    // console.log(pageData);
+    this.SpinnerService.show();
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    this.agentService.getUsers(this.postPerPage, this.currentPage)
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(response => {
+        // do nothing
+      });
+  }
 
   logout() {
     this.authService.logout();

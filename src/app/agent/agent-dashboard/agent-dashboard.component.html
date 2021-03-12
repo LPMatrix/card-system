@@ -81,7 +81,7 @@
                     <div class="card text-white">
                       <div class="card-body">
                         <div class="d-flex justify-content-between pb-2 align-items-center">
-                          <h2 class="font-weight-semibold mb-0">{{ counts?.userCount }}</h2>
+                          <h2 class="font-weight-semibold mb-0">{{ totalUsers }}</h2>
                           <div class="icon-holder">
                             <i class="mdi mdi-briefcase-outline"></i>
                           </div>
@@ -212,7 +212,8 @@
                             </mat-row>
                           </mat-table>
 
-                          <mat-paginator [pageSizeOptions]="[20, 50, 100, 500]"></mat-paginator>
+                          <mat-paginator *ngIf="users.length > 0" class="mt-5" [length]="totalUsers" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" (page) = onChangedPage($event)>
+                          </mat-paginator>
                         </div>
                         
                       </div>

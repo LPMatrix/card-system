@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { User } from '../shared/users.model';
-import { BehaviorSubject, } from 'rxjs';
+import { BehaviorSubject, Subject, } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { ExcoAuthService } from '../auth/exco.auth.service';
@@ -15,6 +15,7 @@ const BACKEND_URL = environment.apiUrl;
 export class AgentService {
     private users: User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
+    usersChanged = new Subject<{ users: User[], totalUsers: number }>();
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -61,15 +62,20 @@ export class AgentService {
             }));
     }
 
-    getUsers() {
+    getUsers(postSizePerPage: number, currentPage: number) {
         const token = this.authService.getToken();
-        return this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/user',
+        return this.http.get<{ users: User[], totalUsers: number }>(BACKEND_URL + 'agent/user',
 
             {
-                headers: new HttpHeaders({ Authorization: "Bearer " + token })
+                headers: new HttpHeaders({ Authorization: "Bearer " + token }),
+                params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
             }).pipe(tap(responseData => {
                 this.users = responseData.users;
                 this.userStatusListener.next(this.users);
+                this.usersChanged.next({
+                    users: this.users.slice(),
+                    totalUsers: responseData.totalUsers,
+                });
             }));
     }
 
