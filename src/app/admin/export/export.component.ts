@@ -21,7 +21,7 @@ export class ExportComponent implements OnInit, OnDestroy {
   totalAgents: number = 0;
   postPerPage: number = 20;
   currentPage: number = 1
-  pageSizeOptions = [20, 50, 100, 200];
+  pageSizeOptions = [20, 50, 200, 500];
   displayedColumns: string[] = [
     'firstname', 'uniqueId', 'verifiedIdType', 'verifiedId', 'gender', 'Image', 'branch', 'zone', 'state',
     'unit', 'Issued On',
