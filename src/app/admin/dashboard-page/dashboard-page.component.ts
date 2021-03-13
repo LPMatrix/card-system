@@ -26,16 +26,16 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     'unit', 'updatedAt', 'Action'
   ];
   branches: string[] = [
-  "PTD",
-  "IMB",
-  "ELD",
-  "JEWOG",
-  "LPGAR",
-  "OGS",
-  "SUTAKEP",
-  "PSW"
-];
-/** check */
+    "PTD",
+    "IMB",
+    "ELD",
+    "JEWOG",
+    "LPGAR",
+    "OGS",
+    "SUTAKEP",
+    "PSW"
+  ];
+  /** check */
   dataSource: any;
   filters: string[] = ['None', 'Branch', 'Agent', 'Date'];
   showButton: boolean = false;
@@ -52,6 +52,9 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   pageSizeOptions = [20, 50, 200, 500];
   counts: { userCount: number, agentCount: number } = { userCount: 0, agentCount: 0 };
   arrayCount: number = 0;
+  startDate: Date = null;
+  endDate: Date = null;
+  branch: string = null;
   private usersSubscription: Subscription;
   private agentsSubscription: Subscription;
   constructor(
@@ -65,26 +68,44 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.credentialsForm = this.formBuilder.group({
       startDate: ['', Validators.nullValidator],
       branch: ['', Validators.nullValidator],
-      endDate: ['', Validators.nullValidator],
-      agent: ['', Validators.nullValidator],
-     });
+      endDate: ['', Validators.nullValidator]
+    });
   }
-  activateButton(){
+  activateButton() {
     this.showButton = true;
   }
   // ngAfterViewInit() {
   //   this.dataSource.sort = this.sort;
   // }
-  filter(){}
-  ngOnInit(): void {
+  getAllUsersWithFilter() {
+    this.filter();
     this.SpinnerService.show();
-    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage, this.startDate, this.endDate, this.branch)
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))
       .subscribe(response => {
         // do nothing
       });
+  }
+  filter() {
+    if (this.selectedFilter == "Branch") {
+      this.startDate = null;
+      this.branch = this.credentialsForm.value.branch;
+      this.endDate = null;
+    } else if(this.selectedFilter == "Date") {
+      this.startDate = this.credentialsForm.value.startDate;
+      this.branch = null;
+      this.endDate = this.credentialsForm.value.endDate;
+    } else {
+      this.startDate = null;
+      this.branch = null;
+      this.endDate = null;
+    }
+
+  }
+  ngOnInit(): void {
+    this.getAllUsersWithFilter();
     this.usersSubscription = this.adminService.usersChanged
       .subscribe((responseData: { users: User[], totalUsers: number, totalAgents: number }) => {
         this.users = responseData.users;
@@ -106,7 +127,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.SpinnerService.show();
     this.currentPage = pageData.pageIndex + 1;
     this.postPerPage = pageData.pageSize;
-    this.adminService.geAgentUsers(this.postPerPage, this.currentPage)
+    this.adminService.geAgentUsers(this.postPerPage, this.currentPage, this.startDate, this.endDate, this.branch)
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))

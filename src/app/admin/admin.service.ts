@@ -70,9 +70,15 @@ export class AdminService {
             this.agentStatusListener.next(this.agents);
         }));
     }
-    geAgentUsers(postSizePerPage: number, currentPage: number) {
+    geAgentUsers(postSizePerPage: number, currentPage: number, startDate: Date = null, endDate: Date = null, branch: string = null) {
+        console.log(startDate, endDate, branch)
+        const postCredentials = {
+            startDate: startDate,
+            endDate: endDate,
+            branch: branch
+        };
         const adminToken = this.adminAuthService.getToken();
-        return this.http.get<{ users: User[], totalUsers: number, totalAgents: number }>(BACKEND_URL + 'admin/agents-users',
+        return this.http.post<{ users: User[], totalUsers: number, totalAgents: number }>(BACKEND_URL + 'admin/agents-users', postCredentials,
             {
                 headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken }),
                 params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
