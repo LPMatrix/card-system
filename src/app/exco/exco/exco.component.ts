@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular
 import { User } from 'src/app/shared/users.model';
 import { Subject, Subscription } from 'rxjs';
 import { Agent } from 'src/app/shared/agent.model';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import { MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AgentService } from 'src/app/agent/agent.service';
 import { ExcoAuthService } from 'src/app/auth/exco.auth.service';
@@ -15,36 +15,61 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './exco.component.html',
   styleUrls: ['./exco.component.css']
 })
-export class ExcoComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ExcoComponent implements OnInit, OnDestroy {
   displayedColumns = [
     'Name', 'Unique Id', 'Email', 'Gender', 'D.O.B', 'Phone No', 'Branch', 'Zone',
     'State',
     'Unit', 'Action'
   ];
 
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   users: User[] = [];
   userInformation: Agent;
+  totalUsers: number = 0;
+  postPerPage: number = 20;
+  currentPage: number = 1
+  pageSizeOptions = [20, 50, 100, 200];
   private userSubscription: Subscription;
-  counts: { userCount: number } = { userCount: 0 };
+  // counts: { userCount: number } = { userCount: 0 };
   constructor(private SpinnerService: NgxSpinnerService, private excoAuthService: ExcoAuthService, private agentService: AgentService) { }
 
   ngOnInit(): void {
     this.SpinnerService.show();
-    this.userSubscription = this.agentService.getExcoUsers()
+    this.agentService.getExcoUsers(this.postPerPage, this.currentPage)
       .pipe(finalize(() => {
         this.SpinnerService.hide();
       }))
       .subscribe(responseData => {
+        // 
+      });
+    this.userSubscription = this.agentService.excoUsersChanged
+      .subscribe((responseData: { users: User[], totalUsers: number }) => {
+        console.log('totaluser', responseData.totalUsers)
         this.users = responseData.users;
+        this.totalUsers = responseData.totalUsers;
         this.dataSource = new MatTableDataSource(this.users);
-        this.counts.userCount = this.users.length;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       });
     this.excoAuthService.getAgentDataStatus()
       .subscribe(responseData => {
         this.userInformation = responseData;
+      });
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    console.log(pageData);
+    this.SpinnerService.show();
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    this.agentService.getExcoUsers(this.postPerPage, this.currentPage)
+      .pipe(finalize(() => {
+        this.SpinnerService.hide();
+      }))
+      .subscribe(responseData => {
+        // do nothing
       });
   }
 
@@ -59,14 +84,9 @@ export class ExcoComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
-
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    // this.userSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
 }

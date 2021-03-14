@@ -71,7 +71,6 @@ export class AdminService {
         }));
     }
     geAgentUsers(postSizePerPage: number, currentPage: number, startDate: Date = null, endDate: Date = null, branch: string = null) {
-        console.log(startDate, endDate, branch)
         const postCredentials = {
             startDate: startDate,
             endDate: endDate,
@@ -92,6 +91,15 @@ export class AdminService {
                     totalAgents: responseData.totalAgents
                 });
             }));
+    }
+
+    getAgentRegisteredUsers(agentId: string, postSizePerPage: number, currentPage: number) {
+        const adminToken = this.adminAuthService.getToken();
+        return this.http.get<{ users: User[], totalUsers: number}>(BACKEND_URL + 'admin/agent/' + agentId + '/registered',
+            {
+                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken }),
+                params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
+            });
     }
     getAgents() {
         const adminToken = this.adminAuthService.getToken();
@@ -203,14 +211,6 @@ export class AdminService {
                 this.users = [...getFilteredUser];
                 this.userStatusListener.next(this.users);
             }))
-    }
-
-    getAgentRegisteredUsers(agentId: String) {
-        const adminToken = this.adminAuthService.getToken();
-        return this.http.get<{ users: User[] }>(BACKEND_URL + 'admin/agent/' + agentId + '/registered',
-            {
-                headers: new HttpHeaders({ AdminAuthorization: "Bearer " + adminToken })
-            });
     }
     getUserDetailById(uniqueId: string) {
         const adminToken = this.adminAuthService.getToken();

@@ -36,11 +36,11 @@ export class ViewAgentComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.adminService.getAgentRegisteredUsers(this.agentId).subscribe(responseData => {
-      this.users = responseData.users;
-      this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource.paginator = this.paginator;
-    });
+    // this.adminService.getAgentRegisteredUsers(this.agentId).subscribe(responseData => {
+    //   this.users = responseData.users;
+    //   this.dataSource = new MatTableDataSource(this.users);
+    //   this.dataSource.paginator = this.paginator;
+    // });
   }
 
   applyFilter(event: Event) {

@@ -34,6 +34,9 @@ import { ExcoAuthGuard } from './auth/exo.auth.guard';
 import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
 import { GetcountComponent } from './getcount/getcount.component';
 import { ExportComponent } from './admin/export/export.component';
+import { RegisteredUsersComponent } from './admin/view-agent/registered-users/registered-users.component';
+import { ExcoAgentComponent } from './exco/exco-agent/exco-agent.component';
+import { ExcoAgentUserComponent } from './exco/exco-agent/exco-agent-user/exco-agent-user.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -55,6 +58,7 @@ const routes: Routes = [
   {path: "agent/forgot-password", component : AgentForgotPasswordComponent},  
   {path: "agent/reset/:token", component: AgentResetPasswordComponent},
   {path: "admin/view-agent", canActivate: [AdminAuthGuard],  component: ViewComponent},
+  {path: "admin/agent/:agentId/users", canActivate: [AdminAuthGuard],  component: RegisteredUsersComponent},
   {path: "admin/edit-user/:user", canActivate: [AdminAuthGuard],  component: EditUserComponent},
   {path: "admin/agent-user/:id", canActivate: [AdminAuthGuard], component: ViewAgentComponent},
   {path: "admin/add-exco", canActivate: [AdminAuthGuard],  component: AddExcoComponent},
@@ -66,6 +70,8 @@ const routes: Routes = [
   {path: "exco/profile", canActivate: [ExcoAuthGuard], component: ExcoProfileComponent},
   {path: "exco/validate", canActivate: [ExcoAuthGuard], component: ValidateComponent},
   {path: "exco/dashboard", canActivate: [ExcoAuthGuard], component: ExcoComponent},
+  {path: "exco/view-agent", canActivate: [ExcoAuthGuard], component: ExcoAgentComponent},
+  {path: "exco/agent/:agentId/users", canActivate: [ExcoAuthGuard], component: ExcoAgentUserComponent},
   {path: "exco/agent/reset/:token", component: ExcoPasswordComponent},
   {path: "exco/forget-password", component: ExcoForgetPasswordComponent},
   {path: "enrolled", component: GetcountComponent}

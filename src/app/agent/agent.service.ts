@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { ExcoAuthService } from '../auth/exco.auth.service';
 import { tap } from 'rxjs/operators';
+import { Agent } from '../shared/agent.model';
 const BACKEND_URL = environment.apiUrl;
 @Injectable({
     providedIn: "root"
@@ -14,8 +15,10 @@ const BACKEND_URL = environment.apiUrl;
 
 export class AgentService {
     private users: User[] = [];
+    private excoUsers: User[] = [];
     private userStatusListener = new BehaviorSubject<User[]>([]);
     usersChanged = new Subject<{ users: User[], totalUsers: number }>();
+    excoUsersChanged = new Subject<{ users: User[], totalUsers: number }>();
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -79,12 +82,39 @@ export class AgentService {
             }));
     }
 
-    getExcoUsers() {
+    getExcoUsers(postSizePerPage: number, currentPage: number) {
         const token = this.excoAuthService.getToken();
-        return this.http.get<{ users: User[] }>(BACKEND_URL + 'agent/exco/users',
+        return this.http.get<{ users: User[], totalUsers: number }>(BACKEND_URL + 'agent/exco/users',
 
             {
+                headers: new HttpHeaders({ ExcoAuthorization: "Bearer " + token }),
+                params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
+            })
+            .pipe(tap(responseData => {
+                this.excoUsers = responseData.users;
+                const totalUsers = responseData.totalUsers;
+                console.log(totalUsers)
+                this.excoUsersChanged.next({
+                    users: this.excoUsers.slice(),
+                    totalUsers: totalUsers
+                });
+            }));
+    }
+
+    getAgents() {
+        const token = this.excoAuthService.getToken();
+        return this.http.get<{ agents: Agent[], totalUsers: number, totalAgents: number }>(BACKEND_URL + 'agent/exco-agents',
+            {
                 headers: new HttpHeaders({ ExcoAuthorization: "Bearer " + token })
+            });
+    }
+
+    getAgentRegisteredUsers(agentId: string, postSizePerPage: number, currentPage: number) {
+        const token = this.excoAuthService.getToken();
+        return this.http.get<{ users: User[], totalUsers: number}>(BACKEND_URL + 'agent/exco/' + agentId + '/registered',
+            {
+                headers: new HttpHeaders({ ExcoAuthorization: "Bearer " + token }),
+                params: new HttpParams().set('currentPage', currentPage.toString()).append('postSizeOptions', postSizePerPage.toString())
             });
     }
 

@@ -57,6 +57,9 @@ import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { ExcoForgetPasswordComponent } from './exco/exco-forget-password/exco-forget-password.component';
 import { GetcountComponent } from './getcount/getcount.component';
 import { ExportComponent } from './admin/export/export.component';
+import { RegisteredUsersComponent } from './admin/view-agent/registered-users/registered-users.component';
+import { ExcoAgentComponent } from './exco/exco-agent/exco-agent.component';
+import { ExcoAgentUserComponent } from './exco/exco-agent/exco-agent-user/exco-agent-user.component';
 
 
 @NgModule({
@@ -102,6 +105,9 @@ import { ExportComponent } from './admin/export/export.component';
     ExcoForgetPasswordComponent,
     GetcountComponent,
     ExportComponent,
+    RegisteredUsersComponent,
+    ExcoAgentComponent,
+    ExcoAgentUserComponent
   ],
   imports: [
     BrowserModule,

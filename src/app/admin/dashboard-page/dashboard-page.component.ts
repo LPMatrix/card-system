@@ -150,11 +150,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   onApprove(userId: string) {
     this.SpinnerService.show()
     this.adminService.approve(userId)
-      .pipe(finalize(() => {
-        this.SpinnerService.hide();
-      }))
       .subscribe(response => {
-        // do nothing
+        this.getAllUsersWithFilter();
       });
     // this.getCount();
   }
@@ -169,23 +166,20 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   }
 
   onAccountStatus(agentId: string) {
-    this.adminService.agentAccountStatus(agentId);
+    this.adminService.agentAccountStatus(agentId).subscribe();
   }
 
   onDelete(agentId: string) {
-    this.adminService.deleteAgent(agentId);
+    this.adminService.deleteAgent(agentId).subscribe();
   }
 
   onDeleteUser(userId: string) {
     // Parse _id value as userId
     this.SpinnerService.show();
     this.adminService.deleteUser(userId)
-      .pipe(finalize(() => {
-        this.SpinnerService.hide();
-      }))
-      .subscribe(response => {
-        // do nothing
-      });;
+    .subscribe(response => {
+      this.getAllUsersWithFilter();
+    });
   }
 
   onEdit(id: string) {

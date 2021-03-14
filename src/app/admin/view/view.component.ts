@@ -55,7 +55,7 @@ displayedColumns = [
 
   openAgent(id: string) {
     // console.log(id)
-    this.router.navigateByUrl('/admin/agent-user/' + id);
+    this.router.navigateByUrl('/admin/agent/' + id + '/users');
   }
 
   ngOnInit(): void {

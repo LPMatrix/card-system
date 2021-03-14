@@ -213,8 +213,7 @@
                               <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> 
-                                  <button class="btn btn-secondary" data-toggle="modal" 
-                                    [attr.data-target]="'#'+row.fingerId">View
+                                  <button class="btn btn-secondary" routerLink="/admin/agent/{{row._id}}/users">View
                                   </button> &nbsp;
                                     <button class="btn badge {{row.approve? 'badge-success':'badge-danger'}}">{{row.approve? 'Approved' : 'Pending'}}</button>
                                   </mat-cell>
