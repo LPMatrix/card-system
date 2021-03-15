@@ -41,6 +41,7 @@ import { ExcoAgentUserComponent } from './exco/exco-agent/exco-agent-user/exco-a
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
   {path: "agent", redirectTo: 'agent/dashboard'},
+  {path: "exco", redirectTo: 'exco/dashboard'},
   {path: "home", canActivate: [UserAuthGuard], component: HomeComponent},
   {path: "admin", redirectTo: 'admin/dashboard'},
   {path: "admin/login", component:AdminLoginComponent},
@@ -65,16 +66,18 @@ const routes: Routes = [
   {path: "admin/excos", canActivate: [AdminAuthGuard],  component: ViewExcosComponent},
   {path: "admin/verify", canActivate: [AdminAuthGuard],  component: VerifyComponent},
   {path: "admin/export", canActivate: [AdminAuthGuard],  component: ExportComponent},
-  {path: "exco", redirectTo: 'exco/dashboard'},
   {path: "exco/login", component: ExcoLoginComponent},
   {path: "exco/profile", canActivate: [ExcoAuthGuard], component: ExcoProfileComponent},
   {path: "exco/validate", canActivate: [ExcoAuthGuard], component: ValidateComponent},
   {path: "exco/dashboard", canActivate: [ExcoAuthGuard], component: ExcoComponent},
   {path: "exco/view-agent", canActivate: [ExcoAuthGuard], component: ExcoAgentComponent},
-  {path: "exco/agent/:agentId/users", canActivate: [ExcoAuthGuard], component: ExcoAgentUserComponent},
+  {path: "exco/:agentId/get/users", canActivate: [ExcoAuthGuard], component: ExcoAgentUserComponent},
   {path: "exco/agent/reset/:token", component: ExcoPasswordComponent},
   {path: "exco/forget-password", component: ExcoForgetPasswordComponent},
-  {path: "enrolled", component: GetcountComponent}
+  {path: "enrolled", component: GetcountComponent},
+  {
+    path: '**', redirectTo: 'login' ,pathMatch: 'full'
+  }
 ];
 
 @NgModule({

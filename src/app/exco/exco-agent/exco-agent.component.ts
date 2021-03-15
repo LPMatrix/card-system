@@ -41,7 +41,7 @@ export class ExcoAgentComponent implements OnInit {
 
   openAgent(id: string) {
     // console.log(id)
-    this.router.navigateByUrl('/exco/agent/' + id + '/users');
+    this.router.navigateByUrl('/exco/' + id + '/get/users');
   }
 
   ngOnInit(): void {

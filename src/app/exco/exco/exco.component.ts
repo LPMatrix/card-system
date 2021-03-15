@@ -46,7 +46,6 @@ export class ExcoComponent implements OnInit, OnDestroy {
       });
     this.userSubscription = this.agentService.excoUsersChanged
       .subscribe((responseData: { users: User[], totalUsers: number }) => {
-        console.log('totaluser', responseData.totalUsers)
         this.users = responseData.users;
         this.totalUsers = responseData.totalUsers;
         this.dataSource = new MatTableDataSource(this.users);
@@ -60,7 +59,6 @@ export class ExcoComponent implements OnInit, OnDestroy {
   }
 
   onChangedPage(pageData: PageEvent) {
-    console.log(pageData);
     this.SpinnerService.show();
     this.currentPage = pageData.pageIndex + 1;
     this.postPerPage = pageData.pageSize;

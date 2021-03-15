@@ -29,7 +29,7 @@ export class ExcoAuthService {
 
   getAgentData() {
     const token = this.getToken();
-    this.http.get<{ agent: Agent }>(BACKEND_URL + 'exco/agent/profile',
+    this.http.get<{ agent: Agent }>(BACKEND_URL + 'agent/exco/profile',
     {
       headers: new HttpHeaders({ExcoAuthorization: "Bearer " + token})
   })

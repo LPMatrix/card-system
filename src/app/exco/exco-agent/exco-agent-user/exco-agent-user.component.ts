@@ -47,7 +47,7 @@ export class ExcoAgentUserComponent implements OnInit {
         }
       }
     );
-    this.excoAuthService.getAgentDataStatus()
+    this.userSubscription = this.excoAuthService.getAgentDataStatus()
       .subscribe(responseData => {
         this.userInformation = responseData;
       });

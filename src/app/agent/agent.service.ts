@@ -93,7 +93,6 @@ export class AgentService {
             .pipe(tap(responseData => {
                 this.excoUsers = responseData.users;
                 const totalUsers = responseData.totalUsers;
-                console.log(totalUsers)
                 this.excoUsersChanged.next({
                     users: this.excoUsers.slice(),
                     totalUsers: totalUsers
